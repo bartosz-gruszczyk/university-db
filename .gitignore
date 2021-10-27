@@ -1,0 +1,15 @@
+# Builds, test, IDE
+build/
+.vscode/
+googletest/
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Executables
+*.exe
+*.out
+*.app
