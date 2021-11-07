@@ -18,10 +18,13 @@ public:
     void printAll();
 
     void addStudent(std::string firstName, std::string lastName, size_t indexNumber, std::string pesel, Address address, Sex sex);
+    void removeStudent(const size_t& indexNumber);
 
-    int columnWidth = 12;   //zrobic const......!!!
+    int columnWidth = 16;   //zrobic const......!!!
 private:
     void printHeader();
+    std::string encodeSex(const Sex& sex) const;
+
     std::vector<std::unique_ptr<Student>> students_;
 
 };
