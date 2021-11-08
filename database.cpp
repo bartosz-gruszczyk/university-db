@@ -5,6 +5,7 @@
 #include <memory>
 
 void DataBase::printHeader(){
+    std::cout << "vector size: " << students_.size() << '\n';
     std::cout.setf(std::ios::left);
     std::cout << std::setw(columnWidth) << "first name:"
               << std::setw(columnWidth) << "last name:"
@@ -15,17 +16,21 @@ void DataBase::printHeader(){
               << '\n';
 }
 
+void DataBase::printStudent(const std::unique_ptr<Student>& student) {
+        std::cout.setf(std::ios::left);
+        std::cout << std::setw(columnWidth) << student->getFirstName()  // zrobic constexpr
+                  << std::setw(columnWidth) << student->getLastName()
+                  << std::setw(columnWidth) << student->getIndexNumber()
+                  << std::setw(48) << student->getAddress()   // zrobic const wartosc kolumny address
+                  << std::setw(columnWidth) << student->getPesel()
+                  << std::setw(columnWidth) << encodeSex(student->getSex())
+                  << '\n';    
+}
+
 void DataBase::printAll() {
     printHeader();
     for (auto it = students_.cbegin(); it != students_.cend(); ++it) {
-        std::cout.setf(std::ios::left);
-        std::cout << std::setw(columnWidth) << (**it).getFirstName()  // zrobic constexpr
-                  << std::setw(columnWidth) << (**it).getLastName()
-                  << std::setw(columnWidth) << (**it).getIndexNumber()
-                  << std::setw(48) << (**it).getAddress()
-                  << std::setw(columnWidth) << (**it).getPesel()
-                  << std::setw(columnWidth) << encodeSex((**it).getSex())
-                  << '\n';
+        printStudent(*it);
     }
 }
 
@@ -43,7 +48,10 @@ void DataBase::addStudent(std::string firstName,
 }
 
 void DataBase::removeStudent(const size_t& indexNumber) {
-    std::erase_if(students_, [indexNumber](std::unique_ptr<Student> ptr){
-        return (*ptr).getIndexNumber() == indexNumber;
+    // sprawdzic czy nie ma wyciekow
+    // czy warto robic remove/erase?
+    // error - invalid index??
+    std::erase_if(students_, [indexNumber](const std::unique_ptr<Student>& ptr){
+        return ptr->getIndexNumber() == indexNumber;
     });
 }

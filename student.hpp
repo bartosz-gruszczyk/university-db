@@ -11,6 +11,7 @@ class Student {
 public:
     // Student();
     Student(std::string, std::string, size_t, std::string, Address, Sex);
+    // co z destruktorem zwalniającym address_ ???
 
     void print();
 
