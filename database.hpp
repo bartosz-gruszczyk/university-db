@@ -21,6 +21,8 @@ public:
     void printStudent(const std::unique_ptr<Student>& student);
     void printAll();
 
+    void searchStudentByLastName(const std::string lastName);  // zrobic referencje?
+
     int columnWidth = 16;   //zrobic const......!!!
 private:
     void printHeader();
