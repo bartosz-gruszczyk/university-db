@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <memory>
+#include <numeric>
 
 void DataBase::printHeader(){
     std::cout << "vector size: " << students_.size() << '\n';
@@ -83,4 +84,25 @@ void DataBase::sortByLastName() { // reference to string?
         return (first <=> second) < 0;
     });
 
+}
+
+bool DataBase::validatePESEL(const std::string pesel) {
+    // const short peselLenght = 11;
+    // const std::string weight = "1379137913"
+    std::array<char, 10> weights {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
+    if (pesel.size() == 11) {
+        std::transform(weights.begin(),
+                       weights.end(),
+                       pesel.begin(),
+                       weights.begin(),
+                       [](const char& weight, const char& digit){
+                           return weight * (digit - '0');
+                       });
+        int modulo = std::reduce(weights.cbegin(), weights.cend(), 0) % 10;
+        if (modulo == 0) {
+            return pesel.ends_with('0');
+        }
+        return pesel.ends_with(10 - modulo + '0');
+    }
+    return false;
 }

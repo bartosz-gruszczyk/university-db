@@ -26,5 +26,16 @@ int main() {
     testDB.sortByLastName();
     testDB.printAll();
 
+    std::cout << "\nTesting pesel validation: \n";
+    std::string pesel1 = "87070907879";
+    std::cout << std::boolalpha << pesel1 << ": " << testDB.validatePESEL(pesel1) << '\n'; 
+    std::string pesel2 = "55030101193";
+    std::cout << std::boolalpha << pesel2 << ": " << testDB.validatePESEL(pesel2) << '\n'; 
+    std::string pesel3 = "55030101230";
+    std::cout << std::boolalpha << pesel3 << ": " << testDB.validatePESEL(pesel3) << '\n'; 
+    std::string pesel4 = "20272904006";
+    std::cout << std::boolalpha << pesel4 << ": " << testDB.validatePESEL(pesel4) << '\n'; 
+    
+
     return 0;
 }

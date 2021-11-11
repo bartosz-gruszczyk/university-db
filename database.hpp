@@ -25,6 +25,8 @@ public:
 
     void sortByLastName();
 
+    bool validatePESEL(const std::string pesel); //reference?
+
     int columnWidth = 16;   //zrobic const......!!!
 private:
     void printHeader();
