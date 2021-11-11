@@ -21,5 +21,10 @@ int main() {
     testDB.printAll();
     std::cout << "find student...\n\n";
     testDB.searchStudentByLastName("Kowa");
+
+    std::cout << "sorting by lastName...\n\n";
+    testDB.sortByLastName();
+    testDB.printAll();
+
     return 0;
 }

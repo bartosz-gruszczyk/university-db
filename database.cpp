@@ -1,5 +1,6 @@
 #include "database.hpp"
 #include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <iomanip>
 #include <memory>
@@ -71,3 +72,15 @@ void DataBase::searchStudentByLastName(const std::string lastName) {
         }
     }
 } 
+
+void DataBase::sortByLastName() { // reference to string?
+
+    std::sort(students_.begin(), students_.end(), [](std::unique_ptr<Student>& a, std::unique_ptr<Student>& b){
+        std::string first = a->getLastName();
+        std::string second = b->getLastName();
+        // std::tolower(first);
+        // std::tolower(second);
+        return (first <=> second) < 0;
+    });
+
+}

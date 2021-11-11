@@ -23,6 +23,8 @@ public:
 
     void searchStudentByLastName(const std::string lastName);  // zrobic referencje?
 
+    void sortByLastName();
+
     int columnWidth = 16;   //zrobic const......!!!
 private:
     void printHeader();
