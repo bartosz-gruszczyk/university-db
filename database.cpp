@@ -10,7 +10,7 @@ void DataBase::printHeader(){
     std::cout << std::setw(columnWidth) << "first name:"
               << std::setw(columnWidth) << "last name:"
               << std::setw(columnWidth) << "index number:"
-              << std::setw(48) << "address:"
+              << std::setw(42) << "address:"
               << std::setw(columnWidth) << "PESEL:"
               << std::setw(columnWidth) << "sex:"
               << '\n';
@@ -21,7 +21,7 @@ void DataBase::printStudent(const std::unique_ptr<Student>& student) {
         std::cout << std::setw(columnWidth) << student->getFirstName()  // zrobic constexpr
                   << std::setw(columnWidth) << student->getLastName()
                   << std::setw(columnWidth) << student->getIndexNumber()
-                  << std::setw(48) << student->getAddress()   // zrobic const wartosc kolumny address
+                  << std::setw(42) << student->getAddress()   // zrobic const wartosc kolumny address
                   << std::setw(columnWidth) << student->getPesel()
                   << std::setw(columnWidth) << encodeSex(student->getSex())
                   << '\n';    
@@ -57,17 +57,29 @@ void DataBase::removeStudent(const size_t& indexNumber) {
 }
 
 void DataBase::searchStudentByLastName(const std::string lastName) {
+    // --- first version ---
+    // auto it = students_.begin();
+    // while (it != students_.end()) {
+    //     it = std::find_if(it, students_.end(), [lastName](const std::unique_ptr<Student>& ptr){
+    //         return ptr->getLastName().find(lastName) != std::string::npos;
+    //     });
+    //     // **it;
+    //     if (it != students_.end()) {
+    //         // std::cout << (*it)->getLastName() << "  \n";
+    //         printStudent(*it);
+    //         ++it;
+    //     }
+    // }
 
-    auto it = students_.begin();
-    while (it != students_.end()) {
-        it = std::find_if(it, students_.end(), [lastName](const std::unique_ptr<Student>& ptr){
+    auto findLastName = [lastName](const std::unique_ptr<Student>& ptr){
             return ptr->getLastName().find(lastName) != std::string::npos;
-        });
-        // **it;
-        if (it != students_.end()) {
-            // std::cout << (*it)->getLastName() << "  \n";
-            printStudent(*it);
-            ++it;
-        }
+    };
+    auto it = std::find_if(students_.cbegin(), students_.cend(), findLastName);
+    while (it != students_.end()) {
+        printStudent(*it++);
+        // ++it;
+        it = std::find_if(it, students_.cend(), findLastName);
     }
+
+
 } 
