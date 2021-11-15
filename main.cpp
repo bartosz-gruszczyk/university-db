@@ -36,6 +36,5 @@ int main() {
     std::string pesel4 = "20272904006";
     std::cout << std::boolalpha << pesel4 << ": " << testDB.validatePESEL(pesel4) << '\n'; 
     
-
     return 0;
 }
