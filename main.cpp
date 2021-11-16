@@ -20,10 +20,13 @@ int main() {
     std::cout << "removing student...\n\n";
     testDB.printAll();
     std::cout << "find student...\n\n";
-    testDB.searchStudentByLastName("Kowa");
+    testDB.searchStudentByLastName("kowa");
 
     std::cout << "sorting by lastName...\n\n";
     testDB.sortByLastName();
+    testDB.printAll();
+    std::cout << "sorting by PESEL...\n\n";
+    testDB.sortByPESEL();
     testDB.printAll();
 
     std::cout << "\nTesting pesel validation: \n";

@@ -21,13 +21,16 @@ public:
     void printStudent(const std::unique_ptr<Student>& student);
     void printAll();
 
-    void searchStudentByLastName(const std::string lastName);  // zrobic referencje?
+    void searchStudentByLastName(const std::string& lastName);  // zrobic referencje?
+    // dorobic dla malych liter??
 
     void sortByLastName();
+    void sortByPESEL();
 
     bool validatePESEL(const std::string pesel); //reference?
 
     int columnWidth = 16;   //zrobic const......!!!
+    static std::string stringToLower(const std::string& str);
 private:
     void printHeader();
     std::string encodeSex(const Sex& sex) const;

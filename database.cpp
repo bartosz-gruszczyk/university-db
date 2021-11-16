@@ -58,7 +58,7 @@ void DataBase::removeStudent(const size_t& indexNumber) {
     });
 }
 
-void DataBase::searchStudentByLastName(const std::string lastName) {
+void DataBase::searchStudentByLastName(const std::string& lastName) {
     // --- first version ---
     // auto it = students_.begin();
     // while (it != students_.end()) {
@@ -74,7 +74,10 @@ void DataBase::searchStudentByLastName(const std::string lastName) {
     // }
 
     auto findLastName = [lastName](const std::unique_ptr<Student>& ptr){
-            return ptr->getLastName().find(lastName) != std::string::npos;
+            std::string lastNameToSearch = DataBase::stringToLower(lastName);
+            std::string currentLastName = DataBase::stringToLower(ptr->getLastName());
+            // return ptr->getLastName().find(lastName) != std::string::npos;
+            return currentLastName.find(lastNameToSearch) != std::string::npos;
     };
     auto it = std::find_if(students_.cbegin(), students_.cend(), findLastName);
     while (it != students_.end()) {
@@ -83,19 +86,29 @@ void DataBase::searchStudentByLastName(const std::string lastName) {
         it = std::find_if(it, students_.cend(), findLastName);
     }
 
-
 } 
 
-void DataBase::sortByLastName() { // reference to string?
+std::string DataBase::stringToLower(const std::string& str) { // moze wywalic do innego cpp ?
+    std::string lower = str;
+    std::transform(lower.begin(), lower.end(), lower.begin(), [](unsigned char c){ return std::tolower(c); });
+    return lower;
+}
 
+void DataBase::sortByLastName() { // reference to string?
     std::sort(students_.begin(), students_.end(), [](std::unique_ptr<Student>& a, std::unique_ptr<Student>& b){
-        std::string first = a->getLastName();
-        std::string second = b->getLastName();
+        // std::string first = a->getLastName();
+        // std::string second = b->getLastName();
         // std::tolower(first);
         // std::tolower(second);
-        return (first <=> second) < 0;
+        // return (first <=> second) < 0;
+        return (a->getLastName() <=> b->getLastName()) < 0;
     });
+}
 
+void DataBase::sortByPESEL() {
+    std::sort(students_.begin(), students_.end(), [](std::unique_ptr<Student>& a, std::unique_ptr<Student>& b){
+        return (a->getPesel() <=> b->getPesel()) < 0;
+    });
 }
 
 bool DataBase::validatePESEL(const std::string pesel) {
