@@ -13,14 +13,17 @@ int main() {
     testDB.addStudent("Stefan", "Grubson", 2, "09283902323", Address("44-200", "Rybnik", "Gliwicka 667"), Sex::Male);
     testDB.addStudent("Ania", "Zalewska", 3, "11122233449", Address("03-943", "Warszawa", "Paryska 668"), Sex::Female);
     testDB.addStudent("Ameba", "Pierwotniak", 4, "00990099009", Address("01-666", "Radom", "Morza radomskiego 9"), Sex::Other);
-    testDB.addStudent("Jan", "Kowalski", 5, "74185285248", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male);
+    testDB.addStudent("Jan", "Kowalski", 5, "78785285248", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male);
     testDB.addStudent("Janoslaw", "Kowalczyk", 6, "78787878788", Address("99-112", "Krakow", "Stawowa 700"), Sex::Male);
     testDB.printAll();
     testDB.removeStudent(3);
     std::cout << "removing student...\n\n";
     testDB.printAll();
-    std::cout << "find student...\n\n";
+    std::cout << "find student by name...\n\n";
     testDB.searchStudentByLastName("kowa");
+
+    std::cout << "find student by PESEL...\n\n";
+    testDB.searchStudentByPESEL("7878");
 
     std::cout << "sorting by lastName...\n\n";
     testDB.sortByLastName();

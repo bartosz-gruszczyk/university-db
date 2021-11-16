@@ -6,7 +6,6 @@ enum class Sex {
     Female, Male, Other
 };
 
-
 class Student {
 public:
     // Student();
@@ -24,6 +23,18 @@ public:
 
 private:
     std::string firstName_;
+    std::string lastName_;
+    size_t indexNumber_;
+    std::string pesel_;
+    Address address_;
+    Sex sex_;
+    
+};
+
+class StudentData {
+
+private:
+    char firstName_[16];
     std::string lastName_;
     size_t indexNumber_;
     std::string pesel_;

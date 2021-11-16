@@ -23,6 +23,7 @@ public:
 
     void searchStudentByLastName(const std::string& lastName);  // zrobic referencje?
     // dorobic dla malych liter??
+    void searchStudentByPESEL(const std::string& pesel);
 
     void sortByLastName();
     void sortByPESEL();

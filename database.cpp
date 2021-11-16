@@ -85,8 +85,20 @@ void DataBase::searchStudentByLastName(const std::string& lastName) {
         // ++it;
         it = std::find_if(it, students_.cend(), findLastName);
     }
-
 } 
+
+void DataBase::searchStudentByPESEL(const std::string& pesel) {
+    auto findPESEL = [pesel](const std::unique_ptr<Student>& student) {  // name of ptr??
+        return student->getPesel().starts_with(pesel);
+    };
+    auto it = std::find_if(students_.cbegin(), students_.cend(), findPESEL);
+    while (it != students_.end()) {
+        printStudent(*it++);
+        it = std::find_if(it, students_.cend(), findPESEL);
+    }
+
+}
+
 
 std::string DataBase::stringToLower(const std::string& str) { // moze wywalic do innego cpp ?
     std::string lower = str;
