@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "address.hpp"
+#include <cstring>
 
 enum class Sex {
     Female, Male, Other
@@ -32,13 +33,23 @@ private:
 };
 
 class StudentData {
+public:
+    void packData(const Student& student) {
+        // std::strncpy(name_, name.data(), 10);
+    }
+    
+    Student unpackData() const {
+
+    }
 
 private:
     char firstName_[16];
-    std::string lastName_;
+    char lastName_[16];
     size_t indexNumber_;
-    std::string pesel_;
-    Address address_;
+    char pesel_[11];
+    char postalCode_[6];
+    char city_[16];
+    char streetAndNumber[32];
     Sex sex_;
     
 };

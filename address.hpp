@@ -13,6 +13,18 @@ public:
         return postalCode_ + ' ' + city_ + " ul." + streetAndNumber_;
     }
 
+    std::string getPostalCode() const {
+        return postalCode_;
+    }
+
+    std::string getCity() const {
+        return city_;
+    }
+
+    std::string getStreetAndNumber() const {
+        return streetAndNumber_;
+    }
+
 private:
     std::string postalCode_;
     std::string city_;
