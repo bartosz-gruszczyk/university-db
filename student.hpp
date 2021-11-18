@@ -1,7 +1,7 @@
 #pragma once
-#include <string>
 #include "address.hpp"
 #include <cstring>
+#include <string>
 
 enum class Sex {
     Female, Male, Other
@@ -20,6 +20,10 @@ public:
     size_t getIndexNumber() const;
     std::string getPesel() const;
     std::string getAddress() const;
+    // maybe there is a better solution for addres...
+    std::string getPostalCode() const;
+    std::string getCity() const;
+    std::string getStreetAndNumber() const;
     Sex getSex() const;
 
 private:
@@ -32,15 +36,11 @@ private:
     
 };
 
-class StudentData {
+class StudentData { 
 public:
-    void packData(const Student& student) {
-        // std::strncpy(name_, name.data(), 10);
-    }
+    void packData(const Student& student);
     
-    Student unpackData() const {
-
-    }
+    Student unpackData() const;
 
 private:
     char firstName_[16];
@@ -49,7 +49,7 @@ private:
     char pesel_[11];
     char postalCode_[6];
     char city_[16];
-    char streetAndNumber[32];
+    char streetAndNumber_[32];
     Sex sex_;
     
 };

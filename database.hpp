@@ -30,8 +30,12 @@ public:
 
     bool validatePESEL(const std::string pesel); //reference?
 
+    bool saveFile(const std::string& fileName); // const??
+    bool openFile(const std::string& fileName);
+
     int columnWidth = 16;   //zrobic const......!!!
     static std::string stringToLower(const std::string& str);
+
 private:
     void printHeader();
     std::string encodeSex(const Sex& sex) const;

@@ -1,6 +1,7 @@
 #include "database.hpp"
 #include <algorithm>
 #include <cctype>
+#include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <memory>
@@ -142,4 +143,39 @@ bool DataBase::validatePESEL(const std::string pesel) {
         return pesel.ends_with(10 - modulo + '0');
     }
     return false;
+}
+
+bool DataBase::saveFile(const std::string& fileName) {
+    // std::vector<StudentData> data(students_.size());
+    std::fstream file(fileName, file.out | file.binary);
+    if (file.is_open()) {   // file.good() ????
+        for (size_t i = 0; i < students_.size(); ++i) {
+            StudentData tempStudent;
+            tempStudent.packData(*(students_[i]));
+            file.write(reinterpret_cast<char*>(&tempStudent), sizeof(StudentData));
+        }
+        return true;
+    }
+    return false;
+}
+
+bool DataBase::openFile(const std::string& fileName) {
+    std::fstream file(fileName, file.in | file.binary);
+    if (file.is_open()) {
+        students_.clear();
+        StudentData tempStudent;
+        while (!file.read(reinterpret_cast<char*>(&tempStudent), sizeof(StudentData)).eof()) {
+            students_.push_back(std::make_unique<Student>(tempStudent.unpackData()));
+        }
+        return true;
+    }
+    return false;
+    //    std::fstream testfile4("20_testfile4.bin", testfile4.in | testfile4.binary);
+    // if (testfile4.is_open()) {
+    //     // std::cout << "jestem jestem";
+    //     Person tempPerson;
+    //     while (!testfile4.read(reinterpret_cast<char*>(&tempPerson), sizeof(Person)).eof()) {
+    //         people.push_back(std::make_unique<Person>(tempPerson));
+    //     }
+    // }    
 }
