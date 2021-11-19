@@ -42,14 +42,14 @@ public:
     
     Student unpackData() const;
 
-private:
     char firstName_[16];
     char lastName_[16];
     size_t indexNumber_;
-    char pesel_[11];
-    char postalCode_[6];
+    char pesel_[12]; // uwaga na znak konca wyrazu
+    char postalCode_[7];
     char city_[16];
     char streetAndNumber_[32];
     Sex sex_;
+private:
     
 };

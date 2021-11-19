@@ -166,6 +166,9 @@ bool DataBase::openFile(const std::string& fileName) {
         StudentData tempStudent;
         while (!file.read(reinterpret_cast<char*>(&tempStudent), sizeof(StudentData)).eof()) {
             students_.push_back(std::make_unique<Student>(tempStudent.unpackData()));
+            // // tymczasowo:
+            // std::cout << tempStudent.city_ << ' ' << tempStudent.postalCode_ << ' ' << 
+            //     tempStudent.streetAndNumber_ << '\n';
         }
         return true;
     }

@@ -65,11 +65,12 @@ void StudentData::packData(const Student& student) {
     std::strncpy(firstName_, student.getFirstName().data(), 16);
     std::strncpy(lastName_, student.getLastName().data(), 16);
     indexNumber_ = student.getIndexNumber();
-    std::strncpy(pesel_, student.getPesel().data(), 11);
-    std::strncpy(postalCode_, student.getPostalCode().data(), 6);
+    std::strncpy(pesel_, student.getPesel().data(), 12);
+    std::strncpy(postalCode_, (student.getPostalCode()).data(), 7);
     std::strncpy(city_, student.getCity().data(), 16);
     std::strncpy(streetAndNumber_, student.getStreetAndNumber().data(), 32);
     sex_ = student.getSex();
+    // std::cout << "---  " << postalCode_ << '_' << pesel_ << " ---\n";
 }
 
 Student StudentData::unpackData() const {
