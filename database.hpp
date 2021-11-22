@@ -35,12 +35,12 @@ public:
 
     int columnWidth = 16;   //zrobic const......!!!
     static std::string stringToLower(const std::string& str);
-    void writeStringToFile(const std::string& str, std::ofstream& file);
-    void readStringFromFile(std::string& str, std::ifstream& file);
 
 private:
     void printHeader();
     std::string encodeSex(const Sex& sex) const;
+    void writeStringToFile(const std::string& str, std::ofstream& file);
+    void readStringFromFile(std::string& str, std::ifstream& file);
 
     std::vector<std::unique_ptr<Student>> students_;
 

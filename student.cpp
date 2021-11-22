@@ -12,9 +12,9 @@ Student::Student(std::string firstName, std::string lastName, size_t indexNumber
     , sex_{sex}
     {}
 
-void Student::print() {
+void Student::print() { // to juz niepotrzebne
     // std::cout.width(16);
-    int columnWidth = 12;
+    int columnWidth = 12; // porzadek z wymiarem kolumn
     std::cout.setf(std::ios::left);
     std::cout << std::setw(columnWidth) << firstName_  // zrobic constexpr
               << std::setw(columnWidth) << lastName_ 
@@ -60,19 +60,19 @@ std::string Student::getStreetAndNumber() const {
 }
 
 
-void StudentData::packData(const Student& student) {
-    // std::strncpy(name_, name.data(), 10);
-    std::strncpy(firstName_, student.getFirstName().data(), 16);
-    std::strncpy(lastName_, student.getLastName().data(), 16);
-    indexNumber_ = student.getIndexNumber();
-    std::strncpy(pesel_, student.getPesel().data(), 12);
-    std::strncpy(postalCode_, (student.getPostalCode()).data(), 7);
-    std::strncpy(city_, student.getCity().data(), 16);
-    std::strncpy(streetAndNumber_, student.getStreetAndNumber().data(), 32);
-    sex_ = student.getSex();
-    // std::cout << "---  " << postalCode_ << '_' << pesel_ << " ---\n";
-}
+// void StudentData::packData(const Student& student) {
+//     // std::strncpy(name_, name.data(), 10);
+//     std::strncpy(firstName_, student.getFirstName().data(), 16);
+//     std::strncpy(lastName_, student.getLastName().data(), 16);
+//     indexNumber_ = student.getIndexNumber();
+//     std::strncpy(pesel_, student.getPesel().data(), 12);
+//     std::strncpy(postalCode_, (student.getPostalCode()).data(), 7);
+//     std::strncpy(city_, student.getCity().data(), 16);
+//     std::strncpy(streetAndNumber_, student.getStreetAndNumber().data(), 32);
+//     sex_ = student.getSex();
+//     // std::cout << "---  " << postalCode_ << '_' << pesel_ << " ---\n";
+// }
 
-Student StudentData::unpackData() const {
-    return Student(firstName_, lastName_, indexNumber_, pesel_, Address(postalCode_, city_, streetAndNumber_), sex_);
-}
+// Student StudentData::unpackData() const {
+//     return Student(firstName_, lastName_, indexNumber_, pesel_, Address(postalCode_, city_, streetAndNumber_), sex_);
+// }

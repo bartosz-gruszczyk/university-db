@@ -36,20 +36,20 @@ private:
     
 };
 
-class StudentData { 
-public:
-    void packData(const Student& student);
+// class StudentData { 
+// public:
+//     void packData(const Student& student);
     
-    Student unpackData() const;
+//     Student unpackData() const;
 
-    char firstName_[16];
-    char lastName_[16];
-    size_t indexNumber_;
-    char pesel_[12]; // uwaga na znak konca wyrazu
-    char postalCode_[7];
-    char city_[16];
-    char streetAndNumber_[32];
-    Sex sex_;
-private:
+//     char firstName_[16];
+//     char lastName_[16];
+//     size_t indexNumber_;
+//     char pesel_[12]; // uwaga na znak konca wyrazu
+//     char postalCode_[7];
+//     char city_[16];
+//     char streetAndNumber_[32];
+//     Sex sex_;
+// private:
     
-};
+// };
