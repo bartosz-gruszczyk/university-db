@@ -145,40 +145,111 @@ bool DataBase::validatePESEL(const std::string pesel) {
     return false;
 }
 
+// first version - not very good solution
+// bool DataBase::saveFile(const std::string& fileName) {
+//     // std::vector<StudentData> data(students_.size());
+//     std::fstream file(fileName, file.out | file.binary);
+//     if (file.is_open()) {   // file.good() ????
+//         for (size_t i = 0; i < students_.size(); ++i) {
+//             StudentData tempStudent;
+//             tempStudent.packData(*(students_[i]));
+//             file.write(reinterpret_cast<char*>(&tempStudent), sizeof(StudentData));
+//         }
+//         return true;
+//     }
+//     return false;
+// }
+
+void DataBase::writeStringToFile(const std::string& str, std::ofstream& file) {
+    // if (file.is_open()) { // moze nie bedzie potrzebne bo sprawdzane nadrzednie
+    char size = static_cast<char>(str.size());
+    file.write(&size, sizeof(char));
+    file.write(&str[0], size);
+}
+
+void DataBase::readStringFromFile(std::string& str, std::ifstream& file) {
+    char size;  // moze jednak zmienic na unsigned short?
+    file.read(&size, sizeof(char)); 
+    str.resize(size);
+    file.read(&str[0], size);
+}
+        //    char size;
+        //     file.read(&size, sizeof(char));
+        //     str1.resize(size);
+        //     file.read(&str1[0], size);
+        //     std::cout << std::boolalpha << "eof: " << file.eof() << '\n';
+
 bool DataBase::saveFile(const std::string& fileName) {
-    // std::vector<StudentData> data(students_.size());
-    std::fstream file(fileName, file.out | file.binary);
+    
+    std::ofstream file(fileName, file.out | file.binary);
     if (file.is_open()) {   // file.good() ????
         for (size_t i = 0; i < students_.size(); ++i) {
-            StudentData tempStudent;
-            tempStudent.packData(*(students_[i]));
-            file.write(reinterpret_cast<char*>(&tempStudent), sizeof(StudentData));
+            writeStringToFile(students_[i]->getFirstName(), file);
+            writeStringToFile(students_[i]->getLastName(), file);
+            size_t indexNumber = students_[i]->getIndexNumber();
+            file.write(reinterpret_cast<char*>(&indexNumber), sizeof(size_t));
+            writeStringToFile(students_[i]->getPesel(), file);
+            writeStringToFile(students_[i]->getPostalCode(), file);
+            writeStringToFile(students_[i]->getCity(), file);
+            writeStringToFile(students_[i]->getStreetAndNumber(), file);
+            Sex sex = students_[i]->getSex();
+            file.write(reinterpret_cast<char*>(&sex), sizeof(Sex));
         }
         return true;
     }
     return false;
 }
 
+// first version - not very good solution
+// bool DataBase::openFile(const std::string& fileName) {
+//     std::fstream file(fileName, file.in | file.binary);
+//     if (file.is_open()) {
+//         students_.clear();
+//         StudentData tempStudent;
+//         while (!file.read(reinterpret_cast<char*>(&tempStudent), sizeof(StudentData)).eof()) {
+//             students_.push_back(std::make_unique<Student>(tempStudent.unpackData()));
+//         }
+//         return true;
+//     }
+//     return false;
+// }
 bool DataBase::openFile(const std::string& fileName) {
-    std::fstream file(fileName, file.in | file.binary);
+    std::ifstream file(fileName, file.in | file.binary);
     if (file.is_open()) {
         students_.clear();
-        StudentData tempStudent;
-        while (!file.read(reinterpret_cast<char*>(&tempStudent), sizeof(StudentData)).eof()) {
-            students_.push_back(std::make_unique<Student>(tempStudent.unpackData()));
-            // // tymczasowo:
-            // std::cout << tempStudent.city_ << ' ' << tempStudent.postalCode_ << ' ' << 
-            //     tempStudent.streetAndNumber_ << '\n';
+
+        while (!file.eof()) {
+            std::string firstName;
+            std::string lastName;
+            size_t indexNumber;
+            std::string pesel;
+            std::string postalCode;
+            std::string city;
+            std::string streetAndNumber;
+            Sex sex;
+            readStringFromFile(firstName, file);
+            readStringFromFile(lastName, file);
+            file.read(reinterpret_cast<char*>(&indexNumber), sizeof(size_t));
+            readStringFromFile(pesel, file);
+            readStringFromFile(postalCode, file);
+            readStringFromFile(city, file);
+            readStringFromFile(streetAndNumber, file);
+            file.read(reinterpret_cast<char*>(&sex), sizeof(Sex));
+            Student tempStudent(firstName,
+                                lastName,
+                                indexNumber,
+                                pesel,
+                                Address(postalCode, city, streetAndNumber),
+                                sex);
+            students_.emplace_back(std::make_unique<Student>(tempStudent));
         }
+
+
+        // StudentData tempStudent;
+        // while (!file.read(reinterpret_cast<char*>(&tempStudent), sizeof(StudentData)).eof()) {
+        //     students_.push_back(std::make_unique<Student>(tempStudent.unpackData()));
+        // }
         return true;
     }
     return false;
-    //    std::fstream testfile4("20_testfile4.bin", testfile4.in | testfile4.binary);
-    // if (testfile4.is_open()) {
-    //     // std::cout << "jestem jestem";
-    //     Person tempPerson;
-    //     while (!testfile4.read(reinterpret_cast<char*>(&tempPerson), sizeof(Person)).eof()) {
-    //         people.push_back(std::make_unique<Person>(tempPerson));
-    //     }
-    // }    
 }

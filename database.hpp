@@ -35,6 +35,8 @@ public:
 
     int columnWidth = 16;   //zrobic const......!!!
     static std::string stringToLower(const std::string& str);
+    void writeStringToFile(const std::string& str, std::ofstream& file);
+    void readStringFromFile(std::string& str, std::ifstream& file);
 
 private:
     void printHeader();

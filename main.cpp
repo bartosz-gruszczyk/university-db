@@ -5,9 +5,6 @@
 
 int main() {
 
-    // Student testStudent("Bartek", "Gruszczyk", 1, "12345634126", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male);
-    // testStudent.print();
-
     DataBase testDB;
     // testDB.addStudent("Bartek", "Gruszczyk", 1, "12345634126", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male);
     // testDB.addStudent("Stefan", "Grubson", 2, "09283902323", Address("44-200", "Rybnik", "Gliwicka 667"), Sex::Male);
