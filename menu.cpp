@@ -2,7 +2,7 @@
 #include <iostream>
 
 void Menu::run() {
-
+    printMainMenu();
 }
 
 void Menu::printMainMenu() {
