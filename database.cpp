@@ -45,7 +45,7 @@ void DataBase::addStudent(std::string firstName,
                           std::string lastName,
                           size_t indexNumber,
                           std::string pesel,
-                          Address address,
+                          Address address,   //hmmmmm !!! czy robic Rvalue reff
                           Sex sex) {
     students_.push_back(std::make_unique<Student>(Student(firstName, lastName, indexNumber, pesel, address, sex)));
 }
@@ -212,4 +212,23 @@ bool DataBase::openFile(const std::string& fileName) {
         return true;
     }
     return false;
+}
+
+bool DataBase::existsInDataBase(const size_t& indexNumber) {
+    auto it = std::find_if(students_.cbegin(),
+                           students_.cend(),
+                           [indexNumber](const std::unique_ptr<Student>& student){
+                               return indexNumber == student->getIndexNumber();
+                           });
+    return it != students_.cend();
+}
+
+bool DataBase::existsInDataBase(const std::string& pesel) {
+    auto it = std::find_if(students_.cbegin(),
+                           students_.cend(),
+                           [pesel](const std::unique_ptr<Student>& student){
+                               return pesel == student->getPesel();
+                           });
+    return it != students_.cend();
+
 }

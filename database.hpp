@@ -36,6 +36,9 @@ public:
     int columnWidth = 16;   //zrobic const......!!!
     static std::string stringToLower(const std::string& str);
 
+    bool existsInDataBase(const size_t& indexNumber);
+    bool existsInDataBase(const std::string& pesel);
+
 private:
     void printHeader();
     std::string encodeSex(const Sex& sex) const;

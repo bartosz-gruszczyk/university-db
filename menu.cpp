@@ -48,11 +48,36 @@ void Menu::printMainMenu() {
                 std::cin >> postalCode;
                 std::cout << "City: ";
                 std::cin >> city;
-
-            
+                std::cout << "Street and number: ";
+                std::getline(std::cin >> std::ws, streetAndNumber);
+                std::cout << "Sex (m - male, f - female, o - other): ";
+                char c;
+                std::cin >> c;
+                if (c == 'm') {
+                    sex = Sex::Male;
+                } else if (c == 'f') {
+                    sex = Sex::Female;
+                } else if (c == 'o') {
+                    sex = Sex::Other;
+                } else {
+                    std::cout << "Wrong input";
+                    break;
+                }
+                dataBase_.addStudent(firstName,
+                                     lastName,
+                                     indexNumber,
+                                     pesel,
+                                     Address(postalCode, city, streetAndNumber),
+                                     sex);                
             }
             break;
-
+            case '3': {
+                std::cout << "Enter student's index number: ";
+                size_t indexNumber;
+                std::cin >> indexNumber;
+                dataBase_.removeStudent(indexNumber);
+            }
+            break;
             case '4': {
                 dataBase_.sortByLastName();
                 std::cout << "Data base sorted by last name.\n\n";
