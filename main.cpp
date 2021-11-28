@@ -45,6 +45,9 @@ int main() {
     // std::cout << "opening db to file: " << testDB.openFile("savedDB.dat") << '\n';
 
     // testDB.printAll();
+
+    // std::cout << std::boolalpha << "exist by iD: " << testDB.existsInDataBase(99) << '\n';
+    // std::cout << std::boolalpha << "exist by pesel: " << testDB.existsInDataBase("7878") << '\n';
     
     Menu menu(testDB);
     menu.run();

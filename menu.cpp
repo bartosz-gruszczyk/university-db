@@ -9,7 +9,7 @@ void Menu::run() {
 
 void Menu::printMainMenu() {
     char choice = 0;
-    while (choice != '8') {
+    while (choice != '0') {
         std::cout << "\t..:: Univeristy DB ::..\n";
         std::cout << "\t1. Print DB\n"
                   << "\t2. Add student\n"
@@ -18,7 +18,9 @@ void Menu::printMainMenu() {
                   << "\t5. Sort by PESEL\n"
                   << "\t6. Find last name\n"
                   << "\t7. Find PESEL\n"
-                  << "\t8. Exit\n"
+                  << "\t8. Save to file\n"
+                  << "\t9. Read from file\n"
+                  << "\t0. Exit\n"
                   << "\t: ";
         std::cin >> choice;
         switch (choice) {
@@ -103,6 +105,20 @@ void Menu::printMainMenu() {
             }
             break;
             case '8': {
+                std::cout << "Enter filename: ";
+                std::string filename;
+                std::cin >> filename;
+                dataBase_.saveFile(filename);
+            }
+            break;
+            case '9': {
+                std::cout << "Enter filename: ";
+                std::string filename;
+                std::cin >> filename;
+                dataBase_.openFile(filename);
+            }
+            break;
+            case '0': {
                 std::cout << "Returned to OS.\n\n";
             }
             break;

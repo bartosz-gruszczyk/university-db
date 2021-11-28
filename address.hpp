@@ -26,9 +26,9 @@ public:
     std::string getStreetAndNumber() const {
         return streetAndNumber_;
     }
-    ~Address() {
-        std::cout << "\n---Address d'tor---\n";
-    }
+    // ~Address() {
+    //     std::cout << "\n---Address d'tor---\n";
+    // }
 
 private:
     std::string postalCode_;
