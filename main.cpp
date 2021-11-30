@@ -4,6 +4,8 @@
 #include "menu.hpp"
 #include "student.hpp"
 
+#include <functional>
+
 int main() {
 
     DataBase testDB;
@@ -51,6 +53,8 @@ int main() {
     
     Menu menu(testDB);
     menu.run();
+
+    std::function<void()> func1 = &Menu::menuAddStudent;
 
     return 0;
 }

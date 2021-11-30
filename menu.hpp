@@ -1,9 +1,14 @@
 #pragma once
 #include "database.hpp"
+#include <map>
+#include <functional>
 
 class Menu {
 public:
-    Menu(DataBase& dataBase) : dataBase_{dataBase} {}
+    Menu(DataBase& dataBase) : dataBase_{dataBase} {
+        // std::function<void()> func1 = &Menu::menuAddStudent;
+        // menuItems.insert(std::pair{'2', &Menu::menuAddStudent});
+    }
     
     void run();
 
@@ -21,6 +26,10 @@ public:
     void menuReadFromFile();
 
 private:
-    DataBase& dataBase_;
+    std::map<char, std::function<void()>> menuItems; 
+    // {
+        // {'2', &Menu::menuAddStudent} 
+    // };
 
+    DataBase& dataBase_;
 };
