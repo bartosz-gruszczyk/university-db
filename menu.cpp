@@ -3,11 +3,67 @@
 
 void Menu::run() {
 
-    printMainMenu();
+    mainMenu();
     
 }
 
-void Menu::printMainMenu() {
+void Menu::menuAddStudent() {
+    std::string firstName;
+    std::string lastName;
+    size_t indexNumber;
+    std::string pesel;
+    std::string postalCode;
+    std::string city;
+    std::string streetAndNumber;   // a może by tak ze string streamem?
+    Sex sex;
+    std::cout << "Enter student data:\n";
+    std::cout << "First name: ";
+    std::cin >> firstName;
+    std::cout << "Last name: ";
+    std::cin >> lastName;
+    std::cout << "Index number: ";  // operator= dla studenta ??
+    std::cin >> indexNumber;  // sprawdzic czy istnieje
+    std::cout << "PESEL: ";
+    std::cin >> pesel; // tez sprawdzac na przyszlosc
+    std::cout << "Postal Code: ";
+    std::cin >> postalCode;
+    std::cout << "City: ";
+    std::cin >> city;
+    std::cout << "Street and number: ";
+    std::getline(std::cin >> std::ws, streetAndNumber);
+    std::cout << "Sex (m - male, f - female, o - other): ";
+    char c;
+    std::cin >> c;
+    if (c == 'm') {
+        sex = Sex::Male;
+    } else if (c == 'f') {
+        sex = Sex::Female;
+    } else if (c == 'o') {
+        sex = Sex::Other;
+    } else {
+        std::cout << "Wrong input";
+        return;
+    }
+    dataBase_.addStudent(firstName,
+                         lastName,
+                         indexNumber,
+                         pesel,
+                         Address(postalCode, city, streetAndNumber),
+                         sex);                
+}
+
+void Menu::menuRemoveStudent() {
+    std::cout << "Enter student's index number: ";
+    size_t indexNumber;
+    std::cin >> indexNumber;
+    if (dataBase_.existsInDataBase(indexNumber)) {
+        dataBase_.removeStudent(indexNumber);
+    } else { // zmienic na kody bledow??
+        std::cout << "Student with index no. " << indexNumber << " doesn't exist in data base.\n";
+    }
+}
+
+void Menu::mainMenu() {
     char choice = 0;
     while (choice != '0') {
         std::cout << "\t..:: Univeristy DB ::..\n";
@@ -29,55 +85,11 @@ void Menu::printMainMenu() {
             }
             break;
             case '2': {
-                std::string firstName;
-                std::string lastName;
-                size_t indexNumber;
-                std::string pesel;
-                std::string postalCode;
-                std::string city;
-                std::string streetAndNumber;   // a może by tak ze string streamem?
-                Sex sex;
-                std::cout << "Enter student data:\n";
-                std::cout << "First name: ";
-                std::cin >> firstName;
-                std::cout << "Last name: ";
-                std::cin >> lastName;
-                std::cout << "Index number: ";  // operator= dla studenta ??
-                std::cin >> indexNumber;  // sprawdzic czy istnieje
-                std::cout << "PESEL: ";
-                std::cin >> pesel; // tez sprawdzac na przyszlosc
-                std::cout << "Postal Code: ";
-                std::cin >> postalCode;
-                std::cout << "City: ";
-                std::cin >> city;
-                std::cout << "Street and number: ";
-                std::getline(std::cin >> std::ws, streetAndNumber);
-                std::cout << "Sex (m - male, f - female, o - other): ";
-                char c;
-                std::cin >> c;
-                if (c == 'm') {
-                    sex = Sex::Male;
-                } else if (c == 'f') {
-                    sex = Sex::Female;
-                } else if (c == 'o') {
-                    sex = Sex::Other;
-                } else {
-                    std::cout << "Wrong input";
-                    break;
-                }
-                dataBase_.addStudent(firstName,
-                                     lastName,
-                                     indexNumber,
-                                     pesel,
-                                     Address(postalCode, city, streetAndNumber),
-                                     sex);                
+                menuAddStudent();
             }
             break;
             case '3': {
-                std::cout << "Enter student's index number: ";
-                size_t indexNumber;
-                std::cin >> indexNumber;
-                dataBase_.removeStudent(indexNumber);
+                menuRemoveStudent();
             }
             break;
             case '4': {

@@ -8,7 +8,11 @@ public:
     void run();
 
 
-    void printMainMenu();
+    void mainMenu();
+    // void printMainMenu();
+
+    void menuAddStudent();
+    void menuRemoveStudent();
 
 private:
     DataBase& dataBase_;
