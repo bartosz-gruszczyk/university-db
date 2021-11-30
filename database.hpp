@@ -23,12 +23,12 @@ public:
 
     void searchStudentByLastName(const std::string& lastName);  // zrobic referencje?
     // dorobic dla malych liter??
-    void searchStudentByPESEL(const std::string& pesel);
+    void searchStudentByPesel(const std::string& pesel);
 
     void sortByLastName();
-    void sortByPESEL();
+    void sortByPesel();
 
-    bool validatePESEL(const std::string pesel); //reference?
+    bool validatePesel(const std::string pesel); //reference?
 
     bool saveFile(const std::string& fileName); // const??
     bool openFile(const std::string& fileName);

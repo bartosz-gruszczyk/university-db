@@ -13,6 +13,12 @@ public:
 
     void menuAddStudent();
     void menuRemoveStudent();
+    void menuSortByLastName();
+    void menuSortByPesel();
+    void menuFindLastName();
+    void menuFindPesel();
+    void menuSaveToFile();
+    void menuReadFromFile();
 
 private:
     DataBase& dataBase_;

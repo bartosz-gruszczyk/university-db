@@ -88,7 +88,7 @@ void DataBase::searchStudentByLastName(const std::string& lastName) {
     }
 } 
 
-void DataBase::searchStudentByPESEL(const std::string& pesel) {
+void DataBase::searchStudentByPesel(const std::string& pesel) {
     auto findPESEL = [pesel](const std::unique_ptr<Student>& student) {  // name of ptr??
         return student->getPesel().starts_with(pesel);
     };
@@ -118,13 +118,13 @@ void DataBase::sortByLastName() { // reference to string?
     });
 }
 
-void DataBase::sortByPESEL() {
+void DataBase::sortByPesel() {
     std::sort(students_.begin(), students_.end(), [](std::unique_ptr<Student>& a, std::unique_ptr<Student>& b){
         return (a->getPesel() <=> b->getPesel()) < 0;
     });
 }
 
-bool DataBase::validatePESEL(const std::string pesel) {
+bool DataBase::validatePesel(const std::string pesel) {
     // const short peselLenght = 11;
     // const std::string weight = "1379137913"
     std::array<char, 10> weights {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};

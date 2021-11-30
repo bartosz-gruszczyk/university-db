@@ -63,6 +63,44 @@ void Menu::menuRemoveStudent() {
     }
 }
 
+void Menu::menuSortByLastName() {
+    dataBase_.sortByLastName();
+    std::cout << "Data base sorted by last name.\n\n";
+}
+
+void Menu::menuSortByPesel() {
+    dataBase_.sortByPesel();
+    std::cout << "Data base sorted by PESEL.\n\n";
+}
+
+void Menu::menuFindLastName() {
+    std::cout << "Enter last name to find: ";
+    std::string lastName;
+    std:: cin >> lastName;
+    dataBase_.searchStudentByLastName(lastName);
+}
+
+void Menu::menuFindPesel() {
+    std::cout << "Enter some first digits of PESEL to find: ";
+    std::string pesel;
+    std:: cin >> pesel;
+    dataBase_.searchStudentByPesel(pesel);
+}
+
+void Menu::menuSaveToFile() {
+    std::cout << "Enter filename: ";
+    std::string filename;
+    std::cin >> filename;
+    dataBase_.saveFile(filename);
+}
+
+void Menu::menuReadFromFile() {
+    std::cout << "Enter filename: ";
+    std::string filename;
+    std::cin >> filename;
+    dataBase_.openFile(filename);
+}
+
 void Menu::mainMenu() {
     char choice = 0;
     while (choice != '0') {
@@ -93,41 +131,27 @@ void Menu::mainMenu() {
             }
             break;
             case '4': {
-                dataBase_.sortByLastName();
-                std::cout << "Data base sorted by last name.\n\n";
+                menuSortByLastName();                
             }
             break;
             case '5': {
-                dataBase_.sortByPESEL();
-                std::cout << "Data base sorted by PESEL.\n\n";
+                menuSortByPesel();
             }
             break;
             case '6': {
-                std::cout << "Enter last name to find: ";
-                std::string lastName;
-                std:: cin >> lastName;
-                dataBase_.searchStudentByLastName(lastName);
+                menuFindLastName();
             }
             break;
             case '7': {
-                std::cout << "Enter some first digits of PESEL to find: ";
-                std::string pesel;
-                std:: cin >> pesel;
-                dataBase_.searchStudentByPESEL(pesel);
+                menuFindPesel();
             }
             break;
             case '8': {
-                std::cout << "Enter filename: ";
-                std::string filename;
-                std::cin >> filename;
-                dataBase_.saveFile(filename);
+                menuSaveToFile();
             }
             break;
             case '9': {
-                std::cout << "Enter filename: ";
-                std::string filename;
-                std::cin >> filename;
-                dataBase_.openFile(filename);
+                menuReadFromFile();                
             }
             break;
             case '0': {
