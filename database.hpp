@@ -8,6 +8,13 @@
     // Sortowanie po nazwisku
     // Usuwanie po numerze indeksu
 
+    // Przechowywanie rekordów pracowników uczelni o strukturze: imię, nazwisko, PESEL, płeć, adres, zarobki
+    // Wszystkie osoby niezależnie czy będą to pracownicy, czy studenci mają być trzymani w jednym kontenerze
+    // Wypełnianie bazy danych sztucznymi danymi (generowanie danych)
+    // Modyfikacja zarobków wyszukując osobę po numerze PESEL (problematyczne)
+    // Sortowanie po zarobkach (problematyczne)
+
+
 #pragma once
 #include <memory>
 #include <vector>

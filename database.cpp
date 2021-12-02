@@ -60,20 +60,6 @@ void DataBase::removeStudent(const size_t& indexNumber) {
 }
 
 void DataBase::searchStudentByLastName(const std::string& lastName) {
-    // --- first version ---
-    // auto it = students_.begin();
-    // while (it != students_.end()) {
-    //     it = std::find_if(it, students_.end(), [lastName](const std::unique_ptr<Student>& ptr){
-    //         return ptr->getLastName().find(lastName) != std::string::npos;
-    //     });
-    //     // **it;
-    //     if (it != students_.end()) {
-    //         // std::cout << (*it)->getLastName() << "  \n";
-    //         printStudent(*it);
-    //         ++it;
-    //     }
-    // }
-
     auto findLastName = [lastName](const std::unique_ptr<Student>& ptr){
             std::string lastNameToSearch = DataBase::stringToLower(lastName);
             std::string currentLastName = DataBase::stringToLower(ptr->getLastName());
