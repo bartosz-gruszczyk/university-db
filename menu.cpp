@@ -46,10 +46,10 @@ void Menu::menuAddStudent() {
     }
     dataBase_.addStudent(firstName,
                          lastName,
-                         indexNumber,
                          pesel,
                          Address(postalCode, city, streetAndNumber),
-                         sex);                
+                         sex,
+                         indexNumber);                
 }
 
 void Menu::menuRemoveStudent() {
@@ -162,23 +162,5 @@ void Menu::mainMenu() {
                 std::cout << "Wrong option.\n\n";
             }
         }
-
-        // if (choice == '1') {
-        //     dataBase_.printAll();
-        // }
-        // if (choice == '4') {
-        //     dataBase_.sortByLastName();
-        //     std::cout << "Data base sorted by last name.\n";
-        // }
-        // if (choice == '5') {
-        //     dataBase_.sortByPESEL();
-        //     std::cout << "Data base sorted by PESEL.\n";
-        // }
     }
-
-            // std::string lastName;
-            // std::cout << "Enter last name to sorty by: ";
-            // std::cin >> lastName;
-    
-    
 }

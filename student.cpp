@@ -1,14 +1,12 @@
 #include "student.hpp"
-#include <iomanip>
-#include <iostream>
 
 // Student();
 Student::Student(std::string firstName,
                  std::string lastName,
-                 size_t indexNumber,
                  std::string pesel,
                  Address address,
-                 Sex sex) 
+                 Sex sex,
+                 size_t indexNumber) 
     : Person(PersonType::Student, firstName, lastName, pesel, address, sex)
     , indexNumber_{indexNumber}
     {}

@@ -43,11 +43,11 @@ std::string DataBase::encodeSex(const Sex& sex) const {
 
 void DataBase::addStudent(std::string firstName,
                           std::string lastName,
-                          size_t indexNumber,
                           std::string pesel,
                           Address address,   //hmmmmm !!! czy robic Rvalue reff
-                          Sex sex) {
-    students_.push_back(std::make_unique<Student>(Student(firstName, lastName, indexNumber, pesel, address, sex)));
+                          Sex sex, 
+                          size_t indexNumber) {
+    students_.push_back(std::make_unique<Student>(Student(firstName, lastName, pesel, address, sex, indexNumber)));
 }
 
 void DataBase::removeStudent(const size_t& indexNumber) {
@@ -188,10 +188,10 @@ bool DataBase::openFile(const std::string& fileName) {
             file.read(reinterpret_cast<char*>(&sex), sizeof(Sex));
             Student tempStudent(firstName,
                                 lastName,
-                                indexNumber,
                                 pesel,
                                 Address(postalCode, city, streetAndNumber),
-                                sex);
+                                sex,
+                                indexNumber);
             students_.emplace_back(std::make_unique<Student>(tempStudent));
             file.peek();
         }

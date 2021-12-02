@@ -9,12 +9,12 @@
 int main() {
 
     DataBase testDB;
-    testDB.addStudent("Bartek", "Gruszczyk", 1, "12345634126", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male);
-    testDB.addStudent("Stefan", "Grubson", 2, "09283902323", Address("44-200", "Rybnik", "Gliwicka 667"), Sex::Male);
-    testDB.addStudent("Ania", "Zalewska", 3, "11122233449", Address("03-943", "Warszawa", "Paryska 668"), Sex::Female);
-    testDB.addStudent("Ameba", "Pierwotniak", 4, "00990099009", Address("01-666", "Radom", "Morza radomskiego 9"), Sex::Other);
-    testDB.addStudent("Jan", "Kowalski", 5, "78785285248", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male);
-    testDB.addStudent("Janoslaw", "Kowalczyk", 6, "78787878788", Address("99-112", "Krakow", "Stawowa 700"), Sex::Male);
+    testDB.addStudent("Bartek", "Gruszczyk", "12345634126", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male, 1);
+    testDB.addStudent("Stefan", "Grubson", "09283902323", Address("44-200", "Rybnik", "Gliwicka 667"), Sex::Male, 2);
+    testDB.addStudent("Ania", "Zalewska", "11122233449", Address("03-943", "Warszawa", "Paryska 668"), Sex::Female, 3);
+    testDB.addStudent("Ameba", "Pierwotniak", "00990099009", Address("01-666", "Radom", "Morza radomskiego 9"), Sex::Other, 4);
+    testDB.addStudent("Jan", "Kowalski", "78785285248", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
+    testDB.addStudent("Janoslaw", "Kowalczyk", "78787878788", Address("99-112", "Krakow", "Stawowa 700"), Sex::Male, 6);
 
     // testDB.printAll();
     // testDB.removeStudent(3);

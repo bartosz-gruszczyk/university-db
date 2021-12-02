@@ -23,7 +23,7 @@
 class DataBase {
 public:
 
-    void addStudent(std::string firstName, std::string lastName, size_t indexNumber, std::string pesel, Address address, Sex sex);
+    void addStudent(std::string firstName, std::string lastName, std::string pesel, Address address, Sex sex, size_t indexNumber);
     void removeStudent(const size_t& indexNumber);
     void printStudent(const std::unique_ptr<Student>& student);
     void printAll();

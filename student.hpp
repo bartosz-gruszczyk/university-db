@@ -1,7 +1,7 @@
 #pragma once
 #include "address.hpp"
 #include "person.hpp"
-#include <cstring>
+#include <cstring> // wywalic??
 #include <string>
 
 // enum class Sex {
@@ -13,10 +13,10 @@ public:
     // Student();
     Student(std::string firstName,
             std::string lastName,
-            size_t indexNumber,
             std::string pesel,
             Address address,
-            Sex sex);
+            Sex sex,
+            size_t indexNumber);
 
     // co z destruktorem zwalniającym address_ ???
 
