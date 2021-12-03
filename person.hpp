@@ -29,6 +29,8 @@ public:
 
     virtual size_t getIndexNumber() const = 0;
     virtual size_t getSalary() const = 0;
+    // virtual size_t getIndexNumber() const;
+    // virtual size_t getSalary() const;
 
 private:
     PersonType type_;

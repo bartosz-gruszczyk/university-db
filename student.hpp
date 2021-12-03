@@ -19,6 +19,7 @@ public:
             size_t indexNumber);
 
     // co z destruktorem zwalniającym address_ ???
+    ~Student();
 
     size_t getIndexNumber() const override;
     size_t getSalary() const override;

@@ -18,14 +18,16 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include "person.hpp"
 #include "student.hpp"
+#include "employee.hpp"
 
 class DataBase {
 public:
 
     void addStudent(std::string firstName, std::string lastName, std::string pesel, Address address, Sex sex, size_t indexNumber);
     void removeStudent(const size_t& indexNumber);
-    void printStudent(const std::unique_ptr<Student>& student);
+    void printPerson(const std::unique_ptr<Person>& person);
     void printAll();
 
     void searchStudentByLastName(const std::string& lastName);  // zrobic referencje?
@@ -52,6 +54,6 @@ private:
     void writeStringToFile(const std::string& str, std::ofstream& file);
     void readStringFromFile(std::string& str, std::ifstream& file);
 
-    std::vector<std::unique_ptr<Student>> students_;
+    std::vector<std::unique_ptr<Person>> people_;
 
 };

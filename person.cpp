@@ -48,3 +48,12 @@ std::string Person::getCity() const {
 std::string Person::getStreetAndNumber() const {
     return address_.getStreetAndNumber();
 }
+
+// // this is strange...
+// size_t Person::getIndexNumber() const {
+//     return 0;
+// }
+
+// size_t Person::getSalary() const {
+//     return 0;
+// }

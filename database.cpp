@@ -8,7 +8,7 @@
 #include <numeric>
 
 void DataBase::printHeader(){
-    std::cout << "vector size: " << students_.size() << '\n';
+    std::cout << "vector size: " << people_.size() << '\n';
     std::cout.setf(std::ios::left);
     std::cout << std::setw(columnWidth) << "first name:"
               << std::setw(columnWidth) << "last name:"
@@ -19,21 +19,21 @@ void DataBase::printHeader(){
               << '\n';
 }
 
-void DataBase::printStudent(const std::unique_ptr<Student>& student) {
+void DataBase::printPerson(const std::unique_ptr<Person>& person) {
         std::cout.setf(std::ios::left);
-        std::cout << std::setw(columnWidth) << student->getFirstName()  // zrobic constexpr
-                  << std::setw(columnWidth) << student->getLastName()
-                  << std::setw(columnWidth) << student->getIndexNumber()
-                  << std::setw(42) << student->getAddress()   // zrobic const wartosc kolumny address
-                  << std::setw(columnWidth) << student->getPesel()
-                  << std::setw(columnWidth) << encodeSex(student->getSex())
+        std::cout << std::setw(columnWidth) << person->getFirstName()  // zrobic constexpr
+                  << std::setw(columnWidth) << person->getLastName()
+                  << std::setw(columnWidth) << person->getIndexNumber()
+                  << std::setw(42) << person->getAddress()   // zrobic const wartosc kolumny address
+                  << std::setw(columnWidth) << person->getPesel()
+                  << std::setw(columnWidth) << encodeSex(person->getSex())
                   << '\n';    
 }
 
 void DataBase::printAll() {
     printHeader();
-    for (auto it = students_.cbegin(); it != students_.cend(); ++it) {
-        printStudent(*it);
+    for (auto it = people_.cbegin(); it != people_.cend(); ++it) {
+        printPerson(*it);
     }
 }
 
@@ -47,41 +47,46 @@ void DataBase::addStudent(std::string firstName,
                           Address address,   //hmmmmm !!! czy robic Rvalue reff
                           Sex sex, 
                           size_t indexNumber) {
-    students_.push_back(std::make_unique<Student>(Student(firstName, lastName, pesel, address, sex, indexNumber)));
+    Student tempStudent(firstName, lastName, pesel, address, sex, indexNumber);
+    // people_.emplace_back(std::make_unique<Person>(std::move(tempStudent))); // na pewno emplace??
+    people_.emplace_back(std::make_unique<Student>(tempStudent));
+    // people_.emplace_back(std::unique_ptr<Person>(new Student(firstName, lastName, pesel, address, sex, indexNumber)));
+
+    // people_.push_back(std::make_unique<Person>(Student(firstName, lastName, pesel, address, sex, indexNumber)));
 }
 
 void DataBase::removeStudent(const size_t& indexNumber) {
     // sprawdzic czy nie ma wyciekow
     // czy warto robic remove/erase?
     // error - invalid index??
-    std::erase_if(students_, [indexNumber](const std::unique_ptr<Student>& ptr){
+    std::erase_if(people_, [indexNumber](const std::unique_ptr<Person>& ptr){
         return ptr->getIndexNumber() == indexNumber;
     });
 }
 
 void DataBase::searchStudentByLastName(const std::string& lastName) {
-    auto findLastName = [lastName](const std::unique_ptr<Student>& ptr){
+    auto findLastName = [lastName](const std::unique_ptr<Person>& ptr){
             std::string lastNameToSearch = DataBase::stringToLower(lastName);
             std::string currentLastName = DataBase::stringToLower(ptr->getLastName());
             // return ptr->getLastName().find(lastName) != std::string::npos;
             return currentLastName.find(lastNameToSearch) != std::string::npos;
     };
-    auto it = std::find_if(students_.cbegin(), students_.cend(), findLastName);
-    while (it != students_.end()) {
-        printStudent(*it++);
+    auto it = std::find_if(people_.cbegin(), people_.cend(), findLastName);
+    while (it != people_.end()) {
+        printPerson(*it++);
         // ++it;
-        it = std::find_if(it, students_.cend(), findLastName);
+        it = std::find_if(it, people_.cend(), findLastName);
     }
 } 
 
 void DataBase::searchStudentByPesel(const std::string& pesel) {
-    auto findPESEL = [pesel](const std::unique_ptr<Student>& student) {  // name of ptr??
-        return student->getPesel().starts_with(pesel);
+    auto findPESEL = [pesel](const std::unique_ptr<Person>& person) {  // name of ptr??
+        return person->getPesel().starts_with(pesel);
     };
-    auto it = std::find_if(students_.cbegin(), students_.cend(), findPESEL);
-    while (it != students_.end()) {
-        printStudent(*it++);
-        it = std::find_if(it, students_.cend(), findPESEL);
+    auto it = std::find_if(people_.cbegin(), people_.cend(), findPESEL);
+    while (it != people_.end()) {
+        printPerson(*it++);
+        it = std::find_if(it, people_.cend(), findPESEL);
     }
 
 }
@@ -94,7 +99,7 @@ std::string DataBase::stringToLower(const std::string& str) { // moze wywalic do
 }
 
 void DataBase::sortByLastName() { // reference to string?
-    std::sort(students_.begin(), students_.end(), [](std::unique_ptr<Student>& a, std::unique_ptr<Student>& b){
+    std::sort(people_.begin(), people_.end(), [](std::unique_ptr<Person>& a, std::unique_ptr<Person>& b){
         // std::string first = a->getLastName();
         // std::string second = b->getLastName();
         // std::tolower(first);
@@ -105,7 +110,7 @@ void DataBase::sortByLastName() { // reference to string?
 }
 
 void DataBase::sortByPesel() {
-    std::sort(students_.begin(), students_.end(), [](std::unique_ptr<Student>& a, std::unique_ptr<Student>& b){
+    std::sort(people_.begin(), people_.end(), [](std::unique_ptr<Person>& a, std::unique_ptr<Person>& b){
         return (a->getPesel() <=> b->getPesel()) < 0;
     });
 }
@@ -148,16 +153,16 @@ void DataBase::readStringFromFile(std::string& str, std::ifstream& file) {
 bool DataBase::saveFile(const std::string& fileName) {
     std::ofstream file(fileName, file.out | file.binary);
     if (file.is_open()) {   // file.good() ????
-        for (size_t i = 0; i < students_.size(); ++i) {
-            writeStringToFile(students_[i]->getFirstName(), file);
-            writeStringToFile(students_[i]->getLastName(), file);
-            size_t indexNumber = students_[i]->getIndexNumber();
+        for (size_t i = 0; i < people_.size(); ++i) {
+            writeStringToFile(people_[i]->getFirstName(), file);
+            writeStringToFile(people_[i]->getLastName(), file);
+            size_t indexNumber = people_[i]->getIndexNumber();
             file.write(reinterpret_cast<char*>(&indexNumber), sizeof(size_t));
-            writeStringToFile(students_[i]->getPesel(), file);
-            writeStringToFile(students_[i]->getPostalCode(), file);
-            writeStringToFile(students_[i]->getCity(), file);
-            writeStringToFile(students_[i]->getStreetAndNumber(), file);
-            Sex sex = students_[i]->getSex();
+            writeStringToFile(people_[i]->getPesel(), file);
+            writeStringToFile(people_[i]->getPostalCode(), file);
+            writeStringToFile(people_[i]->getCity(), file);
+            writeStringToFile(people_[i]->getStreetAndNumber(), file);
+            Sex sex = people_[i]->getSex();
             file.write(reinterpret_cast<char*>(&sex), sizeof(Sex));
         }
         return true;
@@ -168,7 +173,7 @@ bool DataBase::saveFile(const std::string& fileName) {
 bool DataBase::openFile(const std::string& fileName) {
     std::ifstream file(fileName, file.in | file.binary);
     if (file.is_open()) {
-        students_.clear();
+        people_.clear();
         while (!file.eof()) {
             std::string firstName;
             std::string lastName;
@@ -192,7 +197,8 @@ bool DataBase::openFile(const std::string& fileName) {
                                 Address(postalCode, city, streetAndNumber),
                                 sex,
                                 indexNumber);
-            students_.emplace_back(std::make_unique<Student>(tempStudent));
+            people_.emplace_back(std::make_unique<Student>(tempStudent));
+            // people_.emplace_back(std::make_unique<Person>(std::move(tempStudent)));
             file.peek();
         }
         return true;
@@ -201,20 +207,20 @@ bool DataBase::openFile(const std::string& fileName) {
 }
 
 bool DataBase::existsInDataBase(const size_t& indexNumber) {
-    auto it = std::find_if(students_.cbegin(),
-                           students_.cend(),
-                           [indexNumber](const std::unique_ptr<Student>& student){
-                               return indexNumber == student->getIndexNumber();
+    auto it = std::find_if(people_.cbegin(),
+                           people_.cend(),
+                           [indexNumber](const std::unique_ptr<Person>& person){
+                               return indexNumber == person->getIndexNumber();
                            });
-    return it != students_.cend();
+    return it != people_.cend();
 }
 
 bool DataBase::existsInDataBase(const std::string& pesel) {
-    auto it = std::find_if(students_.cbegin(),
-                           students_.cend(),
-                           [pesel](const std::unique_ptr<Student>& student){
-                               return pesel == student->getPesel();
+    auto it = std::find_if(people_.cbegin(),
+                           people_.cend(),
+                           [pesel](const std::unique_ptr<Person>& person){
+                               return pesel == person->getPesel();
                            });
-    return it != students_.cend();
+    return it != people_.cend();
 
 }

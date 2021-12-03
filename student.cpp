@@ -11,6 +11,10 @@ Student::Student(std::string firstName,
     , indexNumber_{indexNumber}
     {}
 
+Student::~Student() {
+    
+}
+
 
 size_t Student::getIndexNumber() const {
     return indexNumber_;
