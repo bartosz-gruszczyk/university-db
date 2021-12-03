@@ -1,6 +1,5 @@
 #include "employee.hpp"
 
-
 Employee::Employee(std::string firstName,
             std::string lastName,
             std::string pesel,

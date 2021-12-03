@@ -26,10 +26,7 @@ public:
     void menuReadFromFile();
 
 private:
-    std::map<char, std::function<void()>> menuItems; 
-    // {
-        // {'2', &Menu::menuAddStudent} 
-    // };
+    // std::map<char, std::function<void()>> menuItems; 
 
     DataBase& dataBase_;
 };

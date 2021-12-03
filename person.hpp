@@ -36,7 +36,6 @@ private:
     PersonType type_;
     std::string firstName_;
     std::string lastName_;
-    // size_t indexNumber_;
     std::string pesel_;
     Address address_;
     Sex sex_;

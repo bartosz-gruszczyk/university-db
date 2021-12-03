@@ -14,7 +14,6 @@
     // Modyfikacja zarobków wyszukując osobę po numerze PESEL (problematyczne)
     // Sortowanie po zarobkach (problematyczne)
 
-
 #pragma once
 #include <memory>
 #include <vector>
@@ -24,7 +23,6 @@
 
 class DataBase {
 public:
-
     void addStudent(std::string firstName, std::string lastName, std::string pesel, Address address, Sex sex, size_t indexNumber);
     void removeStudent(const size_t& indexNumber);
     void printPerson(const std::unique_ptr<Person>& person);

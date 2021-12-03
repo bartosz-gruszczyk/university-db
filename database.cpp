@@ -48,11 +48,7 @@ void DataBase::addStudent(std::string firstName,
                           Sex sex, 
                           size_t indexNumber) {
     Student tempStudent(firstName, lastName, pesel, address, sex, indexNumber);
-    // people_.emplace_back(std::make_unique<Person>(std::move(tempStudent))); // na pewno emplace??
     people_.emplace_back(std::make_unique<Student>(tempStudent));
-    // people_.emplace_back(std::unique_ptr<Person>(new Student(firstName, lastName, pesel, address, sex, indexNumber)));
-
-    // people_.push_back(std::make_unique<Person>(Student(firstName, lastName, pesel, address, sex, indexNumber)));
 }
 
 void DataBase::removeStudent(const size_t& indexNumber) {
