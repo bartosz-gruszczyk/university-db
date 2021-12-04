@@ -60,6 +60,17 @@ void DataBase::removeStudent(const size_t& indexNumber) {
     });
 }
 
+void DataBase::addEmployee(std::string firstName,
+                 std::string lastName,
+                 std::string pesel,
+                 Address address,
+                 Sex sex,
+                 size_t salary) {
+    Employee tempEmployee(firstName, lastName, pesel, address, sex, salary);
+    people_.emplace_back(std::make_unique<Employee>(tempEmployee));
+}
+
+
 void DataBase::searchStudentByLastName(const std::string& lastName) {
     auto findLastName = [lastName](const std::unique_ptr<Person>& ptr){
             std::string lastNameToSearch = DataBase::stringToLower(lastName);

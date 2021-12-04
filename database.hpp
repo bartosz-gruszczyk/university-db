@@ -25,6 +25,9 @@ class DataBase {
 public:
     void addStudent(std::string firstName, std::string lastName, std::string pesel, Address address, Sex sex, size_t indexNumber);
     void removeStudent(const size_t& indexNumber);
+
+    void addEmployee(std::string firstName, std::string lastName, std::string pesel, Address address, Sex sex, size_t salary);
+
     void printPerson(const std::unique_ptr<Person>& person);
     void printAll();
 
