@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(university-db)
 
 set(SRC_LIST person.cpp
+             employee.cpp
              student.cpp
              database.cpp
              menu.cpp)

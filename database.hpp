@@ -43,7 +43,11 @@ public:
     bool saveFile(const std::string& fileName); // const??
     bool openFile(const std::string& fileName);
 
-    int columnWidth = 16;   //zrobic const......!!!
+    uint8_t typeColumnWidth = 10;
+    uint8_t columnWidth = 16;   //zrobic const......!!!
+    uint8_t addressColumnWidth = 42;
+    uint8_t sexColumnWidth = 10;
+    uint8_t peselColumnWidth = 14;
     static std::string stringToLower(const std::string& str);
 
     bool existsInDataBase(const size_t& indexNumber);
@@ -52,6 +56,7 @@ public:
 private:
     void printHeader();
     std::string encodeSex(const Sex& sex) const;
+    std::string encodeType(const Person::PersonType& type) const;
     void writeStringToFile(const std::string& str, std::ofstream& file);
     void readStringFromFile(std::string& str, std::ifstream& file);
 

@@ -10,24 +10,33 @@
 void DataBase::printHeader(){
     std::cout << "vector size: " << people_.size() << '\n';
     std::cout.setf(std::ios::left);
-    std::cout << std::setw(columnWidth) << "first name:"
+    std::cout << std::setw(typeColumnWidth) << "type:"
+              << std::setw(columnWidth) << "first name:"
               << std::setw(columnWidth) << "last name:"
+              << std::setw(addressColumnWidth) << "address:"
+              << std::setw(peselColumnWidth) << "PESEL:"
+              << std::setw(sexColumnWidth) << "sex:"
               << std::setw(columnWidth) << "index number:"
-              << std::setw(42) << "address:"
-              << std::setw(columnWidth) << "PESEL:"
-              << std::setw(columnWidth) << "sex:"
+              << std::setw(columnWidth) << "salary:"
               << '\n';
 }
 
 void DataBase::printPerson(const std::unique_ptr<Person>& person) {
         std::cout.setf(std::ios::left);
-        std::cout << std::setw(columnWidth) << person->getFirstName()  // zrobic constexpr
+        std::cout << std::setw(typeColumnWidth) << encodeType(person->getType())
+                  << std::setw(columnWidth) << person->getFirstName()  // zrobic constexpr
                   << std::setw(columnWidth) << person->getLastName()
-                  << std::setw(columnWidth) << person->getIndexNumber()
-                  << std::setw(42) << person->getAddress()   // zrobic const wartosc kolumny address
-                  << std::setw(columnWidth) << person->getPesel()
-                  << std::setw(columnWidth) << encodeSex(person->getSex())
-                  << '\n';    
+                  << std::setw(addressColumnWidth) << person->getAddress()   // zrobic const wartosc kolumny address
+                  << std::setw(peselColumnWidth) << person->getPesel()
+                  << std::setw(sexColumnWidth) << encodeSex(person->getSex());
+        if (person->getType() == Person::PersonType::Student) {
+            std::cout << std::setw(columnWidth) << person->getIndexNumber()
+                      << std::setw(columnWidth) << "---";
+        } else {
+            std::cout << std::setw(columnWidth) << "---"
+                      << std::setw(columnWidth) << person->getSalary();
+        }
+        std::cout << '\n';
 }
 
 void DataBase::printAll() {
@@ -39,6 +48,10 @@ void DataBase::printAll() {
 
 std::string DataBase::encodeSex(const Sex& sex) const {
     return sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other";
+}
+
+std::string DataBase::encodeType(const Person::PersonType& type) const {
+    return type == Person::PersonType::Student ? "student" : "employee";
 }
 
 void DataBase::addStudent(std::string firstName,
