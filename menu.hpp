@@ -20,6 +20,7 @@ public:
     void menuRemoveStudent();
     void menuSortByLastName();
     void menuSortByPesel();
+    void menuSortBySalary();
     void menuFindLastName();
     void menuFindPesel();
     void menuSaveToFile();

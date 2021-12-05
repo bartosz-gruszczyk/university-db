@@ -65,12 +65,17 @@ void Menu::menuRemoveStudent() {
 
 void Menu::menuSortByLastName() {
     dataBase_.sortByLastName();
-    std::cout << "Data base sorted by last name.\n\n";
+    std::cout << "Data base has been sorted by last name.\n\n";
 }
 
 void Menu::menuSortByPesel() {
     dataBase_.sortByPesel();
-    std::cout << "Data base sorted by PESEL.\n\n";
+    std::cout << "Data base has been sorted by PESEL.\n\n";
+}
+
+void Menu::menuSortBySalary() {
+    dataBase_.sortBySalary();
+    std::cout << "Data base has been sorted by salary.\n\n";
 }
 
 void Menu::menuFindLastName() {
@@ -102,59 +107,64 @@ void Menu::menuReadFromFile() {
 }
 
 void Menu::mainMenu() {
-    char choice = 0;
-    while (choice != '0') {
+    short choice = -1;
+    while (choice != 0) {
         std::cout << "\t..:: Univeristy DB ::..\n";
         std::cout << "\t1. Print DB\n"
                   << "\t2. Add student\n"
                   << "\t3. Remove student\n"
                   << "\t4. Sort by last name\n"
                   << "\t5. Sort by PESEL\n"
-                  << "\t6. Find last name\n"
-                  << "\t7. Find PESEL\n"
-                  << "\t8. Save to file\n"
-                  << "\t9. Read from file\n"
+                  << "\t6. Sort by salary\n"
+                  << "\t7. Find last name\n"
+                  << "\t8. Find PESEL\n"
+                  << "\t9. Save to file\n"
+                  << "\t10. Read from file\n"
                   << "\t0. Exit\n"
                   << "\t: ";
         std::cin >> choice;
         switch (choice) {
-            case '1': {
+            case 1: {
                 dataBase_.printAll();
             }
             break;
-            case '2': {
+            case 2: {
                 menuAddStudent();
             }
             break;
-            case '3': {
+            case 3: {
                 menuRemoveStudent();
             }
             break;
-            case '4': {
+            case 4: {
                 menuSortByLastName();                
             }
             break;
-            case '5': {
+            case 5: {
                 menuSortByPesel();
             }
             break;
-            case '6': {
+            case 6: {
+                menuSortBySalary();
+            }
+            break;
+            case 7: {
                 menuFindLastName();
             }
             break;
-            case '7': {
+            case 8: {
                 menuFindPesel();
             }
             break;
-            case '8': {
+            case 9: {
                 menuSaveToFile();
             }
             break;
-            case '9': {
+            case 10: {
                 menuReadFromFile();                
             }
             break;
-            case '0': {
+            case 0: {
                 std::cout << "Returned to OS.\n\n";
             }
             break;

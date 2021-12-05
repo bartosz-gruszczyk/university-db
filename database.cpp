@@ -135,6 +135,12 @@ void DataBase::sortByPesel() {
     });
 }
 
+void DataBase::sortBySalary() {
+    std::sort(people_.begin(), people_.end(), [](std::unique_ptr<Person>& a, std::unique_ptr<Person>& b){
+        return a->getSalary() > b->getSalary();
+    });
+}
+
 bool DataBase::validatePesel(const std::string pesel) {
     // const short peselLenght = 11;
     // const std::string weight = "1379137913"

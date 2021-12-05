@@ -14,6 +14,8 @@ int main() {
     testDB.addStudent("Ania", "Zalewska", "11122233449", Address("03-943", "Warszawa", "Paryska 668"), Sex::Female, 3);
     testDB.addEmployee("Witold", "Konieczny", "73647382712", Address("77-777", "Otwock", "Bystra 669"), Sex::Male, 4020);
     testDB.addStudent("Ameba", "Pierwotniak", "00990099009", Address("01-666", "Radom", "Morza radomskiego 9"), Sex::Other, 4);
+    testDB.addEmployee("Monika", "Lubicz", "938475603232", Address("09-622", "Wolniki", "Skrzetuskiego 9"), Sex::Female, 4300);
+    testDB.addEmployee("Krystian", "Zaremba", "34343434343", Address("44-200", "Rybnik", "Janasa 3"), Sex::Male, 3040);
     testDB.addStudent("Jan", "Kowalski", "78785285248", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
     testDB.addStudent("Janoslaw", "Kowalczyk", "78787878788", Address("99-112", "Krakow", "Stawowa 700"), Sex::Male, 6);
 

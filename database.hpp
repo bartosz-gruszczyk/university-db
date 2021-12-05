@@ -37,6 +37,7 @@ public:
 
     void sortByLastName();
     void sortByPesel();
+    void sortBySalary();
 
     bool validatePesel(const std::string pesel); //reference?
 
