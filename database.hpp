@@ -39,6 +39,8 @@ public:
     void sortByPesel();
     void sortBySalary();
 
+    void changeSalary(const std::string& pesel);
+
     bool validatePesel(const std::string pesel); //reference?
 
     bool saveFile(const std::string& fileName); // const??

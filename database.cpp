@@ -141,6 +141,21 @@ void DataBase::sortBySalary() {
     });
 }
 
+void DataBase::changeSalary(const std::string& pesel) { // moze tez zwrocic kiedys error code?
+    auto it = std::find_if(people_.begin(), people_.end(), [pesel](const std::unique_ptr<Person>& ptr){
+        return ptr->getPesel() == pesel;  // a moze od razu porownac z PersonType::Employee??
+    });
+    if (it != people_.end()) {
+        size_t newSalary = -1;
+        std::cout << "Enter new salary: ";
+        std::cin >> newSalary;
+        (*it)->setSalary(newSalary);
+    } else {
+        std::cout << "----there is no employee with that pesel------\n";
+    }
+
+}
+
 bool DataBase::validatePesel(const std::string pesel) {
     // const short peselLenght = 11;
     // const std::string weight = "1379137913"

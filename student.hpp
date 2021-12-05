@@ -18,6 +18,7 @@ public:
 
     size_t getIndexNumber() const override;
     size_t getSalary() const override;
+    void setSalary(size_t newSalary) override;
 
 private:
     size_t indexNumber_;

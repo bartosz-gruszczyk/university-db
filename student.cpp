@@ -22,3 +22,7 @@ size_t Student::getIndexNumber() const {
 size_t Student::getSalary() const {
     return 0;
 }
+
+void Student::setSalary(size_t newSalary) { // zrobic const!
+    // do nothing... null object pattern
+}

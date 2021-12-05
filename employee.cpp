@@ -21,3 +21,7 @@ size_t Employee::getIndexNumber() const {
 size_t Employee::getSalary() const {
         return salary_;
     }
+
+void Employee::setSalary(size_t newSalary) { // walidacja!!!
+    salary_ = newSalary;
+}
