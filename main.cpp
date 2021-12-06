@@ -54,7 +54,7 @@ int main() {
     // std::cout << std::boolalpha << "exist by iD: " << testDB.existsInDataBase(99) << '\n';
     // std::cout << std::boolalpha << "exist by pesel: " << testDB.existsInDataBase("7878") << '\n';
     
-    testDB.changeSalary("938475603232");
+    // testDB.changeSalary("938475603232");
 
     Menu menu(testDB);
     menu.run();

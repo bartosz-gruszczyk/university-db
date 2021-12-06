@@ -20,6 +20,7 @@
 #include "person.hpp"
 #include "student.hpp"
 #include "employee.hpp"
+#include "errors.hpp"
 
 class DataBase {
 public:
