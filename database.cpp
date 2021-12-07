@@ -7,19 +7,7 @@
 #include <memory>
 #include <numeric>
 
-void DataBase::printHeader(){
-    std::cout << "vector size: " << people_.size() << '\n';
-    std::cout.setf(std::ios::left);
-    std::cout << std::setw(typeColumnWidth) << "type:"
-              << std::setw(columnWidth) << "first name:"
-              << std::setw(columnWidth) << "last name:"
-              << std::setw(addressColumnWidth) << "address:"
-              << std::setw(peselColumnWidth) << "PESEL:"
-              << std::setw(sexColumnWidth) << "sex:"
-              << std::setw(columnWidth) << "index number:"
-              << std::setw(columnWidth) << "salary:"
-              << '\n';
-}
+
 
 void DataBase::printPerson(const std::unique_ptr<Person>& person) {
         std::cout.setf(std::ios::left);
@@ -46,41 +34,69 @@ void DataBase::printAll() {
     }
 }
 
-std::string DataBase::encodeSex(const Sex& sex) const {
-    return sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other";
-}
-
-std::string DataBase::encodeType(const Person::PersonType& type) const {
-    return type == Person::PersonType::Student ? "student" : "employee";
-}
-
-void DataBase::addStudent(std::string firstName,
-                          std::string lastName,
-                          std::string pesel,
-                          Address address,   //hmmmmm !!! czy robic Rvalue reff
-                          Sex sex, 
-                          size_t indexNumber) {
+ErrorCode DataBase::addStudent(const std::string& firstName,
+                               const std::string& lastName,
+                               const std::string& pesel,
+                               const Address& address,
+                               const Sex& sex,
+                               const size_t& indexNumber) {
+    if (!isPeselValid(pesel)) {
+        return ErrorCode::InvalidPesel;
+    }
+    if (existsInDataBase(pesel)) {
+        return ErrorCode::PeselAlreadyExists;
+    }
+    if (existsInDataBase(indexNumber)) {
+        return ErrorCode::IndexNumberAlreadyExists;
+    }
     Student tempStudent(firstName, lastName, pesel, address, sex, indexNumber);
     people_.emplace_back(std::make_unique<Student>(tempStudent));
+    return ErrorCode::Ok;
 }
 
-void DataBase::removeStudent(const size_t& indexNumber) {
-    // sprawdzic czy nie ma wyciekow
-    // czy warto robic remove/erase?
-    // error - invalid index??
-    std::erase_if(people_, [indexNumber](const std::unique_ptr<Person>& ptr){
-        return ptr->getIndexNumber() == indexNumber;
-    });
-}
-
-void DataBase::addEmployee(std::string firstName,
-                 std::string lastName,
-                 std::string pesel,
-                 Address address,
-                 Sex sex,
-                 size_t salary) {
+ErrorCode DataBase::addEmployee(const std::string& firstName,
+                                const std::string& lastName,
+                                const std::string& pesel,
+                                const Address& address,
+                                const Sex& sex,
+                                const size_t& salary) {
+    if (!isPeselValid(pesel)) {
+        return ErrorCode::InvalidPesel;
+    }
+    if (existsInDataBase(pesel)) {
+        return ErrorCode::PeselAlreadyExists;
+    }
     Employee tempEmployee(firstName, lastName, pesel, address, sex, salary);
     people_.emplace_back(std::make_unique<Employee>(tempEmployee));
+    return ErrorCode::Ok;
+}
+
+ErrorCode DataBase::removeStudent(const size_t& indexNumber) {
+    // sprawdzic czy nie ma wyciekow
+    // czy warto robic remove/erase?
+    if (indexNumber == 0) {
+        return ErrorCode::WrongIndexNumber;
+    }
+    int numberOfErasedElements = std::erase_if(people_, [indexNumber](const std::unique_ptr<Person>& ptr){
+        return ptr->getIndexNumber() == indexNumber;
+    });
+    if (numberOfErasedElements == 0) {
+        return ErrorCode::IndexNumberNotFound;
+    }
+    return ErrorCode::Ok;
+}
+
+ErrorCode DataBase::removePerson(const std::string& pesel) {
+    if (!isPeselValid(pesel)) {
+        return ErrorCode::InvalidPesel;
+    }
+    int numberOfErasedElements = std::erase_if(people_, [pesel](const std::unique_ptr<Person>& ptr){
+        return ptr->getPesel() == pesel;
+    });
+    if (numberOfErasedElements == 0) {
+        return ErrorCode::PeselNotFound;
+    }
+    return ErrorCode::Ok;
 }
 
 
@@ -110,7 +126,6 @@ void DataBase::searchStudentByPesel(const std::string& pesel) {
     }
 
 }
-
 
 std::string DataBase::stringToLower(const std::string& str) { // moze wywalic do innego cpp ?
     std::string lower = str;
@@ -146,7 +161,7 @@ void DataBase::changeSalary(const std::string& pesel) { // moze tez zwrocic kied
         return ptr->getPesel() == pesel;  // a moze od razu porownac z PersonType::Employee??
     });
     if (it != people_.end()) {
-        size_t newSalary = -1;
+        size_t newSalary = 0;
         std::cout << "Enter new salary: ";
         std::cin >> newSalary;
         (*it)->setSalary(newSalary);
@@ -156,7 +171,7 @@ void DataBase::changeSalary(const std::string& pesel) { // moze tez zwrocic kied
 
 }
 
-bool DataBase::validatePesel(const std::string pesel) {
+bool DataBase::isPeselValid(const std::string& pesel) {
     // const short peselLenght = 11;
     // const std::string weight = "1379137913"
     std::array<char, 10> weights {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
@@ -175,6 +190,14 @@ bool DataBase::validatePesel(const std::string pesel) {
         return pesel.ends_with(10 - modulo + '0');
     }
     return false;
+}
+
+std::string DataBase::encodeSex(const Sex& sex) const {
+    return sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other";
+}
+
+std::string DataBase::encodeType(const Person::PersonType& type) const {
+    return type == Person::PersonType::Student ? "student" : "employee";
 }
 
 void DataBase::writeStringToFile(const std::string& str, std::ofstream& file) {
@@ -245,6 +268,20 @@ bool DataBase::openFile(const std::string& fileName) {
         return true;
     }
     return false;
+}
+
+void DataBase::printHeader(){
+    std::cout << "vector size: " << people_.size() << '\n';
+    std::cout.setf(std::ios::left);
+    std::cout << std::setw(typeColumnWidth) << "type:"
+              << std::setw(columnWidth) << "first name:"
+              << std::setw(columnWidth) << "last name:"
+              << std::setw(addressColumnWidth) << "address:"
+              << std::setw(peselColumnWidth) << "PESEL:"
+              << std::setw(sexColumnWidth) << "sex:"
+              << std::setw(columnWidth) << "index number:"
+              << std::setw(columnWidth) << "salary:"
+              << '\n';
 }
 
 bool DataBase::existsInDataBase(const size_t& indexNumber) {

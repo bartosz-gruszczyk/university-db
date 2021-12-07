@@ -4,11 +4,12 @@
 
 enum class ErrorCode {
     Ok,
-    PeselNotValid,
+    InvalidPesel,
     PeselAlreadyExists,
     PeselNotFound,
     IndexNumberAlreadyExists,
     IndexNumberNotFound,
+    WrongIndexNumber,
     PersonNotFound // czy potrzebne?
 
 };

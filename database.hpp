@@ -24,10 +24,26 @@
 
 class DataBase {
 public:
-    void addStudent(std::string firstName, std::string lastName, std::string pesel, Address address, Sex sex, size_t indexNumber);
-    void removeStudent(const size_t& indexNumber);
-
-    void addEmployee(std::string firstName, std::string lastName, std::string pesel, Address address, Sex sex, size_t salary);
+    uint8_t typeColumnWidth = 10;
+    uint8_t columnWidth = 16;   //zrobic const......!!!
+    uint8_t addressColumnWidth = 42;
+    uint8_t sexColumnWidth = 10;
+    uint8_t peselColumnWidth = 14;
+    
+    ErrorCode addStudent(const std::string& firstName,
+                         const std::string& lastName,
+                         const std::string& pesel,
+                         const Address& address,
+                         const Sex& sex,
+                         const size_t& indexNumber);
+    ErrorCode addEmployee(const std::string& firstName,
+                          const std::string& lastName,
+                          const std::string& pesel,
+                          const Address& address,
+                          const Sex& sex,
+                          const size_t& salary);
+    ErrorCode removeStudent(const size_t& indexNumber);
+    ErrorCode removePerson(const std::string& pesel);
 
     void printPerson(const std::unique_ptr<Person>& person);
     void printAll();
@@ -42,16 +58,12 @@ public:
 
     void changeSalary(const std::string& pesel);
 
-    bool validatePesel(const std::string pesel); //reference?
+    bool isPeselValid(const std::string& pesel); //reference?
 
     bool saveFile(const std::string& fileName); // const??
     bool openFile(const std::string& fileName);
 
-    uint8_t typeColumnWidth = 10;
-    uint8_t columnWidth = 16;   //zrobic const......!!!
-    uint8_t addressColumnWidth = 42;
-    uint8_t sexColumnWidth = 10;
-    uint8_t peselColumnWidth = 14;
+
     static std::string stringToLower(const std::string& str);
 
     bool existsInDataBase(const size_t& indexNumber);

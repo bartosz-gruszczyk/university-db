@@ -7,30 +7,34 @@ void Menu::run() {
     
 }
 
-void Menu::menuAddStudent() {
+void Menu::menuAddPerson() {
     std::string firstName;
     std::string lastName;
-    size_t indexNumber;
     std::string pesel;
     std::string postalCode;
     std::string city;
     std::string streetAndNumber;   // a może by tak ze string streamem?
     Sex sex;
-    std::cout << "Enter student data:\n";
+    std::cout << "Student or Employee? (s - student, e - employee): ";
+    char type;
+    std::cin >> type;
+    if (!(type == 's' || type == 'e')) {
+        std::cout << "Wrong input\n";
+        return;
+    }
     std::cout << "First name: ";
     std::cin >> firstName;
     std::cout << "Last name: ";
     std::cin >> lastName;
-    std::cout << "Index number: ";  // operator= dla studenta ??
-    std::cin >> indexNumber;  // sprawdzic czy istnieje
     std::cout << "PESEL: ";
     std::cin >> pesel; // tez sprawdzac na przyszlosc
     std::cout << "Postal Code: ";
     std::cin >> postalCode;
     std::cout << "City: ";
-    std::cin >> city;
+    std::cin >> city; /// cost tu jest nie tak std::ws
     std::cout << "Street and number: ";
     std::getline(std::cin >> std::ws, streetAndNumber);
+    // std::getline(std::cin, streetAndNumber);
     std::cout << "Sex (m - male, f - female, o - other): ";
     char c;
     std::cin >> c;
@@ -41,26 +45,55 @@ void Menu::menuAddStudent() {
     } else if (c == 'o') {
         sex = Sex::Other;
     } else {
-        std::cout << "Wrong input";
+        std::cout << "Wrong input\n";
         return;
     }
-    dataBase_.addStudent(firstName,
-                         lastName,
-                         pesel,
-                         Address(postalCode, city, streetAndNumber),
-                         sex,
-                         indexNumber);                
+    ErrorCode error;
+    if (type == 's') {
+        size_t indexNumber;
+        std::cout << "Index number: ";
+        std::cin >> indexNumber;
+        error = dataBase_.addStudent(firstName,
+                            lastName,
+                            pesel,
+                            Address(postalCode, city, streetAndNumber),
+                            sex,
+                            indexNumber);
+    }
+    if (type == 'e') {
+        size_t salary;
+        std::cout << "Salary: ";
+        std::cin >> salary;
+        error = dataBase_.addEmployee(firstName,
+                                      lastName,
+                                      pesel,
+                                      Address(postalCode, city, streetAndNumber),
+                                      sex,
+                                      salary);
+    }
+    std::cout << "Operation result:" << errors[error] << '\n';
 }
 
-void Menu::menuRemoveStudent() {
-    std::cout << "Enter student's index number: ";
-    size_t indexNumber;
-    std::cin >> indexNumber;
-    if (dataBase_.existsInDataBase(indexNumber)) {
-        dataBase_.removeStudent(indexNumber);
-    } else { // zmienic na kody bledow??
-        std::cout << "Student with index no. " << indexNumber << " doesn't exist in data base.\n";
+void Menu::menuRemovePerson() {
+    std::cout << "Remove by PESEL or Index number? (p - PESEL, i - index num): ";
+    ErrorCode error;
+    char c;
+    std::cin >> c;
+    if (c == 'p') {
+        std::cout << "Enter PESEL: ";
+        std::string pesel;
+        std::cin >> pesel;
+        error = dataBase_.removePerson(pesel);
+    } else if (c == 'i') {
+        std::cout << "Enter index number: ";
+        size_t indexNumber;
+        std::cin >> indexNumber;
+        error = dataBase_.removeStudent(indexNumber);
+    } else {
+        std::cout << "Wrong input\n";
+        return;
     }
+    std::cout << "Operation result:" << errors[error] << '\n';
 }
 
 void Menu::menuSortByLastName() {
@@ -109,10 +142,10 @@ void Menu::menuReadFromFile() {
 void Menu::mainMenu() {
     short choice = -1;
     while (choice != 0) {
-        std::cout << "\t..:: Univeristy DB ::..\n";
+        std::cout << "\n\t..:: Univeristy DB ::..\n";
         std::cout << "\t1. Print DB\n"
-                  << "\t2. Add student\n"
-                  << "\t3. Remove student\n"
+                  << "\t2. Add Person\n"
+                  << "\t3. Remove Person\n"
                   << "\t4. Sort by last name\n"
                   << "\t5. Sort by PESEL\n"
                   << "\t6. Sort by salary\n"
@@ -129,11 +162,11 @@ void Menu::mainMenu() {
             }
             break;
             case 2: {
-                menuAddStudent();
+                menuAddPerson();
             }
             break;
             case 3: {
-                menuRemoveStudent();
+                menuRemovePerson();
             }
             break;
             case 4: {

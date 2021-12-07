@@ -17,8 +17,8 @@ public:
     void mainMenu();
     // void printMainMenu();
 
-    void menuAddStudent();
-    void menuRemoveStudent();
+    void menuAddPerson();
+    void menuRemovePerson();
     void menuSortByLastName();
     void menuSortByPesel();
     void menuSortBySalary();
@@ -33,11 +33,12 @@ private:
 
     std::map<ErrorCode, std::string> errors {
         {ErrorCode::Ok, "Ok"},
-        {ErrorCode::PeselNotValid, "PESEL not valid"},
+        {ErrorCode::InvalidPesel, "Invalid PESEL"},
         {ErrorCode::PeselAlreadyExists, "PESEL already exists"},
         {ErrorCode::PeselNotFound, "PESEL not found"},
         {ErrorCode::IndexNumberAlreadyExists, "Index number already exists"},
         {ErrorCode::IndexNumberNotFound, "Index number not found"},
+        {ErrorCode::WrongIndexNumber, "Wrong index number"},
         {ErrorCode::PersonNotFound, "Person not found"}
     };
 };
