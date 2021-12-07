@@ -9,7 +9,7 @@
 
 
 
-void DataBase::printPerson(const std::unique_ptr<Person>& person) {
+void DataBase::printPerson(const std::shared_ptr<Person>& person) {
         std::cout.setf(std::ios::left);
         std::cout << std::setw(typeColumnWidth) << encodeType(person->getType())
                   << std::setw(columnWidth) << person->getFirstName()  // zrobic constexpr
@@ -50,7 +50,7 @@ ErrorCode DataBase::addStudent(const std::string& firstName,
         return ErrorCode::IndexNumberAlreadyExists;
     }
     Student tempStudent(firstName, lastName, pesel, address, sex, indexNumber);
-    people_.emplace_back(std::make_unique<Student>(tempStudent));
+    people_.emplace_back(std::make_shared<Student>(tempStudent));
     return ErrorCode::Ok;
 }
 
@@ -67,7 +67,7 @@ ErrorCode DataBase::addEmployee(const std::string& firstName,
         return ErrorCode::PeselAlreadyExists;
     }
     Employee tempEmployee(firstName, lastName, pesel, address, sex, salary);
-    people_.emplace_back(std::make_unique<Employee>(tempEmployee));
+    people_.emplace_back(std::make_shared<Employee>(tempEmployee));
     return ErrorCode::Ok;
 }
 
@@ -77,7 +77,7 @@ ErrorCode DataBase::removeStudent(const size_t& indexNumber) {
     if (indexNumber == 0) {
         return ErrorCode::WrongIndexNumber;
     }
-    int numberOfErasedElements = std::erase_if(people_, [indexNumber](const std::unique_ptr<Person>& ptr){
+    int numberOfErasedElements = std::erase_if(people_, [indexNumber](const std::shared_ptr<Person>& ptr){
         return ptr->getIndexNumber() == indexNumber;
     });
     if (numberOfErasedElements == 0) {
@@ -90,7 +90,7 @@ ErrorCode DataBase::removePerson(const std::string& pesel) {
     if (!isPeselValid(pesel)) {
         return ErrorCode::InvalidPesel;
     }
-    int numberOfErasedElements = std::erase_if(people_, [pesel](const std::unique_ptr<Person>& ptr){
+    int numberOfErasedElements = std::erase_if(people_, [pesel](const std::shared_ptr<Person>& ptr){
         return ptr->getPesel() == pesel;
     });
     if (numberOfErasedElements == 0) {
@@ -101,7 +101,7 @@ ErrorCode DataBase::removePerson(const std::string& pesel) {
 
 
 void DataBase::searchStudentByLastName(const std::string& lastName) {
-    auto findLastName = [lastName](const std::unique_ptr<Person>& ptr){
+    auto findLastName = [lastName](const std::shared_ptr<Person>& ptr){
             std::string lastNameToSearch = DataBase::stringToLower(lastName);
             std::string currentLastName = DataBase::stringToLower(ptr->getLastName());
             // return ptr->getLastName().find(lastName) != std::string::npos;
@@ -116,7 +116,7 @@ void DataBase::searchStudentByLastName(const std::string& lastName) {
 } 
 
 void DataBase::searchStudentByPesel(const std::string& pesel) {
-    auto findPESEL = [pesel](const std::unique_ptr<Person>& person) {  // name of ptr??
+    auto findPESEL = [pesel](const std::shared_ptr<Person>& person) {  // name of ptr??
         return person->getPesel().starts_with(pesel);
     };
     auto it = std::find_if(people_.cbegin(), people_.cend(), findPESEL);
@@ -134,7 +134,7 @@ std::string DataBase::stringToLower(const std::string& str) { // moze wywalic do
 }
 
 void DataBase::sortByLastName() { // reference to string?
-    std::sort(people_.begin(), people_.end(), [](std::unique_ptr<Person>& a, std::unique_ptr<Person>& b){
+    std::sort(people_.begin(), people_.end(), [](std::shared_ptr<Person>& a, std::shared_ptr<Person>& b){
         // std::string first = a->getLastName();
         // std::string second = b->getLastName();
         // std::tolower(first);
@@ -145,19 +145,19 @@ void DataBase::sortByLastName() { // reference to string?
 }
 
 void DataBase::sortByPesel() {
-    std::sort(people_.begin(), people_.end(), [](std::unique_ptr<Person>& a, std::unique_ptr<Person>& b){
+    std::sort(people_.begin(), people_.end(), [](std::shared_ptr<Person>& a, std::shared_ptr<Person>& b){
         return (a->getPesel() <=> b->getPesel()) < 0;
     });
 }
 
 void DataBase::sortBySalary() {
-    std::sort(people_.begin(), people_.end(), [](std::unique_ptr<Person>& a, std::unique_ptr<Person>& b){
+    std::sort(people_.begin(), people_.end(), [](std::shared_ptr<Person>& a, std::shared_ptr<Person>& b){
         return a->getSalary() > b->getSalary();
     });
 }
 
 void DataBase::changeSalary(const std::string& pesel) { // moze tez zwrocic kiedys error code?
-    auto it = std::find_if(people_.begin(), people_.end(), [pesel](const std::unique_ptr<Person>& ptr){
+    auto it = std::find_if(people_.begin(), people_.end(), [pesel](const std::shared_ptr<Person>& ptr){
         return ptr->getPesel() == pesel;  // a moze od razu porownac z PersonType::Employee??
     });
     if (it != people_.end()) {
@@ -261,8 +261,8 @@ bool DataBase::openFile(const std::string& fileName) {
                                 Address(postalCode, city, streetAndNumber),
                                 sex,
                                 indexNumber);
-            people_.emplace_back(std::make_unique<Student>(tempStudent));
-            // people_.emplace_back(std::make_unique<Person>(std::move(tempStudent)));
+            people_.emplace_back(std::make_shared<Student>(tempStudent));
+            // people_.emplace_back(std::make_shared<Person>(std::move(tempStudent)));
             file.peek();
         }
         return true;
@@ -287,7 +287,7 @@ void DataBase::printHeader(){
 bool DataBase::existsInDataBase(const size_t& indexNumber) {
     auto it = std::find_if(people_.cbegin(),
                            people_.cend(),
-                           [indexNumber](const std::unique_ptr<Person>& person){
+                           [indexNumber](const std::shared_ptr<Person>& person){
                                return indexNumber == person->getIndexNumber();
                            });
     return it != people_.cend();
@@ -296,7 +296,7 @@ bool DataBase::existsInDataBase(const size_t& indexNumber) {
 bool DataBase::existsInDataBase(const std::string& pesel) {
     auto it = std::find_if(people_.cbegin(),
                            people_.cend(),
-                           [pesel](const std::unique_ptr<Person>& person){
+                           [pesel](const std::shared_ptr<Person>& person){
                                return pesel == person->getPesel();
                            });
     return it != people_.cend();

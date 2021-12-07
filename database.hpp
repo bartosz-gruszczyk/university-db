@@ -45,7 +45,7 @@ public:
     ErrorCode removeStudent(const size_t& indexNumber);
     ErrorCode removePerson(const std::string& pesel);
 
-    void printPerson(const std::unique_ptr<Person>& person);
+    void printPerson(const std::shared_ptr<Person>& person);
     void printAll();
 
     void searchStudentByLastName(const std::string& lastName);  // zrobic referencje?
@@ -76,6 +76,6 @@ private:
     void writeStringToFile(const std::string& str, std::ofstream& file);
     void readStringFromFile(std::string& str, std::ifstream& file);
 
-    std::vector<std::unique_ptr<Person>> people_;
+    std::vector<std::shared_ptr<Person>> people_;
 
 };
