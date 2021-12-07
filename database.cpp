@@ -73,7 +73,8 @@ ErrorCode DataBase::removePerson(const std::string& pesel) {
 }
 
 
-void DataBase::searchStudentByLastName(const std::string& lastName) {
+ErrorCode DataBase::searchStudentByLastName(const std::string& lastName,
+                                       std::vector<std::shared_ptr<Person>>& searchResults) {
     auto findLastName = [lastName](const std::shared_ptr<Person>& ptr){
             std::string lastNameToSearch = DataBase::stringToLower(lastName);
             std::string currentLastName = DataBase::stringToLower(ptr->getLastName());
@@ -81,23 +82,30 @@ void DataBase::searchStudentByLastName(const std::string& lastName) {
             return currentLastName.find(lastNameToSearch) != std::string::npos;
     };
     auto it = std::find_if(people_.cbegin(), people_.cend(), findLastName);
+    if (it == people_.cend()) {
+        return ErrorCode::LastNameNotFound;  // moze da sie jakos lepiej z ifami?
+    }
     while (it != people_.end()) {
-        printPerson(*it++);
-        // ++it;
+        searchResults.emplace_back(*it++);
         it = std::find_if(it, people_.cend(), findLastName);
     }
+    return ErrorCode::Ok;
 } 
 
-void DataBase::searchStudentByPesel(const std::string& pesel) {
-    auto findPESEL = [pesel](const std::shared_ptr<Person>& person) {  // name of ptr??
+ErrorCode DataBase::searchStudentByPesel(const std::string& pesel,
+                                         std::vector<std::shared_ptr<Person>>& searchResults) {
+    auto findPESEL = [pesel](const std::shared_ptr<Person>& person) {
         return person->getPesel().starts_with(pesel);
     };
     auto it = std::find_if(people_.cbegin(), people_.cend(), findPESEL);
+    if (it == people_.cend()) {
+        return ErrorCode::PeselNotFound;  // moze da sie jakos lepiej z ifami?
+    }
     while (it != people_.end()) {
-        printPerson(*it++);
+        searchResults.emplace_back(*it++);
         it = std::find_if(it, people_.cend(), findPESEL);
     }
-
+    return ErrorCode::Ok;
 }
 
 std::string DataBase::stringToLower(const std::string& str) { // moze wywalic do innego cpp ?

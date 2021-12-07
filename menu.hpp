@@ -18,10 +18,7 @@ public:
     }
     
     void run();
-
-
     void mainMenu();
-    // void printMainMenu();
 
     void menuPrintAll();
     void menuAddPerson();
@@ -34,12 +31,13 @@ public:
     void menuSaveToFile();
     void menuReadFromFile();
 
-    std::string Menu::encodeSex(const Sex& sex) const;
-    std::string Menu::encodeType(const Person::PersonType& type) const;
-    
+    std::string encodeSex(const Sex& sex) const;
+    std::string encodeType(const Person::PersonType& type) const;
+
 private:
     void printHeader();
     void printPerson(const std::shared_ptr<Person>& person);
+    void printGroup(const std::vector<std::shared_ptr<Person>>& group);
 
     
     DataBase& dataBase_;
@@ -52,6 +50,8 @@ private:
         {ErrorCode::IndexNumberAlreadyExists, "Index number already exists"},
         {ErrorCode::IndexNumberNotFound, "Index number not found"},
         {ErrorCode::WrongIndexNumber, "Wrong index number"},
+        {ErrorCode::LastNameNotFound, "Last name not found"},
+        {ErrorCode::NotEmployee, "Person is not an employee"},
         {ErrorCode::PersonNotFound, "Person not found"}
     };
 };

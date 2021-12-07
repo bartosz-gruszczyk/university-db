@@ -38,11 +38,10 @@ public:
                           const size_t& salary);
     ErrorCode removeStudent(const size_t& indexNumber);
     ErrorCode removePerson(const std::string& pesel);
-
-    void searchStudentByLastName(const std::string& lastName);  // zrobic referencje?
-    // dorobic dla malych liter??
-    void searchStudentByPesel(const std::string& pesel);
-
+    ErrorCode searchStudentByLastName(const std::string& lastName,
+                                      std::vector<std::shared_ptr<Person>>& searchResults);
+    ErrorCode searchStudentByPesel(const std::string& pesel,
+                                   std::vector<std::shared_ptr<Person>>& searchResults);
     void sortByLastName();
     void sortByPesel();
     void sortBySalary();

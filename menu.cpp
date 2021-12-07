@@ -78,11 +78,7 @@ void Menu::mainMenu() {
 }
 
 void Menu::menuPrintAll() {
-    auto people = dataBase_.data();
-    printHeader();
-    for (auto it = people.cbegin(); it != people.cend(); ++it) {
-        printPerson(*it);
-    }
+    printGroup(dataBase_.data());
 }
 
 void Menu::menuAddPerson() {
@@ -149,7 +145,7 @@ void Menu::menuAddPerson() {
                                       sex,
                                       salary);
     }
-    std::cout << "Operation result:" << errors[error] << '\n';
+    std::cout << "Operation result: " << errors[error] << '\n';
 }
 
 void Menu::menuRemovePerson() {
@@ -171,7 +167,7 @@ void Menu::menuRemovePerson() {
         std::cout << "Wrong input\n";
         return;
     }
-    std::cout << "Operation result:" << errors[error] << '\n';
+    std::cout << "Operation result: " << errors[error] << '\n';
 }
 
 void Menu::menuSortByLastName() {
@@ -193,14 +189,24 @@ void Menu::menuFindLastName() {
     std::cout << "Enter last name to find: ";
     std::string lastName;
     std:: cin >> lastName;
-    dataBase_.searchStudentByLastName(lastName);
+    std::vector<std::shared_ptr<Person>> results; // moze jakies reserve czy cos?
+    ErrorCode error = dataBase_.searchStudentByLastName(lastName, results);
+    std::cout << "Operation result: " << errors[error] << '\n';
+    if (error == ErrorCode::Ok) {
+        printGroup(results);
+    }
 }
 
 void Menu::menuFindPesel() {
     std::cout << "Enter some first digits of PESEL to find: ";
     std::string pesel;
     std:: cin >> pesel;
-    dataBase_.searchStudentByPesel(pesel);
+    std::vector<std::shared_ptr<Person>> results;
+    ErrorCode error = dataBase_.searchStudentByPesel(pesel, results);
+    std::cout << "Operation result: " << errors[error] << '\n';
+    if (error == ErrorCode::Ok) {
+        printGroup(results);
+    }
 }
 
 void Menu::menuSaveToFile() {
@@ -257,3 +263,9 @@ void Menu::printPerson(const std::shared_ptr<Person>& person) {
         std::cout << '\n';
 }
 
+void Menu::printGroup(const std::vector<std::shared_ptr<Person>>& group) {
+    printHeader();
+    for (auto it = group.cbegin(); it != group.cend(); ++it) {
+        printPerson(*it);
+    }
+}
