@@ -1,10 +1,88 @@
 #include "menu.hpp"
 #include <iostream>
+#include <iomanip>
 
 void Menu::run() {
 
     mainMenu();
     
+}
+
+void Menu::mainMenu() {
+    short choice = -1;
+    while (choice != 0) {
+        std::cout << "\n\t..:: Univeristy DB ::..\n";
+        std::cout << "\t1. Print DB\n"
+                  << "\t2. Add Person\n"
+                  << "\t3. Remove Person\n"
+                  << "\t4. Sort by last name\n"
+                  << "\t5. Sort by PESEL\n"
+                  << "\t6. Sort by salary\n"
+                  << "\t7. Find last name\n"
+                  << "\t8. Find PESEL\n"
+                  << "\t9. Save to file\n"
+                  << "\t10. Read from file\n"
+                  << "\t0. Exit\n"
+                  << "\t: ";
+        std::cin >> choice;
+        switch (choice) {
+            case 1: {
+                menuPrintAll();
+            }
+            break;
+            case 2: {
+                menuAddPerson();
+            }
+            break;
+            case 3: {
+                menuRemovePerson();
+            }
+            break;
+            case 4: {
+                menuSortByLastName();                
+            }
+            break;
+            case 5: {
+                menuSortByPesel();
+            }
+            break;
+            case 6: {
+                menuSortBySalary();
+            }
+            break;
+            case 7: {
+                menuFindLastName();
+            }
+            break;
+            case 8: {
+                menuFindPesel();
+            }
+            break;
+            case 9: {
+                menuSaveToFile();
+            }
+            break;
+            case 10: {
+                menuReadFromFile();                
+            }
+            break;
+            case 0: {
+                std::cout << "Returned to OS.\n\n";
+            }
+            break;
+            default: {
+                std::cout << "Wrong option.\n\n";
+            }
+        }
+    }
+}
+
+void Menu::menuPrintAll() {
+    auto people = dataBase_.data();
+    printHeader();
+    for (auto it = people.cbegin(); it != people.cend(); ++it) {
+        printPerson(*it);
+    }
 }
 
 void Menu::menuAddPerson() {
@@ -139,71 +217,43 @@ void Menu::menuReadFromFile() {
     dataBase_.openFile(filename);
 }
 
-void Menu::mainMenu() {
-    short choice = -1;
-    while (choice != 0) {
-        std::cout << "\n\t..:: Univeristy DB ::..\n";
-        std::cout << "\t1. Print DB\n"
-                  << "\t2. Add Person\n"
-                  << "\t3. Remove Person\n"
-                  << "\t4. Sort by last name\n"
-                  << "\t5. Sort by PESEL\n"
-                  << "\t6. Sort by salary\n"
-                  << "\t7. Find last name\n"
-                  << "\t8. Find PESEL\n"
-                  << "\t9. Save to file\n"
-                  << "\t10. Read from file\n"
-                  << "\t0. Exit\n"
-                  << "\t: ";
-        std::cin >> choice;
-        switch (choice) {
-            case 1: {
-                dataBase_.printAll();
-            }
-            break;
-            case 2: {
-                menuAddPerson();
-            }
-            break;
-            case 3: {
-                menuRemovePerson();
-            }
-            break;
-            case 4: {
-                menuSortByLastName();                
-            }
-            break;
-            case 5: {
-                menuSortByPesel();
-            }
-            break;
-            case 6: {
-                menuSortBySalary();
-            }
-            break;
-            case 7: {
-                menuFindLastName();
-            }
-            break;
-            case 8: {
-                menuFindPesel();
-            }
-            break;
-            case 9: {
-                menuSaveToFile();
-            }
-            break;
-            case 10: {
-                menuReadFromFile();                
-            }
-            break;
-            case 0: {
-                std::cout << "Returned to OS.\n\n";
-            }
-            break;
-            default: {
-                std::cout << "Wrong option.\n\n";
-            }
-        }
-    }
+std::string Menu::encodeSex(const Sex& sex) const {
+    return sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other";
 }
+
+std::string Menu::encodeType(const Person::PersonType& type) const {
+    return type == Person::PersonType::Student ? "student" : "employee";
+}
+
+void Menu::printHeader(){
+    // std::cout << "vector size: " << people_.size() << '\n'; // raczej do wywalenia
+    std::cout.setf(std::ios::left);
+    std::cout << std::setw(typeColumnWidth) << "type:"
+              << std::setw(columnWidth) << "first name:"
+              << std::setw(columnWidth) << "last name:"
+              << std::setw(addressColumnWidth) << "address:"
+              << std::setw(peselColumnWidth) << "PESEL:"
+              << std::setw(sexColumnWidth) << "sex:"
+              << std::setw(columnWidth) << "index number:"
+              << std::setw(columnWidth) << "salary:"
+              << '\n';
+}
+
+void Menu::printPerson(const std::shared_ptr<Person>& person) {
+        std::cout.setf(std::ios::left);
+        std::cout << std::setw(typeColumnWidth) << encodeType(person->getType())
+                  << std::setw(columnWidth) << person->getFirstName()  // zrobic constexpr
+                  << std::setw(columnWidth) << person->getLastName()
+                  << std::setw(addressColumnWidth) << person->getAddress()   // zrobic const wartosc kolumny address
+                  << std::setw(peselColumnWidth) << person->getPesel()
+                  << std::setw(sexColumnWidth) << encodeSex(person->getSex());
+        if (person->getType() == Person::PersonType::Student) {
+            std::cout << std::setw(columnWidth) << person->getIndexNumber()
+                      << std::setw(columnWidth) << "---";
+        } else {
+            std::cout << std::setw(columnWidth) << "---"
+                      << std::setw(columnWidth) << person->getSalary();
+        }
+        std::cout << '\n';
+}
+

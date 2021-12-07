@@ -24,12 +24,6 @@
 
 class DataBase {
 public:
-    uint8_t typeColumnWidth = 10;
-    uint8_t columnWidth = 16;   //zrobic const......!!!
-    uint8_t addressColumnWidth = 42;
-    uint8_t sexColumnWidth = 10;
-    uint8_t peselColumnWidth = 14;
-    
     ErrorCode addStudent(const std::string& firstName,
                          const std::string& lastName,
                          const std::string& pesel,
@@ -44,9 +38,6 @@ public:
                           const size_t& salary);
     ErrorCode removeStudent(const size_t& indexNumber);
     ErrorCode removePerson(const std::string& pesel);
-
-    void printPerson(const std::shared_ptr<Person>& person);
-    void printAll();
 
     void searchStudentByLastName(const std::string& lastName);  // zrobic referencje?
     // dorobic dla malych liter??
@@ -69,10 +60,10 @@ public:
     bool existsInDataBase(const size_t& indexNumber);
     bool existsInDataBase(const std::string& pesel);
 
+    std::vector<std::shared_ptr<Person>>& data();
+
 private:
-    void printHeader();
-    std::string encodeSex(const Sex& sex) const;
-    std::string encodeType(const Person::PersonType& type) const;
+
     void writeStringToFile(const std::string& str, std::ofstream& file);
     void readStringFromFile(std::string& str, std::ifstream& file);
 

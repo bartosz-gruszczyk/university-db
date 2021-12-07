@@ -7,33 +7,6 @@
 #include <memory>
 #include <numeric>
 
-
-
-void DataBase::printPerson(const std::shared_ptr<Person>& person) {
-        std::cout.setf(std::ios::left);
-        std::cout << std::setw(typeColumnWidth) << encodeType(person->getType())
-                  << std::setw(columnWidth) << person->getFirstName()  // zrobic constexpr
-                  << std::setw(columnWidth) << person->getLastName()
-                  << std::setw(addressColumnWidth) << person->getAddress()   // zrobic const wartosc kolumny address
-                  << std::setw(peselColumnWidth) << person->getPesel()
-                  << std::setw(sexColumnWidth) << encodeSex(person->getSex());
-        if (person->getType() == Person::PersonType::Student) {
-            std::cout << std::setw(columnWidth) << person->getIndexNumber()
-                      << std::setw(columnWidth) << "---";
-        } else {
-            std::cout << std::setw(columnWidth) << "---"
-                      << std::setw(columnWidth) << person->getSalary();
-        }
-        std::cout << '\n';
-}
-
-void DataBase::printAll() {
-    printHeader();
-    for (auto it = people_.cbegin(); it != people_.cend(); ++it) {
-        printPerson(*it);
-    }
-}
-
 ErrorCode DataBase::addStudent(const std::string& firstName,
                                const std::string& lastName,
                                const std::string& pesel,
@@ -192,13 +165,7 @@ bool DataBase::isPeselValid(const std::string& pesel) {
     return false;
 }
 
-std::string DataBase::encodeSex(const Sex& sex) const {
-    return sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other";
-}
 
-std::string DataBase::encodeType(const Person::PersonType& type) const {
-    return type == Person::PersonType::Student ? "student" : "employee";
-}
 
 void DataBase::writeStringToFile(const std::string& str, std::ofstream& file) {
     // if (file.is_open()) { // moze nie bedzie potrzebne bo sprawdzane nadrzednie
@@ -270,18 +237,8 @@ bool DataBase::openFile(const std::string& fileName) {
     return false;
 }
 
-void DataBase::printHeader(){
-    std::cout << "vector size: " << people_.size() << '\n';
-    std::cout.setf(std::ios::left);
-    std::cout << std::setw(typeColumnWidth) << "type:"
-              << std::setw(columnWidth) << "first name:"
-              << std::setw(columnWidth) << "last name:"
-              << std::setw(addressColumnWidth) << "address:"
-              << std::setw(peselColumnWidth) << "PESEL:"
-              << std::setw(sexColumnWidth) << "sex:"
-              << std::setw(columnWidth) << "index number:"
-              << std::setw(columnWidth) << "salary:"
-              << '\n';
+std::vector<std::shared_ptr<Person>>& DataBase::data() {
+    return people_;
 }
 
 bool DataBase::existsInDataBase(const size_t& indexNumber) {
