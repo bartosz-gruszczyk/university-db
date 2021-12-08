@@ -12,16 +12,18 @@ void Menu::mainMenu() {
     short choice = -1;
     while (choice != 0) {
         std::cout << "\n\t..:: Univeristy DB ::..\n";
-        std::cout << "\t1. Print DB\n"
-                  << "\t2. Add Person\n"
-                  << "\t3. Remove Person\n"
-                  << "\t4. Sort by last name\n"
-                  << "\t5. Sort by PESEL\n"
-                  << "\t6. Sort by salary\n"
-                  << "\t7. Find last name\n"
-                  << "\t8. Find PESEL\n"
-                  << "\t9. Save to file\n"
-                  << "\t10. Read from file\n"
+        std::cout << "\t 1. Print DB\n"
+                  << "\t 2. Add Person\n"
+                  << "\t 3. Remove Person\n"
+                  << "\t 4. Change salary\n"
+                  << "\t 5. Sort by last name\n"
+                  << "\t 6. Sort by PESEL\n"
+                  << "\t 7. Sort by salary\n"
+                  << "\t 8. Find last name\n"
+                  << "\t 9. Find PESEL\n"
+                  << "\t10. Generate data\n"
+                  << "\t11. Save to file\n"
+                  << "\t12. Read from file\n"
                   << "\t0. Exit\n"
                   << "\t: ";
         std::cin >> choice;
@@ -39,30 +41,38 @@ void Menu::mainMenu() {
             }
             break;
             case 4: {
-                menuSortByLastName();                
+                menuChangeSalary();
             }
             break;
             case 5: {
-                menuSortByPesel();
+                menuSortByLastName();                
             }
             break;
             case 6: {
-                menuSortBySalary();
+                menuSortByPesel();
             }
             break;
             case 7: {
-                menuFindLastName();
+                menuSortBySalary();
             }
             break;
             case 8: {
-                menuFindPesel();
+                menuFindLastName();
             }
             break;
             case 9: {
-                menuSaveToFile();
+                menuFindPesel();
             }
             break;
             case 10: {
+                menuGenerateData();
+            }
+            break;
+            case 11: {
+                menuSaveToFile();
+            }
+            break;
+            case 12: {
                 menuReadFromFile();                
             }
             break;
@@ -125,7 +135,7 @@ void Menu::menuAddPerson() {
     ErrorCode error;
     if (type == 's') {
         size_t indexNumber;
-        std::cout << "Index number: ";
+        std::cout << "Index number (1 - " << DataBase::maxIndexNumber << "): ";
         std::cin >> indexNumber;
         error = dataBase_.addStudent(firstName,
                             lastName,
@@ -170,6 +180,10 @@ void Menu::menuRemovePerson() {
     std::cout << "Operation result: " << errors[error] << '\n';
 }
 
+void Menu::menuChangeSalary() {
+
+}
+
 void Menu::menuSortByLastName() {
     dataBase_.sortByLastName();
     std::cout << "Data base has been sorted by last name.\n\n";
@@ -207,6 +221,10 @@ void Menu::menuFindPesel() {
     if (error == ErrorCode::Ok) {
         printGroup(results);
     }
+}
+
+void Menu::menuGenerateData() {
+
 }
 
 void Menu::menuSaveToFile() {

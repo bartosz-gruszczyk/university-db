@@ -7,6 +7,7 @@ enum class ErrorCode {
     InvalidPesel,
     PeselAlreadyExists,
     PeselNotFound,
+    InvalidIndexNumber,
     IndexNumberAlreadyExists,
     IndexNumberNotFound,
     WrongIndexNumber,

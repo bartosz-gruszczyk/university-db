@@ -24,6 +24,8 @@
 
 class DataBase {
 public:
+    static const size_t maxIndexNumber = 999999;
+
     ErrorCode addStudent(const std::string& firstName,
                          const std::string& lastName,
                          const std::string& pesel,

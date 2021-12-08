@@ -19,6 +19,9 @@ ErrorCode DataBase::addStudent(const std::string& firstName,
     if (existsInDataBase(pesel)) {
         return ErrorCode::PeselAlreadyExists;
     }
+    if (indexNumber < 1 || indexNumber > maxIndexNumber) {
+        return ErrorCode::InvalidIndexNumber;
+    }
     if (existsInDataBase(indexNumber)) {
         return ErrorCode::IndexNumberAlreadyExists;
     }

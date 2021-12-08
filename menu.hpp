@@ -11,7 +11,7 @@ public:
     uint8_t addressColumnWidth = 42;
     uint8_t sexColumnWidth = 10;
     uint8_t peselColumnWidth = 14;
-
+    
     Menu(DataBase& dataBase) : dataBase_{dataBase} {
         // std::function<void()> func1 = &Menu::menuAddStudent;
         // menuItems.insert(std::pair{'2', &Menu::menuAddStudent});
@@ -23,11 +23,13 @@ public:
     void menuPrintAll();
     void menuAddPerson();
     void menuRemovePerson();
+    void menuChangeSalary();
     void menuSortByLastName();
     void menuSortByPesel();
     void menuSortBySalary();
     void menuFindLastName();
     void menuFindPesel();
+    void menuGenerateData();
     void menuSaveToFile();
     void menuReadFromFile();
 
@@ -47,6 +49,7 @@ private:
         {ErrorCode::InvalidPesel, "Invalid PESEL"},
         {ErrorCode::PeselAlreadyExists, "PESEL already exists"},
         {ErrorCode::PeselNotFound, "PESEL not found"},
+        {ErrorCode::InvalidIndexNumber, "Invalid index number"},
         {ErrorCode::IndexNumberAlreadyExists, "Index number already exists"},
         {ErrorCode::IndexNumberNotFound, "Index number not found"},
         {ErrorCode::WrongIndexNumber, "Wrong index number"},
