@@ -19,7 +19,7 @@ ErrorCode DataBase::addStudent(const std::string& firstName,
     if (existsInDataBase(pesel)) {
         return ErrorCode::PeselAlreadyExists;
     }
-    if (indexNumber < 1 || indexNumber > maxIndexNumber) {
+    if (!isValidIndexNumber(indexNumber)) {
         return ErrorCode::InvalidIndexNumber;
     }
     if (existsInDataBase(indexNumber)) {
@@ -50,8 +50,8 @@ ErrorCode DataBase::addEmployee(const std::string& firstName,
 ErrorCode DataBase::removeStudent(const size_t& indexNumber) {
     // sprawdzic czy nie ma wyciekow
     // czy warto robic remove/erase?
-    if (indexNumber == 0) {
-        return ErrorCode::WrongIndexNumber;
+    if (!isValidIndexNumber(indexNumber)) {
+        return ErrorCode::InvalidIndexNumber;
     }
     int numberOfErasedElements = std::erase_if(people_, [indexNumber](const std::shared_ptr<Person>& ptr){
         return ptr->getIndexNumber() == indexNumber;
@@ -140,19 +140,21 @@ void DataBase::sortBySalary() {
     });
 }
 
-void DataBase::changeSalary(const std::string& pesel) { // moze tez zwrocic kiedys error code?
+ErrorCode DataBase::changeSalary(const std::string& pesel, const size_t& newSalary) {
     auto it = std::find_if(people_.begin(), people_.end(), [pesel](const std::shared_ptr<Person>& ptr){
-        return ptr->getPesel() == pesel;  // a moze od razu porownac z PersonType::Employee??
+        return ptr->getPesel() == pesel;
     });
     if (it != people_.end()) {
-        size_t newSalary = 0;
-        std::cout << "Enter new salary: ";
-        std::cin >> newSalary;
+        if ((*it)->getType() == Person::PersonType::Student) {
+            return ErrorCode::NotEmployee;
+        }
+        if (newSalary < minSalary || newSalary > maxSalary) {
+            return ErrorCode::InvalidSalary;
+        }
         (*it)->setSalary(newSalary);
-    } else {
-        std::cout << "----there is no employee with that pesel------\n";
-    }
-
+        return ErrorCode::Ok;
+    } 
+    return ErrorCode::PeselNotFound;
 }
 
 bool DataBase::isPeselValid(const std::string& pesel) {
@@ -175,8 +177,6 @@ bool DataBase::isPeselValid(const std::string& pesel) {
     }
     return false;
 }
-
-
 
 void DataBase::writeStringToFile(const std::string& str, std::ofstream& file) {
     // if (file.is_open()) { // moze nie bedzie potrzebne bo sprawdzane nadrzednie
@@ -252,7 +252,7 @@ std::vector<std::shared_ptr<Person>>& DataBase::data() {
     return people_;
 }
 
-bool DataBase::existsInDataBase(const size_t& indexNumber) {
+bool DataBase::existsInDataBase(const size_t& indexNumber) const {
     auto it = std::find_if(people_.cbegin(),
                            people_.cend(),
                            [indexNumber](const std::shared_ptr<Person>& person){
@@ -261,7 +261,7 @@ bool DataBase::existsInDataBase(const size_t& indexNumber) {
     return it != people_.cend();
 }
 
-bool DataBase::existsInDataBase(const std::string& pesel) {
+bool DataBase::existsInDataBase(const std::string& pesel) const {
     auto it = std::find_if(people_.cbegin(),
                            people_.cend(),
                            [pesel](const std::shared_ptr<Person>& person){
@@ -269,4 +269,8 @@ bool DataBase::existsInDataBase(const std::string& pesel) {
                            });
     return it != people_.cend();
 
+}
+
+bool DataBase::isValidIndexNumber(const size_t& indexNumber) const {
+    return indexNumber >= 1 && indexNumber <= maxIndexNumber;
 }

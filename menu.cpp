@@ -181,7 +181,14 @@ void Menu::menuRemovePerson() {
 }
 
 void Menu::menuChangeSalary() {
-
+    size_t newSalary = 0;
+    std::string pesel;
+    std::cout << "Enter employee's PESEL: ";
+    std::cin >> pesel;
+    std::cout << "Enter new salary: ";
+    std::cin >> newSalary;
+    ErrorCode error = dataBase_.changeSalary(pesel, newSalary);
+    std::cout << "Operation result: " << errors[error] << '\n';
 }
 
 void Menu::menuSortByLastName() {

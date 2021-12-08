@@ -23,6 +23,6 @@ size_t Student::getSalary() const {
     return 0;
 }
 
-void Student::setSalary(size_t newSalary) { // zrobic const!
+void Student::setSalary(const size_t&) {
     // do nothing... null object pattern
 }

@@ -22,6 +22,6 @@ size_t Employee::getSalary() const {
         return salary_;
     }
 
-void Employee::setSalary(size_t newSalary) { // walidacja!!!
+void Employee::setSalary(const size_t& newSalary) {
     salary_ = newSalary;
 }

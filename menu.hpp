@@ -52,9 +52,9 @@ private:
         {ErrorCode::InvalidIndexNumber, "Invalid index number"},
         {ErrorCode::IndexNumberAlreadyExists, "Index number already exists"},
         {ErrorCode::IndexNumberNotFound, "Index number not found"},
-        {ErrorCode::WrongIndexNumber, "Wrong index number"},
+        {ErrorCode::InvalidSalary, "Ivalid salary value"},
         {ErrorCode::LastNameNotFound, "Last name not found"},
-        {ErrorCode::NotEmployee, "Person is not an employee"},
-        {ErrorCode::PersonNotFound, "Person not found"}
+        {ErrorCode::NotEmployee, "Person is not an employee"}
+        // {ErrorCode::PersonNotFound, "Person not found"}
     };
 };

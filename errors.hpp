@@ -10,9 +10,9 @@ enum class ErrorCode {
     InvalidIndexNumber,
     IndexNumberAlreadyExists,
     IndexNumberNotFound,
-    WrongIndexNumber,
+    InvalidSalary,
     LastNameNotFound,
     NotEmployee,
-    PersonNotFound // czy potrzebne?
+    // PersonNotFound // czy potrzebne?
 
 };

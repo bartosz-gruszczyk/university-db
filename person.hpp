@@ -29,7 +29,7 @@ public:
 
     virtual size_t getIndexNumber() const = 0;
     virtual size_t getSalary() const = 0;
-    virtual void setSalary(size_t newSalary) = 0;
+    virtual void setSalary(const size_t& newSalary) = 0;
     // virtual size_t getIndexNumber() const;
     // virtual size_t getSalary() const;
 

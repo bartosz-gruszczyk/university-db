@@ -24,7 +24,9 @@
 
 class DataBase {
 public:
-    static const size_t maxIndexNumber = 999999;
+    static const size_t maxIndexNumber = 999999;   // co const a co constexpr??
+    size_t minSalary = 3000;
+    size_t maxSalary = 26000;
 
     ErrorCode addStudent(const std::string& firstName,
                          const std::string& lastName,
@@ -48,7 +50,7 @@ public:
     void sortByPesel();
     void sortBySalary();
 
-    void changeSalary(const std::string& pesel);
+    ErrorCode changeSalary(const std::string& pesel, const size_t& newSalary);
 
     bool isPeselValid(const std::string& pesel); //reference?
 
@@ -58,13 +60,13 @@ public:
 
     static std::string stringToLower(const std::string& str);
 
-    bool existsInDataBase(const size_t& indexNumber);
-    bool existsInDataBase(const std::string& pesel);
 
     std::vector<std::shared_ptr<Person>>& data();
 
 private:
-
+    bool existsInDataBase(const size_t& indexNumber) const;
+    bool existsInDataBase(const std::string& pesel) const;
+    bool isValidIndexNumber(const size_t& indexNumber) const;
     void writeStringToFile(const std::string& str, std::ofstream& file);
     void readStringFromFile(std::string& str, std::ifstream& file);
 
