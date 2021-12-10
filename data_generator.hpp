@@ -10,6 +10,7 @@ public:
     size_t randomNumber(const size_t& rangeMin, const size_t& rangeMax) const; 
     std::string randomFirstName() const;
     std::string randomLastName() const;
+    std::string randomPeselPrototype() const;
     std::string randomCity() const;
     std::string randomStreetAndNumber() const;
     std::string randomPostalCode() const;

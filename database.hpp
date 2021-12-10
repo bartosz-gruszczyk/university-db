@@ -17,10 +17,11 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "person.hpp"
-#include "student.hpp"
+#include "data_generator.hpp"
 #include "employee.hpp"
 #include "errors.hpp"
+#include "person.hpp"
+#include "student.hpp"
 
 class DataBase {
 public:
@@ -52,7 +53,7 @@ public:
 
     ErrorCode changeSalary(const std::string& pesel, const size_t& newSalary);
 
-    void generatePeople(); // :)
+    void generatePeople(const size_t& amount); // :)
 
     // maybe they can be private ?
     int calculatePeselControlDigit(const std::string& pesel) const;
@@ -75,5 +76,7 @@ private:
     void readStringFromFile(std::string& str, std::ifstream& file);
 
     std::vector<std::shared_ptr<Person>> people_;
+
+    DataGenerator dataGen_; // maybe can be static?
 
 };

@@ -158,6 +158,20 @@ ErrorCode DataBase::changeSalary(const std::string& pesel, const size_t& newSala
     return ErrorCode::PeselNotFound;
 }
 
+void DataBase::generatePeople(const size_t& amount) {
+    Person::PersonType type = dataGen_.randomPersonType();
+    // std::cout << "type: " << (tempType == Person::PersonType::Student ? "student" : "employee") << " ___\n";
+    std::string firstName = dataGen_.randomFirstName();
+    std::string lastName = dataGen_.randomLastName();
+    std::stirng pesel = 
+    // Adderss address
+    // Sex sex
+    // size_t indexNumber
+
+
+}
+
+
 int DataBase::calculatePeselControlDigit(const std::string& pesel) const {
     std::array<char, 10> weights {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
     if (pesel.size() >= 10) { // moze wyrzucic pozniej...?

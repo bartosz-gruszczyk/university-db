@@ -17,6 +17,12 @@ std::string DataGenerator::randomLastName() const {
     return lastNames_[randomNumber(0, lastNames_.size() - 1)];
 }
 
+std::string DataGenerator::randomPeselPrototype() const {
+    return std::to_string(randomNumber(0, 99))
+         + std::to_string(randomNumber(0, 12))
+         + std::to_string(randomNumber(0, 31));
+}
+
 std::string DataGenerator::randomCity() const {
     return cities_[randomNumber(0, cities_.size() - 1)];
 }

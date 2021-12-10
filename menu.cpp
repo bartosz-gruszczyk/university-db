@@ -231,7 +231,7 @@ void Menu::menuFindPesel() {
 }
 
 void Menu::menuGenerateData() {
-
+    dataBase_.generatePeople(1);
 }
 
 void Menu::menuSaveToFile() {
