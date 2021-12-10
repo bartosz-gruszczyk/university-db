@@ -158,11 +158,9 @@ ErrorCode DataBase::changeSalary(const std::string& pesel, const size_t& newSala
     return ErrorCode::PeselNotFound;
 }
 
-bool DataBase::isPeselValid(const std::string& pesel) {
-    // const short peselLenght = 11;
-    // const std::string weight = "1379137913"
+int DataBase::calculatePeselControlDigit(const std::string& pesel) const {
     std::array<char, 10> weights {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
-    if (pesel.size() == 11) {
+    if (pesel.size() >= 10) { // moze wyrzucic pozniej...?
         std::transform(weights.begin(),
                        weights.end(),
                        pesel.begin(),
@@ -172,9 +170,16 @@ bool DataBase::isPeselValid(const std::string& pesel) {
                        });
         int modulo = std::reduce(weights.cbegin(), weights.cend(), 0) % 10;
         if (modulo == 0) {
-            return pesel.ends_with('0');
+            return 0;
         }
-        return pesel.ends_with(10 - modulo + '0');
+        return 10 - modulo;
+    }
+    return -1; // when string size is inappropiate
+}
+
+bool DataBase::isPeselValid(const std::string& pesel) {
+    if (pesel.size() == 11) {
+        return pesel.ends_with(calculatePeselControlDigit(pesel) + '0');
     }
     return false;
 }

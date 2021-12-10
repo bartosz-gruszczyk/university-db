@@ -52,6 +52,10 @@ public:
 
     ErrorCode changeSalary(const std::string& pesel, const size_t& newSalary);
 
+    void generatePeople(); // :)
+
+    // maybe they can be private ?
+    int calculatePeselControlDigit(const std::string& pesel) const;
     bool isPeselValid(const std::string& pesel); //reference?
 
     bool saveFile(const std::string& fileName); // const??

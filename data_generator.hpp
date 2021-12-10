@@ -33,11 +33,11 @@ private:
 
     std::vector<std::string> cities_ {"Rybnik", "Gliwice", "Wroclaw", "Warszawa",
     "Krakow", "Gdansk", "Liverpool", "Poznan", "Dublin", "Katowice", "Lomza",
-    "Szczecin", "Kielce", "Swinoujscie"};
+    "Szczecin", "Kielce", "Swinoujscie", "Gniezno", "Berlin", "Rzeszow", "Siedlce"};
 
     std::vector<std::string> streets_ {"Sezamkowa", "Mandarynki", "Nowy swiat",
     "Grochowska", "Francuska", "Zwyciezcow", "Dworcowa", "Stawowa", "Gliwicka",
     "Andersa", "Paderewskiego", "Lotnikow", "Meksykanska", "Saska", "Paryska",
-    "Pawia", "Polna", "Zamkowa", "Chrobrego"};
+    "Pawia", "Polna", "Zamkowa", "Chrobrego", "Kokoryczki", "Bednarska"};
 
 };
