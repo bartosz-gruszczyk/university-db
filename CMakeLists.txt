@@ -9,6 +9,7 @@ set(SRC_LIST person.cpp
              employee.cpp
              student.cpp
              database.cpp
+             data_generator.cpp
              menu.cpp)
 
 add_executable(${PROJECT_NAME} ${SRC_LIST} main.cpp)

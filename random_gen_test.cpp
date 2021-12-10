@@ -6,7 +6,11 @@ int main() {
     DataGenerator gen;
 
     for (int i = 0; i < 25; ++i) {
-        std::cout << i << ": " << gen.randomCity() << '\n';
+        std::cout << i << ": "
+                  << gen.randomFirstName() << "  "
+                  << gen.randomLastName() << "  "
+                  << gen.randomCity() << "  "
+                  << gen.randomStreetAndNumber() << '\n';
     }
 
 

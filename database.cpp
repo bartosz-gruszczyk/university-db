@@ -1,4 +1,5 @@
 #include "database.hpp"
+#include "data_generator.hpp"
 #include <algorithm>
 #include <cctype>
 #include <fstream>

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "person.hpp"
 
 class DataGenerator {
 public:
@@ -10,9 +11,10 @@ public:
     std::string randomFirstName() const;
     std::string randomLastName() const;
     std::string randomCity() const;
-    std::string randomStreet() const;
+    std::string randomStreetAndNumber() const;
     std::string randomPostalCode() const;
-    std::string randomSex() const;
+    Sex randomSex() const;
+    Person::PersonType randomPersonType() const;
     
 
 
