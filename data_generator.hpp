@@ -20,6 +20,8 @@ public:
 
 
 private:
+    std::string randomNumberWithZeros(const int& rangeMin, int rangeMax) const;
+
     std::vector<std::string> firstNames_ {"Alicja", "Anna", "Artur", "Alozjy", "Adam",
     "Bartosz", "Bruno", "Ben", "Barbara", "Cezary", "Celina", "Danuta", "Dawid", "Ewa",
     "Frank", "Gustaw", "Han", "Igor", "Kazik", "Karolina", "Katarzyna", "Luke",

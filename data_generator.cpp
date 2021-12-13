@@ -1,4 +1,5 @@
 #include "data_generator.hpp"
+#include "database.hpp" /// podejrzane... static const
 #include <random>
 // #include <string>
 
@@ -17,10 +18,18 @@ std::string DataGenerator::randomLastName() const {
     return lastNames_[randomNumber(0, lastNames_.size() - 1)];
 }
 
-std::string DataGenerator::randomPeselPrototype() const {
-    return std::to_string(randomNumber(0, 99))
-         + std::to_string(randomNumber(0, 12))
-         + std::to_string(randomNumber(0, 31));
+std::string DataGenerator::randomPeselPrototype() const {\
+
+    // std::cout << randomNumberWithZeros(1, 99) << ' '
+    //           << randomNumberWithZeros(1, 12) << ' '
+    //           << randomNumberWithZeros(1, 31) << ' '
+    //           << randomNumberWithZeros(1, 9999) << '\n';
+
+    return randomNumberWithZeros(1, 99)
+         + randomNumberWithZeros(1, 12)
+         + randomNumberWithZeros(1, 31)
+         + randomNumberWithZeros(1, 9999);
+    return "";
 }
 
 std::string DataGenerator::randomCity() const {
@@ -32,7 +41,7 @@ std::string DataGenerator::randomStreetAndNumber() const {
 }
 
 std::string DataGenerator::randomPostalCode() const {
-    return std::to_string(randomNumber(0, 99)) + '-' + std::to_string(randomNumber(0,999));
+    return randomNumberWithZeros(1, 99) + '-' + randomNumberWithZeros(1, 999);
 }
 
 Sex DataGenerator::randomSex() const {
@@ -41,4 +50,18 @@ Sex DataGenerator::randomSex() const {
 
 Person::PersonType DataGenerator::randomPersonType() const {
     return static_cast<Person::PersonType>(randomNumber(0, 1));
+}
+
+std::string DataGenerator::randomNumberWithZeros(const int& rangeMin, int rangeMax) const {
+        size_t randNum = randomNumber(rangeMin, rangeMax);
+        std::string zeros{""};
+        auto temp = randNum;
+        while (rangeMax / 10 != 0) {
+            rangeMax /= 10;
+            temp /=10;
+            if (temp == 0) {
+                zeros += '0';
+            }
+        }
+        return zeros + std::to_string(randNum);
 }

@@ -8,6 +8,9 @@
 #include <memory>
 #include <numeric>
 
+const size_t DataBase::minIndexNumber = 1;
+const size_t DataBase::maxIndexNumber = 999999;
+
 ErrorCode DataBase::addStudent(const std::string& firstName,
                                const std::string& lastName,
                                const std::string& pesel,
@@ -160,15 +163,19 @@ ErrorCode DataBase::changeSalary(const std::string& pesel, const size_t& newSala
 
 void DataBase::generatePeople(const size_t& amount) {
     Person::PersonType type = dataGen_.randomPersonType();
-    // std::cout << "type: " << (tempType == Person::PersonType::Student ? "student" : "employee") << " ___\n";
     std::string firstName = dataGen_.randomFirstName();
     std::string lastName = dataGen_.randomLastName();
-    std::stirng pesel = 
-    // Adderss address
-    // Sex sex
-    // size_t indexNumber
+    std::string pesel = dataGen_.randomPeselPrototype();
+    pesel += calculatePeselControlDigit(pesel);
 
-
+    Address address(dataGen_.randomPostalCode(), dataGen_.randomCity(), dataGen_.randomStreetAndNumber());
+    Sex sex = dataGen_.randomSex();
+    std::cout << "generate: " << firstName << "  " << lastName << "  " << pesel << "  " <<  (sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other" ) << "  " << "\n";
+    if (type == Person::PersonType::Student) {
+        addStudent(firstName, lastName, pesel, address, sex, dataGen_.randomNumber(minIndexNumber, maxIndexNumber));
+    } else {
+        addEmployee(firstName, lastName, pesel, address, sex, dataGen_.randomNumber(minSalary, maxSalary));
+    }
 }
 
 

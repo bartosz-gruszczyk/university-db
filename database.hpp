@@ -25,7 +25,10 @@
 
 class DataBase {
 public:
-    static const size_t maxIndexNumber = 999999;   // co const a co constexpr??
+    static const size_t minIndexNumber;   // co const a co constexpr??
+    static const size_t maxIndexNumber;   // co const a co constexpr??
+    // size_t minIndexNumber = 1;   // co const a co constexpr??
+    // size_t maxIndexNumber = 999999;   // co const a co constexpr??
     size_t minSalary = 3000;
     size_t maxSalary = 26000;
 
