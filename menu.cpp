@@ -231,7 +231,10 @@ void Menu::menuFindPesel() {
 }
 
 void Menu::menuGenerateData() {
-    dataBase_.generatePeople(1);
+    std::cout << "Enter number of people to generate: ";
+    size_t amountOfPeople;
+    std::cin >> amountOfPeople;
+    dataBase_.generatePeople(amountOfPeople);
 }
 
 void Menu::menuSaveToFile() {
@@ -258,7 +261,7 @@ std::string Menu::encodeType(const Person::PersonType& type) const {
 
 void Menu::printHeader(){
     // std::cout << "vector size: " << people_.size() << '\n'; // raczej do wywalenia
-    std::cout.setf(std::ios::left);
+    std::cout << std::left;
     std::cout << std::setw(typeColumnWidth) << "type:"
               << std::setw(columnWidth) << "first name:"
               << std::setw(columnWidth) << "last name:"
@@ -271,7 +274,8 @@ void Menu::printHeader(){
 }
 
 void Menu::printPerson(const std::shared_ptr<Person>& person) {
-        std::cout.setf(std::ios::left);
+        // std::cout.setf(std::ios::left);
+        std::cout << std::left;
         std::cout << std::setw(typeColumnWidth) << encodeType(person->getType())
                   << std::setw(columnWidth) << person->getFirstName()  // zrobic constexpr
                   << std::setw(columnWidth) << person->getLastName()
@@ -280,10 +284,10 @@ void Menu::printPerson(const std::shared_ptr<Person>& person) {
                   << std::setw(sexColumnWidth) << encodeSex(person->getSex());
         if (person->getType() == Person::PersonType::Student) {
             std::cout << std::setw(columnWidth) << person->getIndexNumber()
-                      << std::setw(columnWidth) << "---";
+                      << std::setw(sexColumnWidth) << std::right << "---";
         } else {
             std::cout << std::setw(columnWidth) << "---"
-                      << std::setw(columnWidth) << person->getSalary();
+                      << std::setw(sexColumnWidth) << std::right << person->getSalary();
         }
         std::cout << '\n';
 }

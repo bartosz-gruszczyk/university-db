@@ -121,14 +121,13 @@ std::string DataBase::stringToLower(const std::string& str) { // moze wywalic do
     return lower;
 }
 
-void DataBase::sortByLastName() { // reference to string?
+void DataBase::sortByLastName() {
     std::sort(people_.begin(), people_.end(), [](std::shared_ptr<Person>& a, std::shared_ptr<Person>& b){
-        // std::string first = a->getLastName();
-        // std::string second = b->getLastName();
-        // std::tolower(first);
-        // std::tolower(second);
-        // return (first <=> second) < 0;
-        return (a->getLastName() <=> b->getLastName()) < 0;
+        auto comparison = a->getLastName() <=> b->getLastName();
+        if (comparison == 0) {
+            return (a->getFirstName() <=> b->getFirstName()) < 0;
+        }
+        return comparison < 0;
     });
 }
 
@@ -162,19 +161,29 @@ ErrorCode DataBase::changeSalary(const std::string& pesel, const size_t& newSala
 }
 
 void DataBase::generatePeople(const size_t& amount) {
-    Person::PersonType type = dataGen_.randomPersonType();
-    std::string firstName = dataGen_.randomFirstName();
-    std::string lastName = dataGen_.randomLastName();
-    std::string pesel = dataGen_.randomPeselPrototype();
-    pesel += calculatePeselControlDigit(pesel);
-
-    Address address(dataGen_.randomPostalCode(), dataGen_.randomCity(), dataGen_.randomStreetAndNumber());
-    Sex sex = dataGen_.randomSex();
-    std::cout << "generate: " << firstName << "  " << lastName << "  " << pesel << "  " <<  (sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other" ) << "  " << "\n";
-    if (type == Person::PersonType::Student) {
-        addStudent(firstName, lastName, pesel, address, sex, dataGen_.randomNumber(minIndexNumber, maxIndexNumber));
-    } else {
-        addEmployee(firstName, lastName, pesel, address, sex, dataGen_.randomNumber(minSalary, maxSalary));
+    size_t counter = 0;
+    while (counter < amount) {
+        Person::PersonType type = dataGen_.randomPersonType();
+        std::string firstName = dataGen_.randomFirstName();
+        std::string lastName = dataGen_.randomLastName();
+        std::string pesel = dataGen_.randomPeselPrototype();
+        pesel += std::to_string(calculatePeselControlDigit(pesel));
+        Address address(dataGen_.randomPostalCode(), dataGen_.randomCity(), dataGen_.randomStreetAndNumber());
+        Sex sex = dataGen_.randomSex();
+        ErrorCode error;
+        std::cout << "generate: " << firstName << "  " << lastName << "  " << pesel << "  " <<  (sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other" ) << "  " << "\n";
+        if (type == Person::PersonType::Student) {
+            size_t lastIndexNumber = minIndexNumber;
+            for (const auto& person : people_) {
+                lastIndexNumber = std::max(lastIndexNumber, person->getIndexNumber());
+            }
+            error = addStudent(firstName, lastName, pesel, address, sex, lastIndexNumber + 1);
+        } else {
+            error = addEmployee(firstName, lastName, pesel, address, sex, dataGen_.randomNumber(minSalary / 10, maxSalary / 10) * 10);
+        }
+        if (error == ErrorCode::Ok) {
+            ++counter;
+        }
     }
 }
 
