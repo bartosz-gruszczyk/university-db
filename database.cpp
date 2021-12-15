@@ -232,16 +232,23 @@ bool DataBase::saveFile(const std::string& fileName) {
     std::ofstream file(fileName, file.out | file.binary);
     if (file.is_open()) {   // file.good() ????
         for (size_t i = 0; i < people_.size(); ++i) {
+            Person::PersonType type = people_[i]->getType();
+            file.write(reinterpret_cast<char*>(&type), sizeof(type));
             writeStringToFile(people_[i]->getFirstName(), file);
             writeStringToFile(people_[i]->getLastName(), file);
-            size_t indexNumber = people_[i]->getIndexNumber();
-            file.write(reinterpret_cast<char*>(&indexNumber), sizeof(size_t));
             writeStringToFile(people_[i]->getPesel(), file);
             writeStringToFile(people_[i]->getPostalCode(), file);
             writeStringToFile(people_[i]->getCity(), file);
             writeStringToFile(people_[i]->getStreetAndNumber(), file);
             Sex sex = people_[i]->getSex();
             file.write(reinterpret_cast<char*>(&sex), sizeof(Sex));
+            if (type == Person::PersonType::Student) {
+                size_t indexNumber = people_[i]->getIndexNumber();
+                file.write(reinterpret_cast<char*>(&indexNumber), sizeof(size_t));
+            } else {
+                size_t salary = people_[i]->getSalary();
+                file.write(reinterpret_cast<char*>(&salary), sizeof(size_t));
+            }
         }
         return true;
     }
@@ -253,30 +260,43 @@ bool DataBase::openFile(const std::string& fileName) {
     if (file.is_open()) {
         people_.clear();
         while (!file.eof()) {
+            Person::PersonType type;
             std::string firstName;
             std::string lastName;
-            size_t indexNumber;
             std::string pesel;
             std::string postalCode;
             std::string city;
             std::string streetAndNumber;
             Sex sex;
+            file.read(reinterpret_cast<char*>(&type), sizeof(Person::PersonType));
             readStringFromFile(firstName, file);
             readStringFromFile(lastName, file);
-            file.read(reinterpret_cast<char*>(&indexNumber), sizeof(size_t));
             readStringFromFile(pesel, file);
             readStringFromFile(postalCode, file);
             readStringFromFile(city, file);
             readStringFromFile(streetAndNumber, file);
             file.read(reinterpret_cast<char*>(&sex), sizeof(Sex));
-            Student tempStudent(firstName,
-                                lastName,
-                                pesel,
-                                Address(postalCode, city, streetAndNumber),
-                                sex,
-                                indexNumber);
-            people_.emplace_back(std::make_shared<Student>(tempStudent));
-            // people_.emplace_back(std::make_shared<Person>(std::move(tempStudent)));
+            if (type == Person::PersonType::Student) {
+                size_t indexNumber; // zainicjowac?
+                file.read(reinterpret_cast<char*>(&indexNumber), sizeof(size_t));
+                Student tempStudent(firstName,
+                                    lastName,
+                                    pesel,
+                                    Address(postalCode, city, streetAndNumber),
+                                    sex,
+                                    indexNumber);
+                people_.emplace_back(std::make_shared<Student>(tempStudent));
+            } else {
+                size_t salary;
+                file.read(reinterpret_cast<char*>(&salary), sizeof(size_t));
+                Employee tempEmployee(firstName,
+                                      lastName,
+                                      pesel,
+                                      Address(postalCode, city, streetAndNumber),
+                                      sex,
+                                      salary);
+                people_.emplace_back(std::make_shared<Employee>(tempEmployee));
+            }
             file.peek();
         }
         return true;
