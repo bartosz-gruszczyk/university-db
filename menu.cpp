@@ -12,20 +12,21 @@ void Menu::mainMenu() {
     short choice = -1;
     while (choice != 0) {
         std::cout << "\n\t..:: Univeristy DB ::..\n";
-        std::cout << "\t 1. Print DB\n"
-                  << "\t 2. Add Person\n"
-                  << "\t 3. Remove Person\n"
-                  << "\t 4. Change salary\n"
-                  << "\t 5. Sort by last name\n"
-                  << "\t 6. Sort by PESEL\n"
-                  << "\t 7. Sort by salary\n"
-                  << "\t 8. Find last name\n"
-                  << "\t 9. Find PESEL\n"
-                  << "\t10. Generate data\n"
-                  << "\t11. Save to file\n"
-                  << "\t12. Read from file\n"
-                  << "\t0. Exit\n"
-                  << "\t: ";
+        // std::cout << "\t 1. Print DB\n"
+        //           << "\t 2. Add Person\n"
+        //           << "\t 3. Remove Person\n"
+        //           << "\t 4. Change salary\n"
+        //           << "\t 5. Sort by last name\n"
+        //           << "\t 6. Sort by PESEL\n"
+        //           << "\t 7. Sort by salary\n"
+        //           << "\t 8. Find last name\n"
+        //           << "\t 9. Find PESEL\n"
+        //           << "\t10. Generate data\n"
+        //           << "\t11. Save to file\n"
+        //           << "\t12. Read from file\n"
+        //           << "\t0. Exit\n"
+        //           << "\t: ";
+        printMainMenu();
         std::cin >> choice;
         switch (choice) {
             case 1: {
@@ -297,4 +298,32 @@ void Menu::printGroup(const std::vector<std::shared_ptr<Person>>& group) {
     for (auto it = group.cbegin(); it != group.cend(); ++it) {
         printPerson(*it);
     }
+}
+
+//  std::cout << "\n\t..:: Univeristy DB ::..\n";
+//                   << "\t 7. Sort by salary\n"
+//                   << "\t 8. Find last name\n"
+//                   << "\t 9. Find PESEL\n"
+//                   << "\t10. Generate data\n"
+//                   << "\t11. Save to file\n"
+//                   << "\t12. Read from file\n"
+//                   << "\t0. Exit\n"
+//                   << "\t: ";
+
+void Menu::printMainMenu() const {
+    char block = 26;
+    std::cout << std::left;
+    std::cout << block << std::setw(16) << " 1. Print DB"
+              << block << std::setw(16) << " 2. Add Person"
+              << block << std::setw(16) << " 3. Remove Person"
+              << block << std::setw(16) << " 4. Change salary"
+              << block << std::setw(18) << " 5. Sort by last name"
+              << block << std::setw(18) << " 6. Sort by PESEL"
+              << block << std::setw(16) << " 7. Sort by salary\n"
+              << block << std::setw(16) << " 8. Find last name"
+              << block << std::setw(16) << " 9. Find PESEL"
+              << block << std::setw(16) << " 10. Generate data"
+              << block << std::setw(16) << " 11. Save to file"
+              << block << std::setw(16) << " 12. Read from file"
+              << block << std::setw(16) << " 0. Quit";
 }

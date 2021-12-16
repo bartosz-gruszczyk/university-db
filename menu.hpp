@@ -37,6 +37,7 @@ public:
     std::string encodeType(const Person::PersonType& type) const;
 
 private:
+    void printMainMenu() const;
     void printHeader();
     void printPerson(const std::shared_ptr<Person>& person);
     void printGroup(const std::vector<std::shared_ptr<Person>>& group);
