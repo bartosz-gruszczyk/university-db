@@ -10,22 +10,12 @@ void Menu::run() {
 
 void Menu::mainMenu() {
     short choice = -1;
+    std::string message = "Welcome. Choose an option.";
     while (choice != 0) {
-        std::cout << "\n\t..:: Univeristy DB ::..\n";
-        // std::cout << "\t 1. Print DB\n"
-        //           << "\t 2. Add Person\n"
-        //           << "\t 3. Remove Person\n"
-        //           << "\t 4. Change salary\n"
-        //           << "\t 5. Sort by last name\n"
-        //           << "\t 6. Sort by PESEL\n"
-        //           << "\t 7. Sort by salary\n"
-        //           << "\t 8. Find last name\n"
-        //           << "\t 9. Find PESEL\n"
-        //           << "\t10. Generate data\n"
-        //           << "\t11. Save to file\n"
-        //           << "\t12. Read from file\n"
-        //           << "\t0. Exit\n"
-        //           << "\t: ";
+        std::cout << std::internal << "\n\t..:: Univeristy DB ::..\n";
+        menuPrintAll();
+        printSeparator();
+        std::cout << "\033[33m" << "Result: " << message << "\033[0m" << '\n';
         printMainMenu();
         std::cin >> choice;
         switch (choice) {
@@ -77,6 +67,10 @@ void Menu::mainMenu() {
                 menuReadFromFile();                
             }
             break;
+            case 13: {
+                menuClearAll();
+            }
+            break;
             case 0: {
                 std::cout << "Returned to OS.\n\n";
             }
@@ -89,7 +83,11 @@ void Menu::mainMenu() {
 }
 
 void Menu::menuPrintAll() {
-    printGroup(dataBase_.data());
+    if (dataBase_.data().empty()) {
+        std::cout << "\n\n\n\t\t\tData base is empty...\n\n\n";
+    } else {
+        printGroup(dataBase_.data());
+    }
 }
 
 void Menu::menuAddPerson() {
@@ -252,6 +250,16 @@ void Menu::menuReadFromFile() {
     dataBase_.openFile(filename);
 }
 
+void Menu::menuClearAll() {
+    std::cout << "Do you really want to clear all data base? (y - yes, n - no): ";
+    char c;
+    std::cin >> c;
+    if (c == 'y') {
+        dataBase_.clearAll();
+    }
+
+}
+
 std::string Menu::encodeSex(const Sex& sex) const {
     return sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other";
 }
@@ -264,31 +272,32 @@ void Menu::printHeader(){
     // std::cout << "vector size: " << people_.size() << '\n'; // raczej do wywalenia
     std::cout << std::left;
     std::cout << std::setw(typeColumnWidth) << "type:"
-              << std::setw(columnWidth) << "first name:"
-              << std::setw(columnWidth) << "last name:"
+              << std::setw(firstNameColumnWidth) << "first name:"
+              << std::setw(lastNameColumnWidth) << "last name:"
               << std::setw(addressColumnWidth) << "address:"
               << std::setw(peselColumnWidth) << "PESEL:"
               << std::setw(sexColumnWidth) << "sex:"
-              << std::setw(columnWidth) << "index number:"
-              << std::setw(columnWidth) << "salary:"
+              << std::setw(indexNumberColumnWidth) << "index num.:"
+              << std::setw(sexColumnWidth) << "salary:"     // zmienic na 
               << '\n';
+    printSeparator();
 }
 
 void Menu::printPerson(const std::shared_ptr<Person>& person) {
         // std::cout.setf(std::ios::left);
-        std::cout << std::left;
+        std::cout << std::left << std::setfill(' ');
         std::cout << std::setw(typeColumnWidth) << encodeType(person->getType())
-                  << std::setw(columnWidth) << person->getFirstName()  // zrobic constexpr
-                  << std::setw(columnWidth) << person->getLastName()
+                  << std::setw(firstNameColumnWidth) << person->getFirstName()  // zrobic constexpr
+                  << std::setw(lastNameColumnWidth) << person->getLastName()
                   << std::setw(addressColumnWidth) << person->getAddress()   // zrobic const wartosc kolumny address
                   << std::setw(peselColumnWidth) << person->getPesel()
                   << std::setw(sexColumnWidth) << encodeSex(person->getSex());
         if (person->getType() == Person::PersonType::Student) {
-            std::cout << std::setw(columnWidth) << person->getIndexNumber()
-                      << std::setw(sexColumnWidth) << std::right << "---";
+            std::cout << std::setw(indexNumberColumnWidth) << person->getIndexNumber() //  << std::right
+                      << std::setw(salaryColumnWidth) << "---";
         } else {
-            std::cout << std::setw(columnWidth) << "---"
-                      << std::setw(sexColumnWidth) << std::right << person->getSalary();
+            std::cout << std::setw(indexNumberColumnWidth) << "---"    // << std::right
+                      << std::setw(salaryColumnWidth) << person->getSalary();
         }
         std::cout << '\n';
 }
@@ -311,19 +320,33 @@ void Menu::printGroup(const std::vector<std::shared_ptr<Person>>& group) {
 //                   << "\t: ";
 
 void Menu::printMainMenu() const {
-    char block = 26;
-    std::cout << std::left;
-    std::cout << block << std::setw(16) << " 1. Print DB"
-              << block << std::setw(16) << " 2. Add Person"
-              << block << std::setw(16) << " 3. Remove Person"
-              << block << std::setw(16) << " 4. Change salary"
-              << block << std::setw(18) << " 5. Sort by last name"
-              << block << std::setw(18) << " 6. Sort by PESEL"
-              << block << std::setw(16) << " 7. Sort by salary\n"
-              << block << std::setw(16) << " 8. Find last name"
-              << block << std::setw(16) << " 9. Find PESEL"
-              << block << std::setw(16) << " 10. Generate data"
-              << block << std::setw(16) << " 11. Save to file"
-              << block << std::setw(16) << " 12. Read from file"
-              << block << std::setw(16) << " 0. Quit";
+    // char block = 26;
+    uint8_t itemSize = 23;
+    std::cout << std::left << std::setfill(' ');
+    std::cout << std::setw(itemSize) << "[ 1] Print DB"
+              << std::setw(itemSize) << "[ 4] Change salary"
+              << std::setw(itemSize) << "[ 7] Sort by salary"
+              << std::setw(itemSize) << "[10] Generate data"
+              << std::setw(itemSize) << "[13] Clear all" << '\n'
+              << std::setw(itemSize) << "[ 2] Add Person"
+              << std::setw(itemSize) << "[ 5] Sort by last name"
+              << std::setw(itemSize) << "[ 8] Find last name"
+              << std::setw(itemSize) << "[11] Save to file"
+              << std::setw(itemSize) << "[ 0] Quit" << '\n'
+              << std::setw(itemSize) << "[ 3] Remove Person"
+              << std::setw(itemSize) << "[ 6] Sort by PESEL"
+              << std::setw(itemSize) << "[ 9] Find PESEL"
+              << std::setw(itemSize) << "[12] Read from file" << '\n';
+}
+
+void Menu::printSeparator() {
+    std::cout << std::right <<std ::setfill('-') << std::setw(typeColumnWidth
+                                                              + firstNameColumnWidth
+                                                              + lastNameColumnWidth
+                                                              + peselColumnWidth
+                                                              + addressColumnWidth
+                                                              + sexColumnWidth
+                                                              + indexNumberColumnWidth
+                                                              + salaryColumnWidth) << '\n';
+
 }

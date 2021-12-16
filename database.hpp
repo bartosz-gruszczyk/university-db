@@ -65,6 +65,7 @@ public:
     bool saveFile(const std::string& fileName); // const??
     bool openFile(const std::string& fileName);
 
+    void clearAll();
 
     static std::string stringToLower(const std::string& str);
 

@@ -308,6 +308,10 @@ std::vector<std::shared_ptr<Person>>& DataBase::data() {
     return people_;
 }
 
+void DataBase::clearAll() {
+    people_.clear();
+}
+
 bool DataBase::existsInDataBase(const size_t& indexNumber) const {
     auto it = std::find_if(people_.cbegin(),
                            people_.cend(),

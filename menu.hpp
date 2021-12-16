@@ -7,10 +7,14 @@
 class Menu {
 public:
     uint8_t typeColumnWidth = 10;
-    uint8_t columnWidth = 16;   //zrobic const......!!!
-    uint8_t addressColumnWidth = 42;
-    uint8_t sexColumnWidth = 10;
+    uint8_t firstNameColumnWidth = 16;   
+    uint8_t lastNameColumnWidth = 16;   
     uint8_t peselColumnWidth = 14;
+    uint8_t addressColumnWidth = 42;
+    uint8_t sexColumnWidth = 8;
+    uint8_t indexNumberColumnWidth = 12;
+    uint8_t salaryColumnWidth = 10;
+
     
     Menu(DataBase& dataBase) : dataBase_{dataBase} {
         // std::function<void()> func1 = &Menu::menuAddStudent;
@@ -32,6 +36,7 @@ public:
     void menuGenerateData();
     void menuSaveToFile();
     void menuReadFromFile();
+    void menuClearAll();
 
     std::string encodeSex(const Sex& sex) const;
     std::string encodeType(const Person::PersonType& type) const;
@@ -39,6 +44,7 @@ public:
 private:
     void printMainMenu() const;
     void printHeader();
+    void printSeparator();
     void printPerson(const std::shared_ptr<Person>& person);
     void printGroup(const std::vector<std::shared_ptr<Person>>& group);
 
