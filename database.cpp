@@ -171,7 +171,7 @@ void DataBase::generatePeople(const size_t& amount) {
         Address address(dataGen_.randomPostalCode(), dataGen_.randomCity(), dataGen_.randomStreetAndNumber());
         Sex sex = dataGen_.randomSex();
         ErrorCode error;
-        std::cout << "generate: " << firstName << "  " << lastName << "  " << pesel << "  " <<  (sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other" ) << "  " << "\n";
+        // std::cout << "generate: " << firstName << "  " << lastName << "  " << pesel << "  " <<  (sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other" ) << "  " << "\n";
         if (type == Person::PersonType::Student) {
             size_t lastIndexNumber = minIndexNumber;
             for (const auto& person : people_) {

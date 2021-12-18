@@ -24,19 +24,19 @@ public:
     void run();
     void mainMenu();
 
-    void menuPrintAll();
-    void menuAddPerson();
-    void menuRemovePerson();
-    void menuChangeSalary();
-    void menuSortByLastName();
-    void menuSortByPesel();
-    void menuSortBySalary();
-    void menuFindLastName();
-    void menuFindPesel();
-    void menuGenerateData();
-    void menuSaveToFile();
-    void menuReadFromFile();
-    void menuClearAll();
+    std::string menuPrintAll();
+    std::string menuAddPerson();
+    std::string menuRemovePerson();
+    std::string menuChangeSalary();
+    std::string menuSortByLastName();
+    std::string menuSortByPesel();
+    std::string menuSortBySalary();
+    std::string menuFindLastName();
+    std::string menuFindPesel();
+    std::string menuGenerateData();
+    std::string menuSaveToFile();
+    std::string menuReadFromFile();
+    std::string menuClearAll();
 
     std::string encodeSex(const Sex& sex) const;
     std::string encodeType(const Person::PersonType& type) const;

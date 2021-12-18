@@ -15,60 +15,60 @@ void Menu::mainMenu() {
         std::cout << std::internal << "\n\t..:: Univeristy DB ::..\n";
         menuPrintAll();
         printSeparator();
-        std::cout << "\033[33m" << "Result: " << message << "\033[0m" << '\n';
+        std::cout << "\033[33m" << "Output: " << message << "\033[0m" << '\n';
         printMainMenu();
         std::cin >> choice;
         switch (choice) {
             case 1: {
-                menuPrintAll();
+                message = menuPrintAll();
             }
             break;
             case 2: {
-                menuAddPerson();
+                message = menuAddPerson();
             }
             break;
             case 3: {
-                menuRemovePerson();
+                message = menuRemovePerson();
             }
             break;
             case 4: {
-                menuChangeSalary();
+                message = menuChangeSalary();
             }
             break;
             case 5: {
-                menuSortByLastName();                
+                message = menuSortByLastName();                
             }
             break;
             case 6: {
-                menuSortByPesel();
+                message = menuSortByPesel();
             }
             break;
             case 7: {
-                menuSortBySalary();
+                message = menuSortBySalary();
             }
             break;
             case 8: {
-                menuFindLastName();
+                message = menuFindLastName();
             }
             break;
             case 9: {
-                menuFindPesel();
+                message = menuFindPesel();
             }
             break;
             case 10: {
-                menuGenerateData();
+                message = menuGenerateData();
             }
             break;
             case 11: {
-                menuSaveToFile();
+                message = menuSaveToFile();
             }
             break;
             case 12: {
-                menuReadFromFile();                
+                message = menuReadFromFile();                
             }
             break;
             case 13: {
-                menuClearAll();
+                message = menuClearAll();
             }
             break;
             case 0: {
@@ -82,15 +82,16 @@ void Menu::mainMenu() {
     }
 }
 
-void Menu::menuPrintAll() {
+std::string Menu::menuPrintAll() {
     if (dataBase_.data().empty()) {
         std::cout << "\n\n\n\t\t\tData base is empty...\n\n\n";
     } else {
         printGroup(dataBase_.data());
     }
+    return "Choose an option.";
 }
 
-void Menu::menuAddPerson() {
+std::string Menu::menuAddPerson() {
     std::string firstName;
     std::string lastName;
     std::string pesel;
@@ -102,8 +103,8 @@ void Menu::menuAddPerson() {
     char type;
     std::cin >> type;
     if (!(type == 's' || type == 'e')) {
-        std::cout << "Wrong input\n";
-        return;
+        // std::cout << "Wrong input\n";
+        return "Wrong type input.";
     }
     std::cout << "First name: ";
     std::cin >> firstName;
@@ -128,8 +129,8 @@ void Menu::menuAddPerson() {
     } else if (c == 'o') {
         sex = Sex::Other;
     } else {
-        std::cout << "Wrong input\n";
-        return;
+        // std::cout << "Wrong input\n";
+        return "Wrong sex input";  // zamienic na error code?
     }
     ErrorCode error;
     if (type == 's') {
@@ -154,10 +155,12 @@ void Menu::menuAddPerson() {
                                       sex,
                                       salary);
     }
-    std::cout << "Operation result: " << errors[error] << '\n';
+    return error == ErrorCode::Ok
+           ? "Person added without errors."
+           : ("Cannot add a person. Error: " + errors[error]);
 }
 
-void Menu::menuRemovePerson() {
+std::string Menu::menuRemovePerson() {
     std::cout << "Remove by PESEL or Index number? (p - PESEL, i - index num): ";
     ErrorCode error;
     char c;
@@ -173,13 +176,14 @@ void Menu::menuRemovePerson() {
         std::cin >> indexNumber;
         error = dataBase_.removeStudent(indexNumber);
     } else {
-        std::cout << "Wrong input\n";
-        return;
+        // std::cout << "Wrong input\n";
+        return "Wrong option.";
     }
-    std::cout << "Operation result: " << errors[error] << '\n';
-}
+    return error == ErrorCode::Ok
+           ? "Person removed without errors."
+           : ("Cannot remove a person. Error: " + errors[error]);}
 
-void Menu::menuChangeSalary() {
+std::string Menu::menuChangeSalary() {
     size_t newSalary = 0;
     std::string pesel;
     std::cout << "Enter employee's PESEL: ";
@@ -187,77 +191,85 @@ void Menu::menuChangeSalary() {
     std::cout << "Enter new salary: ";
     std::cin >> newSalary;
     ErrorCode error = dataBase_.changeSalary(pesel, newSalary);
-    std::cout << "Operation result: " << errors[error] << '\n';
+    return error == ErrorCode::Ok
+           ? "Salary has been changed."
+           : ("Cannot change. Error: " + errors[error]);
 }
 
-void Menu::menuSortByLastName() {
+std::string Menu::menuSortByLastName() {
     dataBase_.sortByLastName();
-    std::cout << "Data base has been sorted by last name.\n\n";
+    return "Data base has been sorted by last name.";
 }
 
-void Menu::menuSortByPesel() {
+std::string Menu::menuSortByPesel() {
     dataBase_.sortByPesel();
-    std::cout << "Data base has been sorted by PESEL.\n\n";
+    return "Data base has been sorted by PESEL.";
 }
 
-void Menu::menuSortBySalary() {
+std::string Menu::menuSortBySalary() {
     dataBase_.sortBySalary();
-    std::cout << "Data base has been sorted by salary.\n\n";
+    return "Data base has been sorted by salary.";
 }
 
-void Menu::menuFindLastName() {
+std::string Menu::menuFindLastName() {
     std::cout << "Enter last name to find: ";
     std::string lastName;
     std:: cin >> lastName;
     std::vector<std::shared_ptr<Person>> results; // moze jakies reserve czy cos?
     ErrorCode error = dataBase_.searchStudentByLastName(lastName, results);
-    std::cout << "Operation result: " << errors[error] << '\n';
     if (error == ErrorCode::Ok) {
         printGroup(results);
+        return "Found " + std::to_string(results.size()) + " records.";
     }
+    return "Cannot find '" + lastName + "'. Error: " + errors[error];
 }
 
-void Menu::menuFindPesel() {
+std::string Menu::menuFindPesel() {
     std::cout << "Enter some first digits of PESEL to find: ";
     std::string pesel;
     std:: cin >> pesel;
     std::vector<std::shared_ptr<Person>> results;
     ErrorCode error = dataBase_.searchStudentByPesel(pesel, results);
-    std::cout << "Operation result: " << errors[error] << '\n';
     if (error == ErrorCode::Ok) {
         printGroup(results);
+        return "Found " + std::to_string(results.size()) + " records.";
     }
+    return "Cannot find '" + pesel + "'. Error: " + errors[error];
 }
 
-void Menu::menuGenerateData() {
+std::string Menu::menuGenerateData() {
     std::cout << "Enter number of people to generate: ";
     size_t amountOfPeople;
     std::cin >> amountOfPeople;
     dataBase_.generatePeople(amountOfPeople);
+    return std::to_string(amountOfPeople) + "people has been generated.";
 }
 
-void Menu::menuSaveToFile() {
+std::string Menu::menuSaveToFile() {
     std::cout << "Enter filename: ";
     std::string filename;
     std::cin >> filename;
     dataBase_.saveFile(filename);
+    return "...";
 }
 
-void Menu::menuReadFromFile() {
+std::string Menu::menuReadFromFile() {
     std::cout << "Enter filename: ";
     std::string filename;
     std::cin >> filename;
     dataBase_.openFile(filename);
+    return "...";
 }
 
-void Menu::menuClearAll() {
+std::string Menu::menuClearAll() {
     std::cout << "Do you really want to clear all data base? (y - yes, n - no): ";
     char c;
     std::cin >> c;
     if (c == 'y') {
         dataBase_.clearAll();
+        return "Data base has been cleared.";
     }
-
+    return "Clear aborted.";
 }
 
 std::string Menu::encodeSex(const Sex& sex) const {
