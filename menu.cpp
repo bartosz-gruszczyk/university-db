@@ -11,12 +11,14 @@ void Menu::run() {
 void Menu::mainMenu() {
     short choice = -1;
     std::string message = "Welcome. Choose an option.";
+    std::cout << std::internal << "\n\t..:: Univeristy DB ::..\n";
+    menuPrintAll();
     while (choice != 0) {
-        std::cout << std::internal << "\n\t..:: Univeristy DB ::..\n";
-        menuPrintAll();
         printSeparator();
         std::cout << "\033[33m" << "Output: " << message << "\033[0m" << '\n';
+        printSeparator();
         printMainMenu();
+        std::cout << "> ";
         std::cin >> choice;
         switch (choice) {
             case 1: {
@@ -155,6 +157,7 @@ std::string Menu::menuAddPerson() {
                                       sex,
                                       salary);
     }
+    printGroup(dataBase_.data());
     return error == ErrorCode::Ok
            ? "Person added without errors."
            : ("Cannot add a person. Error: " + errors[error]);
@@ -191,6 +194,7 @@ std::string Menu::menuChangeSalary() {
     std::cout << "Enter new salary: ";
     std::cin >> newSalary;
     ErrorCode error = dataBase_.changeSalary(pesel, newSalary);
+    printGroup(dataBase_.data());
     return error == ErrorCode::Ok
            ? "Salary has been changed."
            : ("Cannot change. Error: " + errors[error]);
@@ -198,16 +202,19 @@ std::string Menu::menuChangeSalary() {
 
 std::string Menu::menuSortByLastName() {
     dataBase_.sortByLastName();
+    printGroup(dataBase_.data());
     return "Data base has been sorted by last name.";
 }
 
 std::string Menu::menuSortByPesel() {
     dataBase_.sortByPesel();
+    printGroup(dataBase_.data());
     return "Data base has been sorted by PESEL.";
 }
 
 std::string Menu::menuSortBySalary() {
     dataBase_.sortBySalary();
+    printGroup(dataBase_.data());
     return "Data base has been sorted by salary.";
 }
 
@@ -221,6 +228,7 @@ std::string Menu::menuFindLastName() {
         printGroup(results);
         return "Found " + std::to_string(results.size()) + " records.";
     }
+    printGroup(dataBase_.data()); // ??????????
     return "Cannot find '" + lastName + "'. Error: " + errors[error];
 }
 
@@ -234,6 +242,7 @@ std::string Menu::menuFindPesel() {
         printGroup(results);
         return "Found " + std::to_string(results.size()) + " records.";
     }
+    printGroup(dataBase_.data());
     return "Cannot find '" + pesel + "'. Error: " + errors[error];
 }
 
@@ -242,6 +251,7 @@ std::string Menu::menuGenerateData() {
     size_t amountOfPeople;
     std::cin >> amountOfPeople;
     dataBase_.generatePeople(amountOfPeople);
+    printGroup(dataBase_.data());
     return std::to_string(amountOfPeople) + "people has been generated.";
 }
 
@@ -250,6 +260,7 @@ std::string Menu::menuSaveToFile() {
     std::string filename;
     std::cin >> filename;
     dataBase_.saveFile(filename);
+    printGroup(dataBase_.data());
     return "...";
 }
 
@@ -258,6 +269,7 @@ std::string Menu::menuReadFromFile() {
     std::string filename;
     std::cin >> filename;
     dataBase_.openFile(filename);
+    printGroup(dataBase_.data());
     return "...";
 }
 
@@ -270,6 +282,7 @@ std::string Menu::menuClearAll() {
         return "Data base has been cleared.";
     }
     return "Clear aborted.";
+    // ???? printGroup(dataBase_.data());
 }
 
 std::string Menu::encodeSex(const Sex& sex) const {
@@ -320,16 +333,6 @@ void Menu::printGroup(const std::vector<std::shared_ptr<Person>>& group) {
         printPerson(*it);
     }
 }
-
-//  std::cout << "\n\t..:: Univeristy DB ::..\n";
-//                   << "\t 7. Sort by salary\n"
-//                   << "\t 8. Find last name\n"
-//                   << "\t 9. Find PESEL\n"
-//                   << "\t10. Generate data\n"
-//                   << "\t11. Save to file\n"
-//                   << "\t12. Read from file\n"
-//                   << "\t0. Exit\n"
-//                   << "\t: ";
 
 void Menu::printMainMenu() const {
     // char block = 26;
