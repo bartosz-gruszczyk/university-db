@@ -33,6 +33,10 @@ public:
     // virtual size_t getIndexNumber() const;
     // virtual size_t getSalary() const;
 
+    const Address& address() { // wywalic?? zrobione dla unittestow
+        return address_;
+    }
+
 private:
     PersonType type_;
     std::string firstName_;

@@ -30,6 +30,12 @@ public:
     //     std::cout << "\n---Address d'tor---\n";
     // }
 
+    bool operator==(const Address& other) const {
+        return postalCode_ == other.getPostalCode()
+            && city_ == other.getCity()
+            && streetAndNumber_ == other.getStreetAndNumber();
+    }
+
 private:
     std::string postalCode_;
     std::string city_;
