@@ -46,7 +46,7 @@ public:
                           const size_t& salary);
     ErrorCode removeStudent(const size_t& indexNumber);
     ErrorCode removePerson(const std::string& pesel);
-    ErrorCode searchStudentByLastName(const std::string& lastName,
+    ErrorCode searchStudentByLastName(const std::string& lastName,  // zmienic na search Person?
                                       std::vector<std::shared_ptr<Person>>& searchResults);
     ErrorCode searchStudentByPesel(const std::string& pesel,
                                    std::vector<std::shared_ptr<Person>>& searchResults);

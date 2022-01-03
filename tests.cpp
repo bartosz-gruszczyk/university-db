@@ -19,12 +19,16 @@
 
 class DataBaseAddStudentFixture : public ::testing::Test {
 public:
+    DataBaseAddStudentFixture() {
+        cut.addStudent("Jan", "Kowalski", "78785285242", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
+    }
+
     DataBase cut;
 };
 
 TEST_F(DataBaseAddStudentFixture, shouldAddStudentCorrectly) {
-    const std::string firstName = "Bartek";
-    const std::string lastName = "Gruszczyk";
+    const std::string firstName = "Marian";
+    const std::string lastName = "Nowak";
     const std::string pesel = "12345634129";
     const Address address("03-333", "Warszawa", "Kwiatowa 666");
     const Sex sex = Sex::Male;
@@ -41,12 +45,103 @@ TEST_F(DataBaseAddStudentFixture, shouldAddStudentCorrectly) {
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->address(), address); // sprawdzic czy operator porownania dziala
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getSex(), sex);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getIndexNumber(), indexNumber);
-    // EXPECT_EQ(cut.data().->getFirstName(.}
 }
 
 TEST_F(DataBaseAddStudentFixture, shouldReturnInvalidPesel) {
     auto result = cut.addStudent("John", "Doe", "1234", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male, 1);
     EXPECT_EQ(result, ErrorCode::InvalidPesel);
+    result = cut.addStudent("John", "Doe", "12345634122", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male, 1);
+    EXPECT_EQ(result, ErrorCode::InvalidPesel);
+}
 
-    // EXPECT_EQ(result, ErrorCode::InvalidPesel);
+TEST_F(DataBaseAddStudentFixture, shouldReturnPeselAlreadyExists) {
+    auto result = cut.addStudent("Monika", "Kowalik", "78785285242", Address("99-111", " ", " "), Sex::Female, 9);
+    EXPECT_EQ(result, ErrorCode::PeselAlreadyExists);
+}
+
+TEST_F(DataBaseAddStudentFixture, shouldReturnInvalidIndexNumber) {
+    auto result = cut.addStudent("A", "B", "12345634129", Address("99-111", "C", "D"), Sex::Male, -32);
+    EXPECT_EQ(result, ErrorCode::InvalidIndexNumber);
+    result = cut.addStudent("E", "F", "78787878785", Address("99-111", "G", "H"), Sex::Male, DataBase::maxIndexNumber + 1);
+    EXPECT_EQ(result, ErrorCode::InvalidIndexNumber);
+}
+
+TEST_F(DataBaseAddStudentFixture, shouldReturnIndexNumberAlreadyExists) {
+    auto result = cut.addStudent("A", "B", "12345634129", Address("99-999", "C", "D"), Sex::Female, 5);
+    EXPECT_EQ(result, ErrorCode::IndexNumberAlreadyExists);
+}
+
+class DataBaseRemovePersonFixture : public ::testing::Test {
+public:
+    DataBaseRemovePersonFixture() {
+        cut.addStudent("Jan", "Kowalski", "78785285242", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
+    }
+
+    DataBase cut;
+};
+
+TEST_F(DataBaseRemovePersonFixture, shouldReturnInvalidIndexNumber) {
+    auto result = cut.removeStudent(-3);
+    EXPECT_EQ(result, ErrorCode::InvalidIndexNumber);
+}
+
+TEST_F(DataBaseRemovePersonFixture, shouldReturnIndexNumberNotFound) {
+    auto result = cut.removeStudent(99);
+    EXPECT_EQ(result, ErrorCode::IndexNumberNotFound);
+}
+
+TEST_F(DataBaseRemovePersonFixture, shouldRemoveStudent) {
+    auto sizeBeforeRemoving = cut.data().size();
+    auto result = cut.removeStudent(5);
+    EXPECT_EQ(result, ErrorCode::Ok);
+    EXPECT_EQ(cut.data().size(), sizeBeforeRemoving - 1);
+}
+
+TEST_F(DataBaseRemovePersonFixture, shouldReturnInvalidPesel) {
+    auto result = cut.removePerson("55030101192");
+    EXPECT_EQ(result, ErrorCode::InvalidPesel);
+}
+
+TEST_F(DataBaseRemovePersonFixture, shouldReturnPeselNotFound) {
+    auto result = cut.removePerson("55030101193");
+    EXPECT_EQ(result, ErrorCode::PeselNotFound);
+}
+
+TEST_F(DataBaseRemovePersonFixture, shouldRemovePerson) {
+    auto sizeBeforeRemoving = cut.data().size();
+    auto result = cut.removePerson("78785285242");
+    EXPECT_EQ(result, ErrorCode::Ok);
+    EXPECT_EQ(cut.data().size(), sizeBeforeRemoving - 1);
+}
+
+TEST_F(DataBaseRemovePersonFixture, shouldClearWholeDataBase) {
+    cut.clearAll();
+    EXPECT_EQ(cut.data().size(), 0);
+}
+
+class DataBaseSearchPersonFixture : public ::testing::Test {
+public:
+    DataBaseSearchPersonFixture() {
+        cut.addStudent("Jan", "Kowalski", "78785285242", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
+        cut.addEmployee("Monika", "Lubicz", "93847560327", Address("09-622", "Wolniki", "Skrzetuskiego 9"), Sex::Female, 4300);
+        cut.addStudent("Janoslaw", "Kowalczyk", "78787878785", Address("99-112", "Krakow", "Stawowa 700"), Sex::Male, 6);
+        cut.addEmployee("Krystian", "Zaremba", "34343434341", Address("44-200", "Rybnik", "Janasa 3"), Sex::Male, 3040);
+    }
+
+    DataBase cut;
+};
+
+TEST_F(DataBaseSearchPersonFixture, shouldFindOnePerson) {
+    std::vector<std::shared_ptr<Person>> results;
+    auto error = cut.searchStudentByLastName("Kowals", results);
+    ASSERT_EQ(error, ErrorCode::Ok);
+    EXPECT_EQ(results.size(), 1);
+    EXPECT_EQ(cut.data().front(), results.front()); // sprawdzic czy porownanie shared ptrow dziala
+}
+
+TEST_F(DataBaseSearchPersonFixture, shouldFindTwoPeople) {
+    std::vector<std::shared_ptr<Person>> results;
+    auto error = cut.searchStudentByLastName("Kowal", results);
+    ASSERT_EQ(error, ErrorCode::Ok);
+    EXPECT_EQ(results.size(), 2);
 }
