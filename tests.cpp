@@ -32,17 +32,21 @@ TEST_F(DataBaseAddStudentFixture, shouldAddStudentCorrectly) {
 
     auto sizeBeforeAdding = cut.data().size();
     auto result = cut.addStudent(firstName, lastName, pesel, address, sex, indexNumber);
+
     ASSERT_EQ(result, ErrorCode::Ok);
     EXPECT_EQ(cut.data().size(), sizeBeforeAdding + 1);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getFirstName(), firstName);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getLastName(), lastName);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getPesel(), pesel);
-    EXPECT_EQ(cut.data()[sizeBeforeAdding]->address(), address); // sprawdzic
-
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->address(), address); // sprawdzic czy operator porownania dziala
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->getSex(), sex);
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->getIndexNumber(), indexNumber);
     // EXPECT_EQ(cut.data().->getFirstName(.}
 }
 
 TEST_F(DataBaseAddStudentFixture, shouldReturnInvalidPesel) {
     auto result = cut.addStudent("John", "Doe", "1234", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male, 1);
-    ASSERT_EQ(result, ErrorCode::InvalidPesel);
+    EXPECT_EQ(result, ErrorCode::InvalidPesel);
+
+    // EXPECT_EQ(result, ErrorCode::InvalidPesel);
 }
