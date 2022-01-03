@@ -131,7 +131,7 @@ public:
     DataBase cut;
 };
 
-TEST_F(DataBaseSearchPersonFixture, shouldFindOnePerson) {
+TEST_F(DataBaseSearchPersonFixture, shouldFindOnePersonByLastName) {
     std::vector<std::shared_ptr<Person>> results;
     auto error = cut.searchStudentByLastName("Kowals", results);
     ASSERT_EQ(error, ErrorCode::Ok);
@@ -139,9 +139,66 @@ TEST_F(DataBaseSearchPersonFixture, shouldFindOnePerson) {
     EXPECT_EQ(cut.data().front(), results.front()); // sprawdzic czy porownanie shared ptrow dziala
 }
 
-TEST_F(DataBaseSearchPersonFixture, shouldFindTwoPeople) {
+TEST_F(DataBaseSearchPersonFixture, shouldFindTwoPeopleByLastName) {
     std::vector<std::shared_ptr<Person>> results;
     auto error = cut.searchStudentByLastName("Kowal", results);
     ASSERT_EQ(error, ErrorCode::Ok);
     EXPECT_EQ(results.size(), 2);
+}
+
+TEST_F(DataBaseSearchPersonFixture, shouldReturnLastNameNotFound) {
+    std::vector<std::shared_ptr<Person>> results;
+    auto error = cut.searchStudentByLastName("Abcdef", results);
+    ASSERT_EQ(error, ErrorCode::LastNameNotFound);
+    EXPECT_EQ(results.size(), 0);
+}
+
+TEST_F(DataBaseSearchPersonFixture, shouldFindOnePersonByPesel) {
+    std::vector<std::shared_ptr<Person>> results;
+    auto error = cut.searchStudentByPesel("78785285242", results);
+    ASSERT_EQ(error, ErrorCode::Ok);
+    EXPECT_EQ(results.size(), 1);
+}
+
+TEST_F(DataBaseSearchPersonFixture, shouldFindTwoPeopleByPesel) {
+    std::vector<std::shared_ptr<Person>> results;
+    auto error = cut.searchStudentByPesel("7878", results);
+    ASSERT_EQ(error, ErrorCode::Ok);
+    EXPECT_EQ(results.size(), 2);
+}
+
+TEST_F(DataBaseSearchPersonFixture, shouldReturnPeselNotFound) {
+    std::vector<std::shared_ptr<Person>> results;
+    auto error = cut.searchStudentByPesel("55030101193", results);
+    ASSERT_EQ(error, ErrorCode::PeselNotFound);
+    EXPECT_EQ(results.size(), 0);
+}
+
+class DataBaseSortingFixture : public ::testing::Test {
+public:
+    DataBaseSortingFixture() {
+        cut.addEmployee("Monika", "Lubicz", "93847560327", Address("09-622", "Wolniki", "Skrzetuskiego 9"), Sex::Female, 4300);
+        cut.addStudent("Jan", "Kowalski", "78785285242", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
+        cut.addEmployee("Krystian", "Zaremba", "34343434341", Address("44-200", "Rybnik", "Janasa 3"), Sex::Male, 3040);
+        cut.addStudent("Janoslaw", "Kowalczyk", "78787878785", Address("99-112", "Krakow", "Stawowa 700"), Sex::Male, 6);
+        cut.addStudent("Lucja", "Kowalczyk", "55030101193", Address("99-112", "A", "B"), Sex::Female, 7);
+    }
+
+    DataBase cut;
+};
+
+TEST_F(DataBaseSortingFixture, shouldSortByLastName) {
+    std::vector<std::shared_ptr<Person>> sorted;
+    sorted.push_back(cut.data()[3]); // czy my tak mozemy??
+    sorted.push_back(cut.data()[4]); // porownanie shared pointerow
+    sorted.push_back(cut.data()[1]);
+    sorted.push_back(cut.data()[0]);
+    sorted.push_back(cut.data()[2]);
+
+    cut.sortByLastName();
+
+    for (size_t i = 0; i < sorted.size(); ++i) {
+        EXPECT_EQ(cut.data()[i], sorted[i]);
+    }
+
 }
