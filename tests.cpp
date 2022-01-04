@@ -183,7 +183,6 @@ public:
         cut.addStudent("Janoslaw", "Kowalczyk", "78787878785", Address("99-112", "Krakow", "Stawowa 700"), Sex::Male, 6);
         cut.addStudent("Lucja", "Kowalczyk", "55030101193", Address("99-112", "A", "B"), Sex::Female, 7);
     }
-
     DataBase cut;
 };
 
@@ -194,11 +193,59 @@ TEST_F(DataBaseSortingFixture, shouldSortByLastName) {
     sorted.push_back(cut.data()[1]);
     sorted.push_back(cut.data()[0]);
     sorted.push_back(cut.data()[2]);
-
     cut.sortByLastName();
-
     for (size_t i = 0; i < sorted.size(); ++i) {
         EXPECT_EQ(cut.data()[i], sorted[i]);
     }
+}
 
+TEST_F(DataBaseSortingFixture, shouldSortByPesel) {
+    std::vector<std::shared_ptr<Person>> sorted;
+    sorted.push_back(cut.data()[2]);
+    sorted.push_back(cut.data()[4]);
+    sorted.push_back(cut.data()[1]);
+    sorted.push_back(cut.data()[3]);
+    sorted.push_back(cut.data()[0]);
+    cut.sortByPesel();
+    for (size_t i = 0; i < sorted.size(); ++i) {
+        EXPECT_EQ(cut.data()[i], sorted[i]);
+    }
+}
+
+TEST_F(DataBaseSortingFixture, shouldSortBySalary) {
+    std::vector<std::shared_ptr<Person>> sorted;
+    sorted.push_back(cut.data()[0]);
+    sorted.push_back(cut.data()[2]); 
+    cut.sortBySalary();
+    for (size_t i = 0; i < sorted.size(); ++i) {
+        EXPECT_EQ(cut.data()[i], sorted[i]);
+    }
+}
+
+class DataBaseChangeSalaryFixture : public ::testing::Test {
+public:
+    DataBaseChangeSalaryFixture() {
+        cut.addEmployee("Monika", "Lubicz", "93847560327", Address("09-622", "Wolniki", "Skrzetuskiego 9"), Sex::Female, 4300);
+        cut.addStudent("Jan", "Kowalski", "78785285242", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
+    }
+    DataBase cut;
+};
+
+TEST_F(DataBaseChangeSalaryFixture, shouldChangeSalary) {
+    size_t newSalary = 9000;
+    auto error = cut.changeSalary("93847560327", newSalary);
+    ASSERT_EQ(error, ErrorCode::Ok);
+    EXPECT_EQ(newSalary, cut.data().front()->getSalary());
+}
+
+TEST_F(DataBaseChangeSalaryFixture, shouldReturnNotEmployee) {
+    size_t newSalary = 9000;
+    auto error = cut.changeSalary("78785285242", newSalary);
+    EXPECT_EQ(error, ErrorCode::NotEmployee);
+}
+
+TEST_F(DataBaseChangeSalaryFixture, shouldReturnInvalidSalary) {
+    size_t newSalary = cut.maxSalary + 1; // zmienic na static!!
+    auto error = cut.changeSalary("93847560327", newSalary);
+    EXPECT_EQ(error, ErrorCode::InvalidSalary);
 }
