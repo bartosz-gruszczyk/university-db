@@ -249,3 +249,20 @@ TEST_F(DataBaseChangeSalaryFixture, shouldReturnInvalidSalary) {
     auto error = cut.changeSalary("93847560327", newSalary);
     EXPECT_EQ(error, ErrorCode::InvalidSalary);
 }
+
+TEST_F(DataBaseChangeSalaryFixture, shouldReturnPeselNotFound) {
+    size_t newSalary = 9000;
+    auto error = cut.changeSalary("55030101193", newSalary);
+    EXPECT_EQ(error, ErrorCode::PeselNotFound);
+}
+
+// class DataBaseGeneratePeople : public ::testing::Test {
+//     DataBase cut;
+// };
+
+TEST(DataBaseGeneratePeopleSuite, shouldGeneratePeople) {
+    DataBase cut;
+    size_t numberOfPeople = 100;
+    cut.generatePeople(numberOfPeople);
+    EXPECT_EQ(numberOfPeople, cut.data().size());
+}
