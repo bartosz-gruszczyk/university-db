@@ -228,7 +228,7 @@ void DataBase::readStringFromFile(std::string& str, std::ifstream& file) {
     file.read(&str[0], size);
 }
 
-bool DataBase::saveFile(const std::string& fileName) {
+ErrorCode DataBase::saveFile(const std::string& fileName) {
     std::ofstream file(fileName, file.out | file.binary);
     if (file.is_open()) {   // file.good() ????
         for (size_t i = 0; i < people_.size(); ++i) {
@@ -250,12 +250,12 @@ bool DataBase::saveFile(const std::string& fileName) {
                 file.write(reinterpret_cast<char*>(&salary), sizeof(size_t));
             }
         }
-        return true;
+        return ErrorCode::Ok;
     }
-    return false;
+    return ErrorCode::CantSaveFile;
 }
 
-bool DataBase::openFile(const std::string& fileName) {
+ErrorCode DataBase::openFile(const std::string& fileName) {
     std::ifstream file(fileName, file.in | file.binary);
     if (file.is_open()) {
         people_.clear();
@@ -299,9 +299,9 @@ bool DataBase::openFile(const std::string& fileName) {
             }
             file.peek();
         }
-        return true;
+        return ErrorCode::Ok;
     }
-    return false;
+    return ErrorCode::CantOpenFile;
 }
 
 std::vector<std::shared_ptr<Person>>& DataBase::data() {

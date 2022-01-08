@@ -60,10 +60,10 @@ public:
 
     // maybe they can be private ?
     int calculatePeselControlDigit(const std::string& pesel) const;
-    bool isPeselValid(const std::string& pesel); //reference?
+    bool isPeselValid(const std::string& pesel);
 
-    bool saveFile(const std::string& fileName); // const??
-    bool openFile(const std::string& fileName);
+    ErrorCode saveFile(const std::string& fileName);
+    ErrorCode openFile(const std::string& fileName);
 
     void clearAll();
 

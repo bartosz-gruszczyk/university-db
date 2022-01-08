@@ -1,6 +1,7 @@
 #include "menu.hpp"
 #include <iostream>
 #include <iomanip>
+#include <filesystem>
 
 void Menu::run() {
 
@@ -259,18 +260,35 @@ std::string Menu::menuSaveToFile() {
     std::cout << "Enter filename: ";
     std::string filename;
     std::cin >> filename;
-    dataBase_.saveFile(filename);
+    if (std::filesystem::exists(filename)) {
+        std::cout << "File " << filename << " already exist. Do you want to overwrite it? (y/n) :";
+        char c;
+        std::cin >> c;
+        if (c == 'n') {
+            return "Saving canceled.";
+        } else if (c != 'y') {
+            return "Wrong input.";
+        }
+    }
+    ErrorCode error = dataBase_.saveFile(filename);
     printGroup(dataBase_.data());
-    return "...";
+    return error == ErrorCode::Ok
+           ? "File saved without errors."
+           : errors[error];
 }
 
 std::string Menu::menuReadFromFile() {
     std::cout << "Enter filename: ";
     std::string filename;
     std::cin >> filename;
-    dataBase_.openFile(filename);
+    if (!std::filesystem::exists(filename)) {
+        return "File " + filename + " not found.";
+    }
+    ErrorCode error = dataBase_.openFile(filename);
     printGroup(dataBase_.data());
-    return "...";
+    return error == ErrorCode::Ok
+           ? "File opened without errors."
+           : errors[error]; // chyba jednak zmienic w database na file.good()
 }
 
 std::string Menu::menuClearAll() {
