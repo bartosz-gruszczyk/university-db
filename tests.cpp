@@ -2,31 +2,16 @@
 #include "errors.hpp"
 #include "database.hpp"
 
-
-// // TEST(DataBaseAddStudentCorrect, shouldAddStudentCorrectly) {
-// TEST(DataBaseAddStudentTests, shouldAddStudentCorrectly) {
-//     DataBase cut;
-//     auto result = cut.addStudent("Bartek", "Gruszczyk", "12345634129", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male, 1);
-//     ASSERT_EQ(result, ErrorCode::Ok);
-// }
-
-// // TEST(DataBaseAddStudentInvalidPesel, shouldReturnInvalidPesel) {
-// TEST(DataBaseAddStudentTests, shouldReturnInvalidPesel) {
-//     DataBase cut;
-//     auto result = cut.addStudent("John", "Doe", "1234", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male, 1);
-//     ASSERT_EQ(result, ErrorCode::InvalidPesel);
-// }
-
-class DataBaseAddStudentFixture : public ::testing::Test {
+class DataBaseAddPersonFixture : public ::testing::Test {
 public:
-    DataBaseAddStudentFixture() {
+    DataBaseAddPersonFixture() {
         cut.addStudent("Jan", "Kowalski", "78785285242", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
     }
 
     DataBase cut;
 };
 
-TEST_F(DataBaseAddStudentFixture, shouldAddStudentCorrectly) {
+TEST_F(DataBaseAddPersonFixture, shouldAddStudentCorrectly) {
     const std::string firstName = "Marian";
     const std::string lastName = "Nowak";
     const std::string pesel = "12345634129";
@@ -47,26 +32,47 @@ TEST_F(DataBaseAddStudentFixture, shouldAddStudentCorrectly) {
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getIndexNumber(), indexNumber);
 }
 
-TEST_F(DataBaseAddStudentFixture, shouldReturnInvalidPesel) {
+TEST_F(DataBaseAddPersonFixture, shouldAddEmployeeCorrectly) {
+    const std::string firstName = "Jan";
+    const std::string lastName = "Kowalski";
+    const std::string pesel = "44051401458";
+    const Address address("03-333", "Warszawa", "Kwiatowa 667");
+    const Sex sex = Sex::Male;
+    const size_t salary = 5000;
+
+    auto sizeBeforeAdding = cut.data().size();
+    auto result = cut.addEmployee(firstName, lastName, pesel, address, sex, salary);
+
+    ASSERT_EQ(result, ErrorCode::Ok);
+    EXPECT_EQ(cut.data().size(), sizeBeforeAdding + 1);
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->getFirstName(), firstName);
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->getLastName(), lastName);
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->getPesel(), pesel);
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->address(), address); // sprawdzic czy operator porownania dziala
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->getSex(), sex);
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->getSalary(), salary);
+}
+
+TEST_F(DataBaseAddPersonFixture, shouldReturnInvalidPesel) {
     auto result = cut.addStudent("John", "Doe", "1234", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male, 1);
     EXPECT_EQ(result, ErrorCode::InvalidPesel);
     result = cut.addStudent("John", "Doe", "12345634122", Address("03-333", "Warszawa", "Kwiatowa 666"), Sex::Male, 1);
     EXPECT_EQ(result, ErrorCode::InvalidPesel);
 }
 
-TEST_F(DataBaseAddStudentFixture, shouldReturnPeselAlreadyExists) {
+TEST_F(DataBaseAddPersonFixture, shouldReturnPeselAlreadyExists) {
     auto result = cut.addStudent("Monika", "Kowalik", "78785285242", Address("99-111", " ", " "), Sex::Female, 9);
     EXPECT_EQ(result, ErrorCode::PeselAlreadyExists);
 }
 
-TEST_F(DataBaseAddStudentFixture, shouldReturnInvalidIndexNumber) {
+TEST_F(DataBaseAddPersonFixture, shouldReturnInvalidIndexNumber) {
     auto result = cut.addStudent("A", "B", "12345634129", Address("99-111", "C", "D"), Sex::Male, -32);
     EXPECT_EQ(result, ErrorCode::InvalidIndexNumber);
     result = cut.addStudent("E", "F", "78787878785", Address("99-111", "G", "H"), Sex::Male, DataBase::maxIndexNumber + 1);
     EXPECT_EQ(result, ErrorCode::InvalidIndexNumber);
 }
 
-TEST_F(DataBaseAddStudentFixture, shouldReturnIndexNumberAlreadyExists) {
+TEST_F(DataBaseAddPersonFixture, shouldReturnIndexNumberAlreadyExists) {
     auto result = cut.addStudent("A", "B", "12345634129", Address("99-999", "C", "D"), Sex::Female, 5);
     EXPECT_EQ(result, ErrorCode::IndexNumberAlreadyExists);
 }
@@ -256,13 +262,22 @@ TEST_F(DataBaseChangeSalaryFixture, shouldReturnPeselNotFound) {
     EXPECT_EQ(error, ErrorCode::PeselNotFound);
 }
 
-// class DataBaseGeneratePeople : public ::testing::Test {
-//     DataBase cut;
-// };
-
 TEST(DataBaseGeneratePeopleSuite, shouldGeneratePeople) {
     DataBase cut;
     size_t numberOfPeople = 100;
     cut.generatePeople(numberOfPeople);
     EXPECT_EQ(numberOfPeople, cut.data().size());
+}
+
+TEST(PeselValidation,shouldReturnInvalidPesel) {
+    DataBase cut;
+    EXPECT_EQ(cut.isPeselValid("44051401458"), true);
+    EXPECT_EQ(cut.isPeselValid("55030101193"), true);
+    EXPECT_EQ(cut.isPeselValid("55030101230"), true);
+    EXPECT_EQ(cut.isPeselValid("20272904006"), true);
+    EXPECT_EQ(cut.isPeselValid("44051401451"), false);
+    EXPECT_EQ(cut.isPeselValid("55030101195"), false);
+    EXPECT_EQ(cut.isPeselValid("55030101232"), false);
+    EXPECT_EQ(cut.isPeselValid("550301"), false);
+    EXPECT_EQ(cut.isPeselValid("gfdsfsdhdki"), false);
 }

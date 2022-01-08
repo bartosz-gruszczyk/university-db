@@ -1,6 +1,4 @@
 #pragma once
-// #include <map>
-// #include <string>
 
 enum class ErrorCode {
     Ok,
@@ -13,6 +11,6 @@ enum class ErrorCode {
     InvalidSalary,
     LastNameNotFound,
     NotEmployee,
-    // PersonNotFound // czy potrzebne?
-
+    CantSaveFile,
+    CantOpenFile
 };

@@ -61,7 +61,9 @@ private:
         {ErrorCode::IndexNumberNotFound, "Index number not found"},
         {ErrorCode::InvalidSalary, "Ivalid salary value"},
         {ErrorCode::LastNameNotFound, "Last name not found"},
-        {ErrorCode::NotEmployee, "Person is not an employee"}
+        {ErrorCode::NotEmployee, "Person is not an employee"},
+        {ErrorCode::CantSaveFile, "Cannot save to file"},
+        {ErrorCode::CantOpenFile, "Cannot open file"}
         // {ErrorCode::PersonNotFound, "Person not found"}
     };
 };
