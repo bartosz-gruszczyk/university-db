@@ -10,8 +10,18 @@ size_t DataGenerator::randomNumber(const size_t& rangeMin, const size_t& rangeMa
     return distribution(randomGenerator);
 }
 
-std::string DataGenerator::randomFirstName() const {
-    return firstNames_[randomNumber(0, firstNames_.size() - 1)];
+std::string DataGenerator::randomFirstName(const Sex& sex) const {  // refactor this??
+    if (sex == Sex::Male) {
+        return maleFirstNames_[randomNumber(0, maleFirstNames_.size() - 1)];
+    }
+    if (sex == Sex::Female) {
+        return femaleFirstNames_[randomNumber(0, femaleFirstNames_.size() - 1)];
+    }
+    size_t tempRandomNumber = randomNumber(0, maleFirstNames_.size() + femaleFirstNames_.size() - 1);
+    if (tempRandomNumber < maleFirstNames_.size()) {
+        return maleFirstNames_[tempRandomNumber];
+    }
+    return femaleFirstNames_[tempRandomNumber - maleFirstNames_.size()];
 }
 
 std::string DataGenerator::randomLastName() const {

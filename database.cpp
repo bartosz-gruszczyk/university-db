@@ -164,12 +164,12 @@ void DataBase::generatePeople(const size_t& amount) {
     size_t counter = 0;
     while (counter < amount) {
         Person::PersonType type = dataGen_.randomPersonType();
-        std::string firstName = dataGen_.randomFirstName();
+        Sex sex = dataGen_.randomSex();
+        std::string firstName = dataGen_.randomFirstName(sex);
         std::string lastName = dataGen_.randomLastName();
         std::string pesel = dataGen_.randomPeselPrototype();
         pesel += std::to_string(calculatePeselControlDigit(pesel));
         Address address(dataGen_.randomPostalCode(), dataGen_.randomCity(), dataGen_.randomStreetAndNumber());
-        Sex sex = dataGen_.randomSex();
         ErrorCode error;
         // std::cout << "generate: " << firstName << "  " << lastName << "  " << pesel << "  " <<  (sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other" ) << "  " << "\n";
         if (type == Person::PersonType::Student) {
