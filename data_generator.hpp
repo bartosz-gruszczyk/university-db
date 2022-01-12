@@ -1,11 +1,10 @@
 #pragma once
-#include <vector>
 #include <string>
+#include <vector>
 #include "person.hpp"
 
 class DataGenerator {
 public:
-
     size_t randomNumber(const size_t& rangeMin, const size_t& rangeMax) const; 
     std::string randomFirstName(const Sex& sex) const;
     std::string randomLastName() const;

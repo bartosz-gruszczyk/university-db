@@ -5,8 +5,25 @@
 #include <functional>
 
 class Menu {
+private:
+    enum class MenuOption {
+        PrintAll = 1,
+        AddPerson,
+        RemovePerson,
+        ChangeSalary,
+        SortByLastName,
+        SortByPesel,
+        SortBySalary,
+        FindLastName,
+        FindPesel,
+        GenerateData,
+        SaveToFile,
+        ReadFromFile,
+        ClearAll
+    };
+
 public:
-    uint8_t typeColumnWidth = 10;
+    const static uint8_t typeColumnWidth = 10;
     uint8_t firstNameColumnWidth = 16;   
     uint8_t lastNameColumnWidth = 16;   
     uint8_t peselColumnWidth = 14;

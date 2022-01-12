@@ -9,9 +9,7 @@ Person::Person(PersonType type, std::string firstName, std::string lastName, std
     , sex_{sex}
     {}
 
-Person::~Person() {
-    
-}
+Person::~Person() {}
 
 Person::PersonType Person::getType() const { // zostawic enum w klasie czy wywalic?
     return type_;
@@ -48,12 +46,3 @@ std::string Person::getCity() const {
 std::string Person::getStreetAndNumber() const {
     return address_.getStreetAndNumber();
 }
-
-// // this is strange...
-// size_t Person::getIndexNumber() const {
-//     return 0;
-// }
-
-// size_t Person::getSalary() const {
-//     return 0;
-// }

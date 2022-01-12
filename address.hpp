@@ -1,7 +1,5 @@
 #pragma once
 #include <string>
-//temporaray include:
-#include <iostream>
 
 class Address {
 public:
@@ -26,9 +24,6 @@ public:
     std::string getStreetAndNumber() const {
         return streetAndNumber_;
     }
-    // ~Address() {
-    //     std::cout << "\n---Address d'tor---\n";
-    // }
 
     bool operator==(const Address& other) const {
         return postalCode_ == other.getPostalCode()

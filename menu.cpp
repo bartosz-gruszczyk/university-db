@@ -12,7 +12,7 @@ void Menu::run() {
 void Menu::mainMenu() {
     short choice = -1;
     std::string message = "Welcome. Choose an option.";
-    std::cout << std::internal << "\n\t..:: Univeristy DB ::..\n";
+    std::cout <<  "\n..:: Univeristy DB ::..\n";
     menuPrintAll();
     while (choice != 0) {
         printSeparator();
@@ -107,7 +107,7 @@ std::string Menu::menuAddPerson() {
     std::cin >> type;
     if (!(type == 's' || type == 'e')) {
         // std::cout << "Wrong input\n";
-        return "Wrong type input.";
+        return "Wrong input.";
     }
     std::cout << "First name: ";
     std::cin >> firstName;
@@ -133,7 +133,7 @@ std::string Menu::menuAddPerson() {
         sex = Sex::Other;
     } else {
         // std::cout << "Wrong input\n";
-        return "Wrong sex input";  // zamienic na error code?
+        return "Wrong input";  // zamienic na error code?
     }
     ErrorCode error;
     if (type == 's') {
@@ -253,7 +253,7 @@ std::string Menu::menuGenerateData() {
     std::cin >> amountOfPeople;
     dataBase_.generatePeople(amountOfPeople);
     printGroup(dataBase_.data());
-    return std::to_string(amountOfPeople) + "people has been generated.";
+    return std::to_string(amountOfPeople) + " people has been generated.";
 }
 
 std::string Menu::menuSaveToFile() {
@@ -312,7 +312,7 @@ std::string Menu::encodeType(const Person::PersonType& type) const {
 }
 
 void Menu::printHeader(){
-    // std::cout << "vector size: " << people_.size() << '\n'; // raczej do wywalenia
+    printSeparator();
     std::cout << std::left;
     std::cout << std::setw(typeColumnWidth) << "type:"
               << std::setw(firstNameColumnWidth) << "first name:"
@@ -353,7 +353,6 @@ void Menu::printGroup(const std::vector<std::shared_ptr<Person>>& group) {
 }
 
 void Menu::printMainMenu() const {
-    // char block = 26;
     uint8_t itemSize = 23;
     std::cout << std::left << std::setfill(' ');
     std::cout << std::setw(itemSize) << "[ 1] Print DB"
@@ -373,7 +372,7 @@ void Menu::printMainMenu() const {
 }
 
 void Menu::printSeparator() {
-    std::cout << std::right <<std ::setfill('-') << std::setw(typeColumnWidth
+    std::cout << std::right << std ::setfill('-') << std::setw(typeColumnWidth
                                                               + firstNameColumnWidth
                                                               + lastNameColumnWidth
                                                               + peselColumnWidth
@@ -381,5 +380,5 @@ void Menu::printSeparator() {
                                                               + sexColumnWidth
                                                               + indexNumberColumnWidth
                                                               + salaryColumnWidth) << '\n';
-
+    std::cout << std ::setfill(' ');
 }

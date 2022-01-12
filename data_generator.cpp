@@ -28,18 +28,11 @@ std::string DataGenerator::randomLastName() const {
     return lastNames_[randomNumber(0, lastNames_.size() - 1)];
 }
 
-std::string DataGenerator::randomPeselPrototype() const {\
-
-    // std::cout << randomNumberWithZeros(1, 99) << ' '
-    //           << randomNumberWithZeros(1, 12) << ' '
-    //           << randomNumberWithZeros(1, 31) << ' '
-    //           << randomNumberWithZeros(1, 9999) << '\n';
-
+std::string DataGenerator::randomPeselPrototype() const {
     return randomNumberWithZeros(1, 99)
          + randomNumberWithZeros(1, 12)
          + randomNumberWithZeros(1, 31)
          + randomNumberWithZeros(1, 9999);
-    return "";
 }
 
 std::string DataGenerator::randomCity() const {

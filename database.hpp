@@ -1,19 +1,3 @@
-    // Przechowywanie rekordów studentów o strukturze: Imię,,
-    //  nazwisko, adres, nr indeksu, PESEL, płeć
-    // Dodawanie nowych studentów
-    // Wyświetlanie całej bazy danych
-    // Wyszukiwanie po nazwisku
-    // Wyszukiwanie po numerze PESEL
-    // Sortowanie po numerze PESEL
-    // Sortowanie po nazwisku
-    // Usuwanie po numerze indeksu
-
-    // Przechowywanie rekordów pracowników uczelni o strukturze: imię, nazwisko, PESEL, płeć, adres, zarobki
-    // Wszystkie osoby niezależnie czy będą to pracownicy, czy studenci mają być trzymani w jednym kontenerze
-    // Wypełnianie bazy danych sztucznymi danymi (generowanie danych)
-    // Modyfikacja zarobków wyszukując osobę po numerze PESEL (problematyczne)
-    // Sortowanie po zarobkach (problematyczne)
-
 #pragma once
 #include <memory>
 #include <vector>
@@ -66,10 +50,7 @@ public:
     ErrorCode openFile(const std::string& fileName);
 
     void clearAll();
-
     static std::string stringToLower(const std::string& str);
-
-
     std::vector<std::shared_ptr<Person>>& data();
 
 private:
@@ -78,9 +59,7 @@ private:
     bool isValidIndexNumber(const size_t& indexNumber) const;
     void writeStringToFile(const std::string& str, std::ofstream& file);
     void readStringFromFile(std::string& str, std::ifstream& file);
-
     std::vector<std::shared_ptr<Person>> people_;
-
     DataGenerator dataGen_; // maybe can be static?
 
 };

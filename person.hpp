@@ -1,6 +1,6 @@
 #pragma once
+#include <string>
 #include "address.hpp"
-#include <iostream> // or string
 
 enum class Sex {
     Female, Male, Other
@@ -12,7 +12,12 @@ public:
         Student, Employee
     };
 
-    Person(PersonType type, std::string firstName, std::string lastName, std::string pesel, Address address, Sex sex); 
+    Person(PersonType type,
+           std::string firstName,
+           std::string lastName,
+           std::string pesel,
+           Address address,
+           Sex sex);
     
     virtual ~Person();
 
@@ -30,9 +35,7 @@ public:
     virtual size_t getIndexNumber() const = 0;
     virtual size_t getSalary() const = 0;
     virtual void setSalary(const size_t& newSalary) = 0;
-    // virtual size_t getIndexNumber() const;
-    // virtual size_t getSalary() const;
-
+ 
     const Address& address() { // wywalic?? zrobione dla unittestow
         return address_;
     }
