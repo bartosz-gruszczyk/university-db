@@ -7,7 +7,8 @@
 class Menu {
 private:
     enum class MenuOption {
-        PrintAll = 1,
+        ReturnToOS = 0,
+        PrintAll,
         AddPerson,
         RemovePerson,
         ChangeSalary,

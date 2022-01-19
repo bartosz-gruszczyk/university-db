@@ -19,43 +19,6 @@ int main() {
     testDB.addStudent("Jan", "Kowalski", "78785285242", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
     testDB.addStudent("Janoslaw", "Kowalczyk", "78787878785", Address("99-112", "Krakow", "Stawowa 700"), Sex::Male, 6);
 
-    // testDB.printAll();
-    // testDB.removeStudent(3);
-    // std::cout << "removing student...\n\n";
-    // testDB.printAll();
-    // std::cout << "find student by name...\n\n";
-    // testDB.searchStudentByLastName("kowa");
-
-    // std::cout << "find student by PESEL...\n\n";
-    // testDB.searchStudentByPESEL("7878");
-
-    // std::cout << "sorting by lastName...\n\n";
-    // testDB.sortByLastName();
-    // testDB.printAll();
-    // std::cout << "sorting by PESEL...\n\n";
-    // testDB.sortByPESEL();
-    // testDB.printAll();
-
-    // std::cout << "\nTesting pesel validation: \n";
-    // std::string pesel1 = "87070907879";
-    // std::cout << std::boolalpha << pesel1 << ": " << testDB.isPeselValid(pesel1) << '\n'; 
-    // std::string pesel2 = "55030101193";
-    // std::cout << std::boolalpha << pesel2 << ": " << testDB.isPeselValid(pesel2) << '\n'; 
-    // std::string pesel3 = "55030101230";
-    // std::cout << std::boolalpha << pesel3 << ": " << testDB.isPeselValid(pesel3) << '\n'; 
-    // std::string pesel4 = "20272904006";
-    // std::cout << std::boolalpha << pesel4 << ": " << testDB.isPeselValid(pesel4) << '\n'; 
-
-    // std::cout << "saving db to file: " << testDB.saveFile("savedDB.dat") << '\n';
-    // std::cout << "opening db to file: " << testDB.openFile("savedDB.dat") << '\n';
-
-    // testDB.printAll();
-
-    // std::cout << std::boolalpha << "exist by iD: " << testDB.existsInDataBase(99) << '\n';
-    // std::cout << std::boolalpha << "exist by pesel: " << testDB.existsInDataBase("7878") << '\n';
-    
-    // testDB.changeSalary("938475603232");
-
     Menu menu(testDB);
     menu.run();
 

@@ -19,61 +19,62 @@ void Menu::mainMenu() {
         printMainMenu();
         std::cout << "> ";
         std::cin >> choice;
-        switch (choice) {
-            case 1: {
+        // switch (choice) {
+        switch (static_cast<Menu::MenuOption>(choice)) {
+            case MenuOption::ReturnToOS: {
+                std::cout << "Returned to OS.\n\n";
+            }
+            break;
+            case MenuOption::PrintAll: {
                 message = menuPrintAll();
             }
             break;
-            case 2: {
+            case MenuOption::AddPerson: {
                 message = menuAddPerson();
             }
             break;
-            case 3: {
+            case MenuOption::RemovePerson: {
                 message = menuRemovePerson();
             }
             break;
-            case 4: {
+            case MenuOption::ChangeSalary: {
                 message = menuChangeSalary();
             }
             break;
-            case 5: {
+            case MenuOption::SortByLastName: {
                 message = menuSortByLastName();                
             }
             break;
-            case 6: {
+            case MenuOption::SortByPesel: {
                 message = menuSortByPesel();
             }
             break;
-            case 7: {
+            case MenuOption::SortBySalary: {
                 message = menuSortBySalary();
             }
             break;
-            case 8: {
+            case MenuOption::FindLastName: {
                 message = menuFindLastName();
             }
             break;
-            case 9: {
+            case MenuOption::FindPesel: {
                 message = menuFindPesel();
             }
             break;
-            case 10: {
+            case MenuOption::GenerateData: {
                 message = menuGenerateData();
             }
             break;
-            case 11: {
+            case MenuOption::SaveToFile: {
                 message = menuSaveToFile();
             }
             break;
-            case 12: {
+            case MenuOption::ReadFromFile: {
                 message = menuReadFromFile();                
             }
             break;
-            case 13: {
+            case MenuOption::ClearAll: {
                 message = menuClearAll();
-            }
-            break;
-            case 0: {
-                std::cout << "Returned to OS.\n\n";
             }
             break;
             default: {
