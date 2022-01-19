@@ -36,7 +36,7 @@ public:
     virtual size_t getSalary() const = 0;
     virtual void setSalary(const size_t& newSalary) = 0;
  
-    const Address& address() { // wywalic?? zrobione dla unittestow
+    const Address& address() {
         return address_;
     }
 

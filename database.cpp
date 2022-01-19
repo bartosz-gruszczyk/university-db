@@ -31,7 +31,6 @@ ErrorCode DataBase::addStudent(const std::string& firstName,
     }
     Student tempStudent(firstName, lastName, pesel, address, sex, indexNumber);
     people_.emplace_back(std::make_shared<Student>(tempStudent));
-    // people_.emplace_back(std::move(tempStudent)); /// ??????
     return ErrorCode::Ok;
 }
 
@@ -219,7 +218,7 @@ void DataBase::writeStringToFile(const std::string& str, std::ofstream& file) {
 }
 
 void DataBase::readStringFromFile(std::string& str, std::ifstream& file) {
-    uint16_t size;  // moze jednak zmienic na unsigned short?
+    uint16_t size;
     file.read(reinterpret_cast<char*>(&size), sizeof(size)); 
     str.resize(size);
     file.read(&str[0], size);
@@ -274,7 +273,7 @@ ErrorCode DataBase::openFile(const std::string& fileName) {
             readStringFromFile(streetAndNumber, file);
             file.read(reinterpret_cast<char*>(&sex), sizeof(Sex));
             if (type == Person::PersonType::Student) {
-                size_t indexNumber; // zainicjowac?
+                size_t indexNumber;
                 file.read(reinterpret_cast<char*>(&indexNumber), sizeof(size_t));
                 Student tempStudent(firstName,
                                     lastName,

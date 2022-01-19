@@ -15,7 +15,7 @@ public:
 
     size_t getIndexNumber() const override;
     size_t getSalary() const override;
-    void setSalary(const size_t& newSalary) override; // moze tez jednak bool??
+    void setSalary(const size_t& newSalary) override;
     
 private:
     size_t salary_;

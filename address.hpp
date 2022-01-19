@@ -3,33 +3,14 @@
 
 class Address {
 public:
-    Address(std::string postalCode, std::string city, std::string streetAndNumber)
-    : postalCode_{postalCode}
-    , city_{city}
-    , streetAndNumber_{streetAndNumber}
-    {}
+    Address(std::string postalCode, std::string city, std::string streetAndNumber);
 
-    std::string getAddress() const {
-        return postalCode_ + ' ' + city_ + " ul." + streetAndNumber_;
-    }
-
-    std::string getPostalCode() const {
-        return postalCode_;
-    }
-
-    std::string getCity() const {
-        return city_;
-    }
-
-    std::string getStreetAndNumber() const {
-        return streetAndNumber_;
-    }
-
-    bool operator==(const Address& other) const {
-        return postalCode_ == other.getPostalCode()
-            && city_ == other.getCity()
-            && streetAndNumber_ == other.getStreetAndNumber();
-    }
+    std::string getAddress() const;
+    std::string getPostalCode() const;
+    std::string getCity() const;
+    std::string getStreetAndNumber() const;
+    
+    bool operator==(const Address& other) const;
 
 private:
     std::string postalCode_;

@@ -15,7 +15,8 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-set(SRC_LIST person.cpp
+set(SRC_LIST address.cpp
+             person.cpp
              employee.cpp
              student.cpp
              database.cpp

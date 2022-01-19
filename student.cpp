@@ -1,6 +1,5 @@
 #include "student.hpp"
 
-// Student();
 Student::Student(std::string firstName,
                  std::string lastName,
                  std::string pesel,
@@ -11,9 +10,7 @@ Student::Student(std::string firstName,
     , indexNumber_{indexNumber}
     {}
 
-Student::~Student() {
-
-}
+Student::~Student() {}
 
 size_t Student::getIndexNumber() const {
     return indexNumber_;

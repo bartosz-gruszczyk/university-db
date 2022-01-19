@@ -1,8 +1,7 @@
 #pragma once
+#include <map>
 #include "database.hpp"
 #include "errors.hpp"
-#include <map>
-#include <functional>
 
 class Menu {
 private:

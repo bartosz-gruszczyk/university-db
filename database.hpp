@@ -30,7 +30,7 @@ public:
                           const size_t& salary);
     ErrorCode removeStudent(const size_t& indexNumber);
     ErrorCode removePerson(const std::string& pesel);
-    ErrorCode searchStudentByLastName(const std::string& lastName,  // zmienic na search Person?
+    ErrorCode searchStudentByLastName(const std::string& lastName,
                                       std::vector<std::shared_ptr<Person>>& searchResults);
     ErrorCode searchStudentByPesel(const std::string& pesel,
                                    std::vector<std::shared_ptr<Person>>& searchResults);
@@ -41,8 +41,6 @@ public:
     ErrorCode changeSalary(const std::string& pesel, const size_t& newSalary);
 
     void generatePeople(const size_t& amount); // :)
-
-    // maybe they can be private ?
     int calculatePeselControlDigit(const std::string& pesel) const;
     bool isPeselValid(const std::string& pesel);
 
@@ -60,6 +58,6 @@ private:
     void writeStringToFile(const std::string& str, std::ofstream& file);
     void readStringFromFile(std::string& str, std::ifstream& file);
     std::vector<std::shared_ptr<Person>> people_;
-    DataGenerator dataGen_; // maybe can be static?
+    DataGenerator dataGen_;
 
 };

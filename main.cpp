@@ -22,7 +22,5 @@ int main() {
     Menu menu(testDB);
     menu.run();
 
-    // std::function<void()> func1 = &Menu::menuAddStudent;
-
     return 0;
 }

@@ -1,7 +1,6 @@
 #include "data_generator.hpp"
-#include "database.hpp" /// podejrzane... static const
+#include "database.hpp"
 #include <random>
-// #include <string>
 
 size_t DataGenerator::randomNumber(const size_t& rangeMin, const size_t& rangeMax) const {
     std::random_device randomDevice;
@@ -10,7 +9,7 @@ size_t DataGenerator::randomNumber(const size_t& rangeMin, const size_t& rangeMa
     return distribution(randomGenerator);
 }
 
-std::string DataGenerator::randomFirstName(const Sex& sex) const {  // refactor this??
+std::string DataGenerator::randomFirstName(const Sex& sex) const {
     if (sex == Sex::Male) {
         return maleFirstNames_[randomNumber(0, maleFirstNames_.size() - 1)];
     }
@@ -40,7 +39,7 @@ std::string DataGenerator::randomCity() const {
 }
 
 std::string DataGenerator::randomStreetAndNumber() const {
-    return streets_[randomNumber(0, streets_.size() - 1)] + ' ' + std::to_string(randomNumber(1, 999));
+    return streets_[randomNumber(0, streets_.size() - 1)] + ' ' + std::to_string(randomNumber(1, 99));
 }
 
 std::string DataGenerator::randomPostalCode() const {

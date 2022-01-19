@@ -10,9 +10,7 @@ Employee::Employee(std::string firstName,
     , salary_{salary}
     {}
 
-Employee::~Employee() {
-    
-}
+Employee::~Employee() {}
 
 size_t Employee::getIndexNumber() const {
         return 0;
