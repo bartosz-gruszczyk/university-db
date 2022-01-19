@@ -31,6 +31,7 @@ ErrorCode DataBase::addStudent(const std::string& firstName,
     }
     Student tempStudent(firstName, lastName, pesel, address, sex, indexNumber);
     people_.emplace_back(std::make_shared<Student>(tempStudent));
+    // people_.emplace_back(std::move(tempStudent)); /// ??????
     return ErrorCode::Ok;
 }
 
@@ -52,8 +53,6 @@ ErrorCode DataBase::addEmployee(const std::string& firstName,
 }
 
 ErrorCode DataBase::removeStudent(const size_t& indexNumber) {
-    // sprawdzic czy nie ma wyciekow
-    // czy warto robic remove/erase?
     if (!isValidIndexNumber(indexNumber)) {
         return ErrorCode::InvalidIndexNumber;
     }
@@ -81,16 +80,15 @@ ErrorCode DataBase::removePerson(const std::string& pesel) {
 
 
 ErrorCode DataBase::searchStudentByLastName(const std::string& lastName,
-                                       std::vector<std::shared_ptr<Person>>& searchResults) {
+                                            std::vector<std::shared_ptr<Person>>& searchResults) {
     auto findLastName = [lastName](const std::shared_ptr<Person>& ptr){
             std::string lastNameToSearch = DataBase::stringToLower(lastName);
             std::string currentLastName = DataBase::stringToLower(ptr->getLastName());
-            // return ptr->getLastName().find(lastName) != std::string::npos;
             return currentLastName.find(lastNameToSearch) != std::string::npos;
     };
     auto it = std::find_if(people_.cbegin(), people_.cend(), findLastName);
     if (it == people_.cend()) {
-        return ErrorCode::LastNameNotFound;  // moze da sie jakos lepiej z ifami?
+        return ErrorCode::LastNameNotFound;
     }
     while (it != people_.end()) {
         searchResults.emplace_back(*it++);
@@ -106,7 +104,7 @@ ErrorCode DataBase::searchStudentByPesel(const std::string& pesel,
     };
     auto it = std::find_if(people_.cbegin(), people_.cend(), findPESEL);
     if (it == people_.cend()) {
-        return ErrorCode::PeselNotFound;  // moze da sie jakos lepiej z ifami?
+        return ErrorCode::PeselNotFound;
     }
     while (it != people_.end()) {
         searchResults.emplace_back(*it++);
@@ -115,7 +113,7 @@ ErrorCode DataBase::searchStudentByPesel(const std::string& pesel,
     return ErrorCode::Ok;
 }
 
-std::string DataBase::stringToLower(const std::string& str) { // moze wywalic do innego cpp ?
+std::string DataBase::stringToLower(const std::string& str) {
     std::string lower = str;
     std::transform(lower.begin(), lower.end(), lower.begin(), [](unsigned char c){ return std::tolower(c); });
     return lower;
@@ -162,6 +160,7 @@ ErrorCode DataBase::changeSalary(const std::string& pesel, const size_t& newSala
 
 void DataBase::generatePeople(const size_t& amount) {
     size_t counter = 0;
+    people_.reserve(people_.size() + amount);
     while (counter < amount) {
         Person::PersonType type = dataGen_.randomPersonType();
         Sex sex = dataGen_.randomSex();
@@ -171,7 +170,6 @@ void DataBase::generatePeople(const size_t& amount) {
         pesel += std::to_string(calculatePeselControlDigit(pesel));
         Address address(dataGen_.randomPostalCode(), dataGen_.randomCity(), dataGen_.randomStreetAndNumber());
         ErrorCode error;
-        // std::cout << "generate: " << firstName << "  " << lastName << "  " << pesel << "  " <<  (sex == Sex::Male ? "Male" : sex == Sex::Female ? "Female" : "Other" ) << "  " << "\n";
         if (type == Person::PersonType::Student) {
             size_t lastIndexNumber = minIndexNumber;
             for (const auto& person : people_) {
@@ -190,7 +188,7 @@ void DataBase::generatePeople(const size_t& amount) {
 
 int DataBase::calculatePeselControlDigit(const std::string& pesel) const {
     std::array<char, 10> weights {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
-    if (pesel.size() >= 10) { // moze wyrzucic pozniej...?
+    // if (pesel.size() >= 10) { // moze wyrzucic pozniej...?
         std::transform(weights.begin(),
                        weights.end(),
                        pesel.begin(),
@@ -203,8 +201,8 @@ int DataBase::calculatePeselControlDigit(const std::string& pesel) const {
             return 0;
         }
         return 10 - modulo;
-    }
-    return -1; // when string size is inappropiate
+    // }
+    // return -1; // when string size is inappropiate
 }
 
 bool DataBase::isPeselValid(const std::string& pesel) {
@@ -215,15 +213,14 @@ bool DataBase::isPeselValid(const std::string& pesel) {
 }
 
 void DataBase::writeStringToFile(const std::string& str, std::ofstream& file) {
-    // if (file.is_open()) { // moze nie bedzie potrzebne bo sprawdzane nadrzednie
-    char size = static_cast<char>(str.size());
-    file.write(&size, sizeof(char));
+    uint16_t size = static_cast<uint16_t>(str.size());
+    file.write(reinterpret_cast<char*>(&size), sizeof(size));
     file.write(&str[0], size);
 }
 
 void DataBase::readStringFromFile(std::string& str, std::ifstream& file) {
-    char size;  // moze jednak zmienic na unsigned short?
-    file.read(&size, sizeof(char)); 
+    uint16_t size;  // moze jednak zmienic na unsigned short?
+    file.read(reinterpret_cast<char*>(&size), sizeof(size)); 
     str.resize(size);
     file.read(&str[0], size);
 }

@@ -15,9 +15,7 @@ void Menu::mainMenu() {
     std::cout <<  "\n..:: Univeristy DB ::..\n";
     menuPrintAll();
     while (choice != 0) {
-        printSeparator();
-        std::cout << "\033[33m" << "Output: " << message << "\033[0m" << '\n';
-        printSeparator();
+        printOutputPanel(message);
         printMainMenu();
         std::cout << "> ";
         std::cin >> choice;
@@ -87,7 +85,8 @@ void Menu::mainMenu() {
 
 std::string Menu::menuPrintAll() {
     if (dataBase_.data().empty()) {
-        std::cout << "\n\n\n\t\t\tData base is empty...\n\n\n";
+        printHeader();
+        std::cout << "\n\n\t\t\tData base is empty...\n\n\n";
     } else {
         printGroup(dataBase_.data());
     }
@@ -100,13 +99,12 @@ std::string Menu::menuAddPerson() {
     std::string pesel;
     std::string postalCode;
     std::string city;
-    std::string streetAndNumber;   // a może by tak ze string streamem?
+    std::string streetAndNumber;
     Sex sex;
     std::cout << "Student or Employee? (s - student, e - employee): ";
     char type;
     std::cin >> type;
     if (!(type == 's' || type == 'e')) {
-        // std::cout << "Wrong input\n";
         return "Wrong input.";
     }
     std::cout << "First name: ";
@@ -114,11 +112,11 @@ std::string Menu::menuAddPerson() {
     std::cout << "Last name: ";
     std::cin >> lastName;
     std::cout << "PESEL: ";
-    std::cin >> pesel; // tez sprawdzac na przyszlosc
+    std::cin >> pesel;
     std::cout << "Postal Code: ";
     std::cin >> postalCode;
     std::cout << "City: ";
-    std::cin >> city; /// cost tu jest nie tak std::ws
+    std::cin >> city;
     std::cout << "Street and number: ";
     std::getline(std::cin >> std::ws, streetAndNumber);
     // std::getline(std::cin, streetAndNumber);
@@ -132,8 +130,7 @@ std::string Menu::menuAddPerson() {
     } else if (c == 'o') {
         sex = Sex::Other;
     } else {
-        // std::cout << "Wrong input\n";
-        return "Wrong input";  // zamienic na error code?
+        return "Wrong input";
     }
     ErrorCode error;
     if (type == 's') {
@@ -141,11 +138,11 @@ std::string Menu::menuAddPerson() {
         std::cout << "Index number (1 - " << DataBase::maxIndexNumber << "): ";
         std::cin >> indexNumber;
         error = dataBase_.addStudent(firstName,
-                            lastName,
-                            pesel,
-                            Address(postalCode, city, streetAndNumber),
-                            sex,
-                            indexNumber);
+                                     lastName,
+                                     pesel,
+                                     Address(postalCode, city, streetAndNumber),
+                                     sex,
+                                     indexNumber);
     }
     if (type == 'e') {
         size_t salary;
@@ -180,7 +177,6 @@ std::string Menu::menuRemovePerson() {
         std::cin >> indexNumber;
         error = dataBase_.removeStudent(indexNumber);
     } else {
-        // std::cout << "Wrong input\n";
         return "Wrong option.";
     }
     return error == ErrorCode::Ok
@@ -321,25 +317,31 @@ void Menu::printHeader(){
               << std::setw(peselColumnWidth) << "PESEL:"
               << std::setw(sexColumnWidth) << "sex:"
               << std::setw(indexNumberColumnWidth) << "index num.:"
-              << std::setw(sexColumnWidth) << "salary:"     // zmienic na 
+              << std::setw(sexColumnWidth) << "salary:"
               << '\n';
     printSeparator();
 }
 
+void Menu::printOutputPanel(const std::string& outputMessage) {
+    printSeparator();
+    // std::cout << "\033[33m" << "Output: " << message << "\033[0m" << '\n';
+    std::cout << "DB size: " << dataBase_.data().size() << " | Output: " << outputMessage << '\n';
+    printSeparator();
+}
+
 void Menu::printPerson(const std::shared_ptr<Person>& person) {
-        // std::cout.setf(std::ios::left);
         std::cout << std::left << std::setfill(' ');
         std::cout << std::setw(typeColumnWidth) << encodeType(person->getType())
-                  << std::setw(firstNameColumnWidth) << person->getFirstName()  // zrobic constexpr
+                  << std::setw(firstNameColumnWidth) << person->getFirstName()
                   << std::setw(lastNameColumnWidth) << person->getLastName()
-                  << std::setw(addressColumnWidth) << person->getAddress()   // zrobic const wartosc kolumny address
+                  << std::setw(addressColumnWidth) << person->getAddress()
                   << std::setw(peselColumnWidth) << person->getPesel()
                   << std::setw(sexColumnWidth) << encodeSex(person->getSex());
         if (person->getType() == Person::PersonType::Student) {
-            std::cout << std::setw(indexNumberColumnWidth) << person->getIndexNumber() //  << std::right
+            std::cout << std::setw(indexNumberColumnWidth) << person->getIndexNumber()
                       << std::setw(salaryColumnWidth) << "---";
         } else {
-            std::cout << std::setw(indexNumberColumnWidth) << "---"    // << std::right
+            std::cout << std::setw(indexNumberColumnWidth) << "---"
                       << std::setw(salaryColumnWidth) << person->getSalary();
         }
         std::cout << '\n';

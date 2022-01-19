@@ -32,11 +32,7 @@ public:
     uint8_t indexNumberColumnWidth = 12;
     uint8_t salaryColumnWidth = 10;
 
-    
-    Menu(DataBase& dataBase) : dataBase_{dataBase} {
-        // std::function<void()> func1 = &Menu::menuAddStudent;
-        // menuItems.insert(std::pair{'2', &Menu::menuAddStudent});
-    }
+    Menu(DataBase& dataBase) : dataBase_{dataBase} {}
     
     void run();
     void mainMenu();
@@ -54,7 +50,6 @@ public:
     std::string menuSaveToFile();
     std::string menuReadFromFile();
     std::string menuClearAll();
-
     std::string encodeSex(const Sex& sex) const;
     std::string encodeType(const Person::PersonType& type) const;
 
@@ -62,10 +57,10 @@ private:
     void printMainMenu() const;
     void printHeader();
     void printSeparator();
+    void printOutputPanel(const std::string& outputMessage);
     void printPerson(const std::shared_ptr<Person>& person);
     void printGroup(const std::vector<std::shared_ptr<Person>>& group);
 
-    
     DataBase& dataBase_;
 
     std::map<ErrorCode, std::string> errors {
@@ -81,6 +76,5 @@ private:
         {ErrorCode::NotEmployee, "Person is not an employee"},
         {ErrorCode::CantSaveFile, "Cannot save to file"},
         {ErrorCode::CantOpenFile, "Cannot open file"}
-        // {ErrorCode::PersonNotFound, "Person not found"}
     };
 };
