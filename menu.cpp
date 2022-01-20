@@ -1,13 +1,7 @@
 #include "menu.hpp"
-#include <iostream>
-#include <iomanip>
 #include <filesystem>
-
-void Menu::run() {
-
-    mainMenu();
-    
-}
+#include <iomanip>
+#include <iostream>
 
 void Menu::mainMenu() {
     short choice = -1;
@@ -87,7 +81,8 @@ void Menu::mainMenu() {
 std::string Menu::menuPrintAll() {
     if (dataBase_.data().empty()) {
         printHeader();
-        std::cout << "\n\n\t\t\tData base is empty...\n\n\n";
+        std::cout << "\n\n\t\tData base is empty.\n";
+        std::cout << "\t\tGenerate data [10] or read a file [12].\n\n";
     } else {
         printGroup(dataBase_.data());
     }

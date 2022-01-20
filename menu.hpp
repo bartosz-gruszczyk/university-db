@@ -34,7 +34,6 @@ public:
 
     Menu(DataBase& dataBase) : dataBase_{dataBase} {}
     
-    void run();
     void mainMenu();
 
     std::string menuPrintAll();
