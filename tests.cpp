@@ -7,7 +7,6 @@ public:
     DataBaseAddPersonFixture() {
         cut.addStudent("Jan", "Kowalski", "78785285242", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
     }
-
     DataBase cut;
 };
 
@@ -27,7 +26,7 @@ TEST_F(DataBaseAddPersonFixture, shouldAddStudentCorrectly) {
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getFirstName(), firstName);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getLastName(), lastName);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getPesel(), pesel);
-    EXPECT_EQ(cut.data()[sizeBeforeAdding]->address(), address); // sprawdzic czy operator porownania dziala
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->address(), address);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getSex(), sex);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getIndexNumber(), indexNumber);
 }
@@ -48,7 +47,7 @@ TEST_F(DataBaseAddPersonFixture, shouldAddEmployeeCorrectly) {
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getFirstName(), firstName);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getLastName(), lastName);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getPesel(), pesel);
-    EXPECT_EQ(cut.data()[sizeBeforeAdding]->address(), address); // sprawdzic czy operator porownania dziala
+    EXPECT_EQ(cut.data()[sizeBeforeAdding]->address(), address);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getSex(), sex);
     EXPECT_EQ(cut.data()[sizeBeforeAdding]->getSalary(), salary);
 }
@@ -82,7 +81,6 @@ public:
     DataBaseRemovePersonFixture() {
         cut.addStudent("Jan", "Kowalski", "78785285242", Address("99-111", "Krakow", "Stawowa 669"), Sex::Male, 5);
     }
-
     DataBase cut;
 };
 
@@ -133,7 +131,6 @@ public:
         cut.addStudent("Janoslaw", "Kowalczyk", "78787878785", Address("99-112", "Krakow", "Stawowa 700"), Sex::Male, 6);
         cut.addEmployee("Krystian", "Zaremba", "34343434341", Address("44-200", "Rybnik", "Janasa 3"), Sex::Male, 3040);
     }
-
     DataBase cut;
 };
 
@@ -194,8 +191,8 @@ public:
 
 TEST_F(DataBaseSortingFixture, shouldSortByLastName) {
     std::vector<std::shared_ptr<Person>> sorted;
-    sorted.push_back(cut.data()[3]); // czy my tak mozemy??
-    sorted.push_back(cut.data()[4]); // porownanie shared pointerow
+    sorted.push_back(cut.data()[3]);
+    sorted.push_back(cut.data()[4]);
     sorted.push_back(cut.data()[1]);
     sorted.push_back(cut.data()[0]);
     sorted.push_back(cut.data()[2]);
@@ -251,7 +248,7 @@ TEST_F(DataBaseChangeSalaryFixture, shouldReturnNotEmployee) {
 }
 
 TEST_F(DataBaseChangeSalaryFixture, shouldReturnInvalidSalary) {
-    size_t newSalary = cut.maxSalary + 1; // zmienic na static!!
+    size_t newSalary = cut.maxSalary + 1;
     auto error = cut.changeSalary("93847560327", newSalary);
     EXPECT_EQ(error, ErrorCode::InvalidSalary);
 }

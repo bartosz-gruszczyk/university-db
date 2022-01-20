@@ -13,7 +13,6 @@ void Menu::mainMenu() {
         printMainMenu();
         std::cout << "> ";
         std::cin >> choice;
-        // switch (choice) {
         switch (static_cast<Menu::MenuOption>(choice)) {
             case MenuOption::ReturnToOS: {
                 std::cout << "Returned to OS.\n\n";
@@ -115,7 +114,6 @@ std::string Menu::menuAddPerson() {
     std::cin >> city;
     std::cout << "Street and number: ";
     std::getline(std::cin >> std::ws, streetAndNumber);
-    // std::getline(std::cin, streetAndNumber);
     std::cout << "Sex (m - male, f - female, o - other): ";
     char c;
     std::cin >> c;
@@ -215,13 +213,13 @@ std::string Menu::menuFindLastName() {
     std::cout << "Enter last name to find: ";
     std::string lastName;
     std:: cin >> lastName;
-    std::vector<std::shared_ptr<Person>> results; // moze jakies reserve czy cos?
+    std::vector<std::shared_ptr<Person>> results;
     ErrorCode error = dataBase_.searchStudentByLastName(lastName, results);
     if (error == ErrorCode::Ok) {
         printGroup(results);
         return "Found " + std::to_string(results.size()) + " records.";
     }
-    printGroup(dataBase_.data()); // ??????????
+    printGroup(dataBase_.data());
     return "Cannot find '" + lastName + "'. Error: " + errors[error];
 }
 
@@ -280,7 +278,7 @@ std::string Menu::menuReadFromFile() {
     printGroup(dataBase_.data());
     return error == ErrorCode::Ok
            ? "File opened without errors."
-           : errors[error]; // chyba jednak zmienic w database na file.good()
+           : errors[error];
 }
 
 std::string Menu::menuClearAll() {
@@ -292,7 +290,6 @@ std::string Menu::menuClearAll() {
         return "Data base has been cleared.";
     }
     return "Clear aborted.";
-    // ???? printGroup(dataBase_.data());
 }
 
 std::string Menu::encodeSex(const Sex& sex) const {
@@ -320,7 +317,6 @@ void Menu::printHeader(){
 
 void Menu::printOutputPanel(const std::string& outputMessage) {
     printSeparator();
-    // std::cout << "\033[33m" << "Output: " << message << "\033[0m" << '\n';
     std::cout << "DB size: " << dataBase_.data().size() << " | Output: " << outputMessage << '\n';
     printSeparator();
 }

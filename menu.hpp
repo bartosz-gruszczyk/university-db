@@ -23,14 +23,14 @@ private:
     };
 
 public:
-    const static uint8_t typeColumnWidth = 10;
-    uint8_t firstNameColumnWidth = 16;   
-    uint8_t lastNameColumnWidth = 16;   
-    uint8_t peselColumnWidth = 14;
-    uint8_t addressColumnWidth = 42;
-    uint8_t sexColumnWidth = 8;
-    uint8_t indexNumberColumnWidth = 12;
-    uint8_t salaryColumnWidth = 10;
+    constexpr const static uint8_t typeColumnWidth = 10;
+    constexpr const static uint8_t firstNameColumnWidth = 16;   
+    constexpr const static uint8_t lastNameColumnWidth = 16;   
+    constexpr const static uint8_t peselColumnWidth = 14;
+    constexpr const static uint8_t addressColumnWidth = 42;
+    constexpr const static uint8_t sexColumnWidth = 8;
+    constexpr const static uint8_t indexNumberColumnWidth = 12;
+    constexpr const static uint8_t salaryColumnWidth = 10;
 
     Menu(DataBase& dataBase) : dataBase_{dataBase} {}
     

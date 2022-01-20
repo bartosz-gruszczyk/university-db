@@ -1,5 +1,4 @@
 #include "data_generator.hpp"
-#include "database.hpp"
 #include <random>
 
 size_t DataGenerator::randomNumber(const size_t& rangeMin, const size_t& rangeMax) const {

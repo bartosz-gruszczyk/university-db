@@ -1,15 +1,9 @@
 #include "database.hpp"
-#include "data_generator.hpp"
 #include <algorithm>
-#include <cctype>
 #include <fstream>
-#include <iostream>
-#include <iomanip>
 #include <memory>
 #include <numeric>
-
-const size_t DataBase::minIndexNumber = 1;
-const size_t DataBase::maxIndexNumber = 999999;
+#include "data_generator.hpp"
 
 ErrorCode DataBase::addStudent(const std::string& firstName,
                                const std::string& lastName,
@@ -184,24 +178,20 @@ void DataBase::generatePeople(const size_t& amount) {
     }
 }
 
-
 int DataBase::calculatePeselControlDigit(const std::string& pesel) const {
     std::array<char, 10> weights {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
-    // if (pesel.size() >= 10) { // moze wyrzucic pozniej...?
-        std::transform(weights.begin(),
-                       weights.end(),
-                       pesel.begin(),
-                       weights.begin(),
-                       [](const char& weight, const char& digit){
-                           return weight * (digit - '0');
-                       });
-        int modulo = std::reduce(weights.cbegin(), weights.cend(), 0) % 10;
-        if (modulo == 0) {
-            return 0;
-        }
-        return 10 - modulo;
-    // }
-    // return -1; // when string size is inappropiate
+    std::transform(weights.begin(),
+                    weights.end(),
+                    pesel.begin(),
+                    weights.begin(),
+                    [](const char& weight, const char& digit){
+                        return weight * (digit - '0');
+                    });
+    int modulo = std::reduce(weights.cbegin(), weights.cend(), 0) % 10;
+    if (modulo == 0) {
+        return 0;
+    }
+    return 10 - modulo;
 }
 
 bool DataBase::isPeselValid(const std::string& pesel) {
@@ -226,7 +216,7 @@ void DataBase::readStringFromFile(std::string& str, std::ifstream& file) {
 
 ErrorCode DataBase::saveFile(const std::string& fileName) {
     std::ofstream file(fileName, file.out | file.binary);
-    if (file.is_open()) {   // file.good() ????
+    if (file.is_open()) {
         for (size_t i = 0; i < people_.size(); ++i) {
             Person::PersonType type = people_[i]->getType();
             file.write(reinterpret_cast<char*>(&type), sizeof(type));

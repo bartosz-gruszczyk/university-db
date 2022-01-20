@@ -26,19 +26,14 @@ public:
     std::string getLastName() const;
     std::string getPesel() const;
     std::string getAddress() const;
-    // maybe there is a better solution for addres...
     std::string getPostalCode() const;
     std::string getCity() const;
     std::string getStreetAndNumber() const;
     Sex getSex() const;
-
     virtual size_t getIndexNumber() const = 0;
     virtual size_t getSalary() const = 0;
     virtual void setSalary(const size_t& newSalary) = 0;
- 
-    const Address& address() {
-        return address_;
-    }
+    const Address& address();
 
 private:
     PersonType type_;

@@ -9,12 +9,10 @@
 
 class DataBase {
 public:
-    static const size_t minIndexNumber;   // co const a co constexpr??
-    static const size_t maxIndexNumber;   // co const a co constexpr??
-    // size_t minIndexNumber = 1;   // co const a co constexpr??
-    // size_t maxIndexNumber = 999999;   // co const a co constexpr??
-    size_t minSalary = 3000;
-    size_t maxSalary = 26000;
+    constexpr static const size_t minIndexNumber = 1;
+    constexpr static const size_t maxIndexNumber = 999999;
+    const size_t minSalary = 3000;
+    const size_t maxSalary = 26000;
 
     ErrorCode addStudent(const std::string& firstName,
                          const std::string& lastName,
@@ -37,16 +35,12 @@ public:
     void sortByLastName();
     void sortByPesel();
     void sortBySalary();
-
     ErrorCode changeSalary(const std::string& pesel, const size_t& newSalary);
-
     void generatePeople(const size_t& amount); // :)
     int calculatePeselControlDigit(const std::string& pesel) const;
     bool isPeselValid(const std::string& pesel);
-
     ErrorCode saveFile(const std::string& fileName);
     ErrorCode openFile(const std::string& fileName);
-
     void clearAll();
     static std::string stringToLower(const std::string& str);
     std::vector<std::shared_ptr<Person>>& data();
